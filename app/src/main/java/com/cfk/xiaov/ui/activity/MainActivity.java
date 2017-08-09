@@ -113,7 +113,8 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         //设置ViewPager的最大缓存页面
         mVpContent.setOffscreenPageLimit(3);
 
-        mFragmentList.add(FragmentFactory.getInstance().getRecentMessageFragment());
+//        mFragmentList.add(FragmentFactory.getInstance().getRecentMessageFragment());
+        mFragmentList.add(FragmentFactory.getInstance().getVideoFragment());
         mFragmentList.add(FragmentFactory.getInstance().getContactsFragment());
         mFragmentList.add(FragmentFactory.getInstance().getDiscoveryFragment());
         mFragmentList.add(FragmentFactory.getInstance().getMeFragment());

@@ -26,6 +26,7 @@ public class FragmentFactory {
     private ContactsFragment mContactsFragment;
     private DiscoveryFragment mDiscoveryFragment;
     private MeFragment mMeFragment;
+    private VideoFragment mVideoFragment;
 
     public RecentMessageFragment getRecentMessageFragment() {
         if (mRecentMessageFragment == null) {
@@ -36,6 +37,17 @@ public class FragmentFactory {
             }
         }
         return mRecentMessageFragment;
+    }
+
+    public VideoFragment getVideoFragment() {
+        if (mVideoFragment == null) {
+            synchronized (FragmentFactory.class) {
+                if (mVideoFragment == null) {
+                    mVideoFragment = new VideoFragment();
+                }
+            }
+        }
+        return mVideoFragment;
     }
 
     public ContactsFragment getContactsFragment() {

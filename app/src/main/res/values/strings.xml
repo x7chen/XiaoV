@@ -44,7 +44,8 @@
     <string name="register_error">注册出错</string>
 
     <!--主界面-->
-    <string name="message">微信</string>
+    <!--<string name="message">微信</string>-->
+    <string name="message">视频</string>
     <string name="contacts">通讯录</string>
     <string name="discovery">发现</string>
     <string name="me">我</string>
@@ -268,4 +269,7 @@
     <string name="terms_of_use_and_privacy_policy">使用条款和隐私政策</string>
     <string name="CSDN_LQR_personal_development">CSDN_LQR个人开发</string>
     <string name="fun_and_enjoy">兴趣使然</string>
+
+
+    <string name="add_device">您还没有绑定设备哦，请点击+添加设备</string>
 </resources>

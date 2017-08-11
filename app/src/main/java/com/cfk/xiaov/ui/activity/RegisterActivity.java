@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.AccountMgr;
+import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.presenter.RegisterAtPresenter;
 import com.cfk.xiaov.ui.view.IRegisterAtView;
@@ -45,6 +47,8 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
 
     @Bind(R.id.btnRegister)
     Button mBtnRegister;
+
+    static final String prefix = "w";
 
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -116,6 +120,8 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
 
         mBtnRegister.setOnClickListener(v -> {
             mPresenter.register();
+            if(MyApp.mAccountMgr!=null)
+            MyApp.mAccountMgr.t_regist(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
         });
     }
 

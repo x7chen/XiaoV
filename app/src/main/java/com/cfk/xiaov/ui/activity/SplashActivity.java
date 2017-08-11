@@ -7,6 +7,8 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.cfk.xiaov.app.MyApp;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
@@ -51,10 +53,20 @@ public class SplashActivity extends BaseActivity {
                 )
                 .request();
         if (!TextUtils.isEmpty(UserCache.getToken())) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            jumpToActivity(intent);
-            finish();
+//            Intent intent = new Intent(this, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            jumpToActivity(intent);
+//            finish();
+//        }
+            if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
+                String account = AccountCache.getAccount();
+                String user_id = AccountCache.getUserSig();
+                MyApp.mAccountMgr.loginSDK(account, user_id);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                jumpToActivity(intent);
+                finish();
+            }
         }
     }
 

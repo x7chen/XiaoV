@@ -122,6 +122,7 @@
 
 
     <com.zhy.autolayout.AutoLinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_common_item"
@@ -177,6 +178,7 @@
         />
 
     <com.zhy.autolayout.AutoLinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_common_item"

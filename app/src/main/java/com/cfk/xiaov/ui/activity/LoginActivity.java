@@ -1,6 +1,7 @@
 package com.cfk.xiaov.ui.activity;
 
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.presenter.LoginAtPresenter;
 import com.cfk.xiaov.ui.view.ILoginAtView;
@@ -41,6 +43,8 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
     Button mBtnLogin;
     @Bind(com.cfk.xiaov.R.id.tvOtherLogin)
     TextView mTvOtherLogin;
+
+    static final String prefix = "w";
 
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -81,7 +85,20 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
             }
         });
 
-        mBtnLogin.setOnClickListener(v -> mPresenter.login());
+        mBtnLogin.setOnClickListener(v -> {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                MyApp.mAccountMgr.t_login(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
+            }).start();
+
+            mPresenter.login();
+
+
+        });
     }
 
     private boolean canLogin() {

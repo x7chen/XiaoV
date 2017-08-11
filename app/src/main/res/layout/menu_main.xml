@@ -15,6 +15,7 @@
         android:padding="0.5px">
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tvCreateGroup"
             android:layout_width="match_parent"
             android:layout_height="100px"
@@ -29,6 +30,7 @@
             android:textSize="15sp"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tvAddFriend"
             android:layout_width="match_parent"
             android:layout_height="100px"
@@ -43,6 +45,7 @@
             android:textSize="15sp"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tvScan"
             android:layout_width="match_parent"
             android:layout_height="100px"

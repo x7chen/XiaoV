@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.alibaba.fastjson.JSONException;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.cfk.xiaov.api.AccountMgr;
 import com.cfk.xiaov.db.DBManager;
 import com.cfk.xiaov.db.model.Friend;
 import com.cfk.xiaov.manager.BroadcastManager;
@@ -30,6 +31,7 @@ import com.cfk.xiaov.db.model.Groups;
 import com.cfk.xiaov.model.response.ContactNotificationMessageData;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.RedPacketUtil;
+import com.tencent.ilivesdk.ILiveSDK;
 import com.yunzhanghu.redpacketsdk.RPInitRedPacketCallback;
 import com.yunzhanghu.redpacketsdk.RPValueCallback;
 import com.yunzhanghu.redpacketsdk.RedPacket;
@@ -84,9 +86,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class MyApp extends BaseApp implements RongIMClient.OnReceiveMessageListener {
 
+    public static Context ApplicationContext;
+    public static AccountMgr mAccountMgr;
     @Override
     public void onCreate() {
         super.onCreate();
+        ApplicationContext = this;
+        mAccountMgr = new AccountMgr();
         LitePal.initialize(this);
         //初始化融云
         initRongCloud();
@@ -98,6 +104,7 @@ public class MyApp extends BaseApp implements RongIMClient.OnReceiveMessageListe
         LQREmotionKit.init(this, (context, path, imageView) -> Glide.with(context).load(path).centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView));
         //初始化ShareSDK
         ShareSDK.initSDK(getContext());
+        initILVLive();
     }
 
     @Override
@@ -440,5 +447,12 @@ public class MyApp extends BaseApp implements RongIMClient.OnReceiveMessageListe
         }
         return null;
     }
+
+    private void initILVLive(){
+        ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400028285, 11818);
+
+    }
+
+
 
 }

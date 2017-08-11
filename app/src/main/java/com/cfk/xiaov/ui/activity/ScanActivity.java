@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.db.DBManager;
+import com.cfk.xiaov.model.cache.BondCache;
+import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.model.response.GetGroupInfoResponse;
 import com.cfk.xiaov.ui.presenter.ScanAtPresenter;
 import com.lqr.imagepicker.ImagePicker;
@@ -268,6 +270,11 @@ public class ScanActivity extends BaseActivity<IScanAtView, ScanAtPresenter> imp
                             }
                         }, this::loadError);
             }
+        }
+        else if(result.startsWith(AppConst.QrCodeCommon.BOND)){
+            String bondID = result.substring(AppConst.QrCodeCommon.BOND.length());
+            BondCache.save(bondID);
+            finish();
         }
     }
 

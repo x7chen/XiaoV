@@ -47,6 +47,14 @@ public class AppConst {
         public static final String TOKEN = "token";
     }
 
+    public static final class Bond {
+        public static final String BOND_ID = "bond_id";
+    }
+
+    public static final class Account {
+        public static final String ACCOUNT = "account";
+        public static final String USER_SIG = "user_sig";
+    }
 
     public static final class WeChatUrl {
         public static final String HELP_FEED_BACK = "https://kf.qq.com/touch/product/wechat_app.html?scene_id=kf338&code=001ls8gj1IuCnz0kiUfj15uIfj1ls8ga&state=123";
@@ -61,6 +69,7 @@ public class AppConst {
     public static final class QrCodeCommon {
         public static final String ADD = "add:";//加好友
         public static final String JOIN = "join:";//入群
+        public static final String BOND = "bond:";//绑定
     }
 
     //语音存放位置

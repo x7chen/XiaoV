@@ -65,6 +65,7 @@
     </com.zhy.autolayout.AutoLinearLayout>
 
     <com.lqr.optionitemview.OptionItemView
+        android:visibility="gone"
         android:id="@+id/oivAlbum"
         style="@style/OptionItem"
         android:layout_marginTop="@dimen/option_item_margin_top"
@@ -89,6 +90,7 @@
     </com.zhy.autolayout.AutoRelativeLayout>
 
     <com.lqr.optionitemview.OptionItemView
+        android:visibility="gone"
         android:id="@+id/oivCollection"
         style="@style/OptionItem"
         android:background="@drawable/selector_common_item"
@@ -100,6 +102,7 @@
         app:left_text_size="16sp"/>
 
     <com.lqr.optionitemview.OptionItemView
+        android:visibility="gone"
         android:id="@+id/oivWallet"
         style="@style/OptionItem"
         android:layout_marginTop="@dimen/option_item_margin_top"
@@ -124,6 +127,7 @@
     </com.zhy.autolayout.AutoRelativeLayout>
 
     <com.lqr.optionitemview.OptionItemView
+        android:visibility="gone"
         android:id="@+id/oivCardPaket"
         style="@style/OptionItem"
         android:background="@drawable/selector_common_item"

@@ -3,264 +3,264 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Email-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6af2c732a480ae98d94b3413e8a49daca39c11f4">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Email-2.8.2_1f785b20a51307553ed2f557f105221c3a1414ca\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\Rong_IMLib.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="020fb7ece0df1f4df0f359114bea119dd0aa71d5">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\Rong_IMLib_770f1d56359a0b6e30844391f53171e4fdfd8d96\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Wechat-Core-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="002b4be4096d7ce75e969449fc81b62e312748a6">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-Core-2.8.2_f1ba05b36262a19160c943ade6a57470bc4230f1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\TencentMapSDK_Raster_v_1.2.7_51ae0e7.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="cd015da6004ed72abf1936d7a33b6bccc00ef866">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\TencentMapSDK_Raster_v_1.2.7_51ae0e7_6fb6bd160a3909b8af4cd19302a99bfa552806d9\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-QZone-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="dc2c7e7eaa2bad4c5333b6471d388a64df781d1b">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-QZone-2.8.2_211b726a8d4f976e0394c4477bf2057b9be88cac\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\TencentSearch1.1.3.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="195c1468964b5b9491a2d279469e8e52438e85c0">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\TencentSearch1.1.3_94a206502694e6ed19a3e50494526ad7d9adc8ca\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-ShortMessage-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e19bf208ba05ecd52d4301461b6570b26ab3dcb1">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-ShortMessage-2.8.2_5d3689ef368bc3f45c924b55e0ecab4423e0c9ab\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Alipay-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="436a2c5270cc10b2c47eaa36f0eb18e79550532e">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Alipay-2.8.2_8767907dfabe4f803c7ece16cef2ea203135c28c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-SinaWeibo-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e8408628154b6e153c46dc0217cfa4b6ed0694b9">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-SinaWeibo-2.8.2_6ba75f362f9148ea349776d0ef83288b6bf90735\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-TencentWeibo-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="30b58e68a37b15c6159ebe6983e58e84743e1e3f">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-TencentWeibo-2.8.2_6f03b836a0fa45438b2f026acb6571b9da94d5e4\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_37a21e6ebd7dbbabb9303c4fbf7d72a3bcae34f3\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\pinyin4j-2.5.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ae353005f973da1cd8545b54354504c2503f6865">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\pinyin4j-2.5.0_d37e39831ff3a78dfd1da931f00c6a2f19ac4ee0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Alipay-Core-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="06bd4cf516c4809b57eb40ae74a8a29e1d6ffcaf">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Alipay-Core-2.8.2_52338ca78fb446a3c0ab54f76dae9c6341d342ea\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Alipay-Moments-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="87066c53ca2eb2dacb3089c0cd7e69e868d62245">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Alipay-Moments-2.8.2_247605aca1a56b00b368ed176e94f2f04482bffe\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Wechat-Favorite-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1af0c437d793e4f8689be564e02b8c2dec50488a">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-Favorite-2.8.2_ba10707067963ca43515e9c4e0f34d2efc373742\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\MobCommons-2017.0322.0931.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d49d36ec407502d69c217d81a87283eba9c746b2">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\MobCommons-2017.0322.0931_2639067a54b6dfe6a40ae11e98c8097d31ab4e08\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\.android\build-cache\ea689f243937cf375b0a899daf35336eb6607f24\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6c6e253efe436e42d001b5b7dd0e12fda5aaba95">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2fd9206beae7a886837b9aac5cfbd97bfd98088a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-QQ-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="fbb64a7456b98849ee2868a55aa0b3bb3f6e6a29">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-QQ-2.8.2_8230a2f48ceb7b311ce02258784c1b4ffdf9f3d0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2ebbd920370d2c2e082a07d0b822179ba2d4618b">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_4f8a175c1d38bf88d7c4e6113af37afe605129d2\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Facebook-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6fb4a741c1bce3db23e592b939933cf9872bc20b">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Facebook-2.8.2_e50d4105ec0c982ea0dcd0477ffac997cc1561bf\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Twitter-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="9a6b3827ab45de1b3b7df380c2ba95e53e3d5228">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Twitter-2.8.2_c94c796051756c591d4421037c6d39efbc54e23a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\volley-1.0.19.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a8f23f65fc1e522ee4a1a697ee569901a46741fa">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\volley-1.0.19_d71ae08ac84a4b1c7f75c4e2052fde54171d45e8\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Wechat-Moments-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1b40dd5cc7381571d1cc57e03fcf328598d559c4">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-Moments-2.8.2_e7f924ed984d8beb9d75f9b6e1856bf47af1e44d\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\MobTools-2017.0322.0931.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="242b3a8f9b6b47d2ea8cf932cd978a5b6651d22a">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\MobTools-2017.0322.0931_7a42335c044adff7c653459e1ee4071d69374bcc\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\joda-time-2.5.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="c73038a3688525aad5cf33409df483178290cd64">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\joda-time-2.5_96aa8dbeabb9a168e0e3329763bbe77ee19136e4\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\alipaySdk-20161129.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="9356473ed942faa70a18f34883af52681e1c7223">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\alipaySdk-20161129_dfcfe666f44041e0341a6d3f7afb80142cd8a9d9\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Wechat-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f3f9d8cdaf36e449309698b6d3ec46fd47e4e14c">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-2.8.2_41d707b35c49b1d9271f2a9e03fc3551431491e6\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\ShareSDK-Core-2.8.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="521f72e4ce63c721c5d3006bfa4fa712dd51bea9">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Core-2.8.2_e9a4bd15e17995b8b4a49fc8ee874b5607289d16\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sean\AndroidStudioProjects\XiaoV\app\libs\TencentLocationSDK_v4.9.7.12_r247861_161205_1104.jar"
+        jar="G:\anProject\XiaoV\app\libs\TencentLocationSDK_v4.9.7.12_r247861_161205_1104.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="94f448b2cf8726ea2a1f2226c899855c070a8ba5">
-        <dex dex="C:\Users\sean\AndroidStudioProjects\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\TencentLocationSDK_v4.9.7.12_r247861_161205_1104_910dad441a7a1b2c4f838ce5cf312ff91174d23e\classes.dex" />
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\TencentLocationSDK_v4.9.7.12_r247861_161205_1104_1f9c6f14531057c422e2bb6bf93bf3ae6b4ba3e5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-ShortMessage-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e19bf208ba05ecd52d4301461b6570b26ab3dcb1">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-ShortMessage-2.8.2_a8fd4448854ff9210392a38e5f5e2fd63e0ce4d1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Facebook-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6fb4a741c1bce3db23e592b939933cf9872bc20b">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Facebook-2.8.2_7908c9bd5e0b5f0796c14f03d09f1aff51213df1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-TencentWeibo-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="30b58e68a37b15c6159ebe6983e58e84743e1e3f">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-TencentWeibo-2.8.2_ba593af677ab76f5c836405065877a843bddf200\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\alipaySdk-20161129.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9356473ed942faa70a18f34883af52681e1c7223">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\alipaySdk-20161129_76eb0eb63201b01d493b92e40df8e02bb63442ea\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Wechat-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f3f9d8cdaf36e449309698b6d3ec46fd47e4e14c">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-2.8.2_a41235cad7b476d9655cc7fc15d24c5079b00901\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\cfk\.android\build-cache\ce1b5c993b4d646fd5b01b27cda36e201adb3adf\output\jars\libs\wup-1.0.0-SNAPSHOT.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ed71856de464ff25335fdf6593662a2ba7f62535">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\10\wup-1.0.0-SNAPSHOT_d140708ac7d7be0f106f6ab34ca1c3a427449b0d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\MobCommons-2017.0322.0931.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d49d36ec407502d69c217d81a87283eba9c746b2">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\MobCommons-2017.0322.0931_47a47c551e512bd1577b07a9e330e8ca8359968c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Wechat-Core-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="002b4be4096d7ce75e969449fc81b62e312748a6">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-Core-2.8.2_2364c2ebde08baef3dca5c18cde5a080d7731561\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\volley-1.0.19.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a8f23f65fc1e522ee4a1a697ee569901a46741fa">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\volley-1.0.19_7701a0baafbebe40101a48709110e4eefee68981\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Email-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6af2c732a480ae98d94b3413e8a49daca39c11f4">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Email-2.8.2_ab6d2bf930dba541de6ca6c95b5a7dc7f97a9d6b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\MobTools-2017.0322.0931.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="242b3a8f9b6b47d2ea8cf932cd978a5b6651d22a">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\MobTools-2017.0322.0931_354651aaa6781a414ff2d00d99e110206bf0c5d9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-QQ-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fbb64a7456b98849ee2868a55aa0b3bb3f6e6a29">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-QQ-2.8.2_21ca8cc27f738a3e8d27b4c58e33d18c233059fd\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="134e6f8b32140040fe4429d5cc78ba99a6f40b70">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_f536f689b862672e8dedc03daccab63cf7b3d354\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Alipay-Core-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="06bd4cf516c4809b57eb40ae74a8a29e1d6ffcaf">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Alipay-Core-2.8.2_589c2dbebdd0726f72b1737665e5b9d02cb61a66\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-QZone-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="dc2c7e7eaa2bad4c5333b6471d388a64df781d1b">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-QZone-2.8.2_5c62fbddf87a076110850198f365eafbbc508130\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Core-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="521f72e4ce63c721c5d3006bfa4fa712dd51bea9">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Core-2.8.2_5cc5d1a1704287480a39044196f227571fe73205\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\TencentSearch1.1.3.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="195c1468964b5b9491a2d279469e8e52438e85c0">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\TencentSearch1.1.3_db9f3eb6d1460b829ae068f2e662b0237a59942d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Wechat-Favorite-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1af0c437d793e4f8689be564e02b8c2dec50488a">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-Favorite-2.8.2_ae06f8a95a76140dc089b400d0ef14785db073db\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Wechat-Moments-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1b40dd5cc7381571d1cc57e03fcf328598d559c4">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Wechat-Moments-2.8.2_a6d07734ac947426c1db26f25e368eed749e05f1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_ab8e6bc283f403f203b532de7d8feb167715faef\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-SinaWeibo-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e8408628154b6e153c46dc0217cfa4b6ed0694b9">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-SinaWeibo-2.8.2_e38161264b7846eddabbddcb2f9e1a7d856e92c3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Twitter-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9a6b3827ab45de1b3b7df380c2ba95e53e3d5228">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Twitter-2.8.2_1b302f56ea0ad13c89ade9b7620cbecf21dbde09\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Alipay-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="436a2c5270cc10b2c47eaa36f0eb18e79550532e">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Alipay-2.8.2_6d8b76756db7e7e76aa0ffa1a3a91919e6be77fc\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\TencentMapSDK_Raster_v_1.2.7_51ae0e7.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cd015da6004ed72abf1936d7a33b6bccc00ef866">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\TencentMapSDK_Raster_v_1.2.7_51ae0e7_15e2ebd75ae781f0c488900547fdce3940a45b0b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\Rong_IMLib.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="020fb7ece0df1f4df0f359114bea119dd0aa71d5">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\Rong_IMLib_b7afa040d66b64d025d34555588a21985ad16147\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\ShareSDK-Alipay-Moments-2.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="87066c53ca2eb2dacb3089c0cd7e69e868d62245">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\ShareSDK-Alipay-Moments-2.8.2_8970ef85a98eb8c359a4940e1186dba995fb9579\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\pinyin4j-2.5.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ae353005f973da1cd8545b54354504c2503f6865">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\pinyin4j-2.5.0_e2877289c7bbf0c23223d7cc53348fa769085330\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\anProject\XiaoV\app\libs\joda-time-2.5.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c73038a3688525aad5cf33409df483178290cd64">
+        <dex dex="G:\anProject\XiaoV\app\build\intermediates\transforms\dex\debug\folders\1000\2\joda-time-2.5_b8cc51188e5b1f8b3430e130b53dc5079f2a0f2b\classes.dex" />
     </item>
 
 </items>

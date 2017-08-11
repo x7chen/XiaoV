@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="120px"
                 android:layout_height="wrap_content"
-                android:text="+86"
+                android:text="ID"
                 android:textColor="@color/black0"
                 android:textSize="28px"/>
 
@@ -64,8 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="你的手机号码"
-                android:inputType="phone"
+                android:hint="您的ID"
+                android:inputType="text"
                 android:text=""
                 android:textColorHint="@color/gray3"
                 android:textSize="28px"/>

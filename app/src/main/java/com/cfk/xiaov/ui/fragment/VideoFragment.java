@@ -7,11 +7,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.manager.BroadcastManager;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
+import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.activity.ScanActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
@@ -36,6 +39,8 @@ public class VideoFragment extends BaseFragment<IVideoFgView, VideoFgPresenter> 
     RelativeLayout bond_device_view;
     @Bind(R.id.video_call_view)
     RelativeLayout video_call_view;
+    @Bind(R.id.bond_device_name)
+    TextView mBondDeviceName;
 
     @Override
     public void init() {
@@ -67,6 +72,7 @@ public class VideoFragment extends BaseFragment<IVideoFgView, VideoFgPresenter> 
         }else {
             bond_device_view.setVisibility(View.INVISIBLE);
             video_call_view.setVisibility(View.VISIBLE);
+            mBondDeviceName.setText(BondCache.getBondId());
         }
     }
 

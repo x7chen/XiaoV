@@ -212,6 +212,9 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
 
         //avRootView.setAutoOrientation(false);
         ILVCallManager.getInstance().initAvView(avRootView);
+        avRootView.setRemoteRotationFix(270);
+        changeCamera();
+        changeMic();
     }
 
     @Override
@@ -278,12 +281,14 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
 
         Log.d("ILVB-DBG", "onCallEstablish->0:"+avRootView.getViewByIndex(0).getIdentifier()+"/"+avRootView.getViewByIndex(1).getIdentifier());
         avRootView.swapVideoView(0, 1);
+
         // 设置点击小屏切换及可拖动
         for (int i=1; i<ILiveConstants.MAX_AV_VIDEO_NUM; i++){
             final int index = i;
             AVVideoView minorView = avRootView.getViewByIndex(i);
             if (ILiveLoginManager.getInstance().getMyUserId().equals(minorView.getIdentifier())){
                 minorView.setMirror(true);      // 本地镜像
+
             }
             minorView.setDragable(true);    // 小屏可拖动
             minorView.setGestureListener(new GestureDetector.SimpleOnGestureListener(){

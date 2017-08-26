@@ -449,7 +449,7 @@ public class MyApp extends BaseApp implements RongIMClient.OnReceiveMessageListe
     }
 
     private void initILVLive(){
-        ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400028285, 11818);
+        ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400037041, 14464);
 
     }
 

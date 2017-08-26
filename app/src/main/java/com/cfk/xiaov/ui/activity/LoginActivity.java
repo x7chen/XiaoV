@@ -86,16 +86,17 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
         });
 
         mBtnLogin.setOnClickListener(v -> {
-            new Thread(() -> {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                MyApp.mAccountMgr.t_login(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
-            }).start();
-
+//            new Thread(() -> {
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                MyApp.mAccountMgr.t_login(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
+//            }).start();
             mPresenter.login();
+            MyApp.mAccountMgr.t_login(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
+
 
 
         });

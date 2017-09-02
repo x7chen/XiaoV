@@ -2,6 +2,7 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.zhy.autolayout.AutoRelativeLayout
@@ -23,7 +24,7 @@
                     android:layout_height="60dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="50dp"
                     android:text="@string/add_device"
                     android:textSize="18sp" />
 
@@ -40,7 +41,8 @@
                 android:id="@+id/video_call_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?android:attr/colorActivatedHighlight"
+                android:background="@mipmap/timg"
+
                 android:visibility="invisible">
 
                 <ImageButton
@@ -58,6 +60,24 @@
                     android:layout_below="@+id/btMakeCall"
                     android:layout_centerHorizontal="true"
                     android:text="@string/app_name" />
+
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:visibility="gone"
+                    android:id="@+id/sb_start_video"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    app:kswTextOff="视频通话"
+                    app:kswTextOn="ON"
+                    app:kswThumbHeight="40dp"
+                    app:kswThumbWidth="40dp"
+                    app:kswTintColor="#0E5AA4"
+                    android:layout_alignParentRight="true" />
+
 
             </com.zhy.autolayout.AutoRelativeLayout>
 

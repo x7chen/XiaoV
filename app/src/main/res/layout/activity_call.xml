@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -25,6 +26,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_marginTop="50dp"
             android:layout_alignParentRight="true"
@@ -104,15 +106,33 @@
             android:layout_marginBottom="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <Button
+            <ImageButton
                 android:id="@+id/btn_end"
                 android:visibility="gone"
                 android:onClick="onClick"
                 android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
                 android:textColor="@color/white"
+                android:background="@color/transparent"
+                android:src="@mipmap/gd"
                 android:text="@string/tip_end_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/sb_sw_video"
+                style="@style/SwitchButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:kswTextOff="视频通话"
+                app:kswTextOn="ON"
+                app:kswThumbHeight="40dp"
+                app:kswThumbWidth="40dp"
+                app:kswTintColor="#0E5AA4"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
     </RelativeLayout>
 

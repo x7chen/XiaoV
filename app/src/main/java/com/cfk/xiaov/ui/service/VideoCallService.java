@@ -1,15 +1,13 @@
 package com.cfk.xiaov.ui.service;
 
-import android.app.AlertDialog;
 import android.app.Service;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.WindowManager;
 
 import com.cfk.xiaov.ui.activity.CallActivity;
+import com.cfk.xiaov.ui.activity.ComingCallActivity;
 import com.tencent.callsdk.ILVCallConfig;
 import com.tencent.callsdk.ILVCallListener;
 import com.tencent.callsdk.ILVCallManager;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 public class VideoCallService extends Service implements ILVIncomingListener, ILVCallListener, ILVCallNotificationListener {
     String TAG = getClass().getSimpleName();
     Handler handler;
-    private AlertDialog mIncomingDlg;
     private int mCurIncomingId;
     ArrayList<String> callList = new ArrayList<String>();
 
@@ -86,9 +83,6 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
 
     @Override
     public void onCallEnd(int callId, int endResult, String endInfo) {
-        if (mCurIncomingId == callId) {
-            mIncomingDlg.dismiss();
-        }
         Log.i(TAG, "End Call:" + endResult + "-" + endInfo + "/" + callId);
         Log.e("XDBG_END", "onCallEnd->id: " + callId + "|" + endResult + "|" + endInfo);
     }
@@ -106,32 +100,37 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
     @Override
     public void onNewIncomingCall(final int callId, final int callType, final ILVIncomingNotification notification) {
         Log.i(TAG, "New Call from:" + notification.getSender() + "/" + callId + "-" + notification);
-        if (null != mIncomingDlg) {  // 关闭遗留来电对话框
-            mIncomingDlg.dismiss();
-        }
         mCurIncomingId = callId;
-        mIncomingDlg = new AlertDialog.Builder(this)
-                .setTitle("New Call From " + notification.getSender())
-                .setMessage(notification.getNotifDesc())
-                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        acceptCall(callId, notification.getSponsorId(), callType);
-                        Log.i(TAG, "Accept Call :" + mCurIncomingId);
-                    }
-                })
-                .setNegativeButton("Reject", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int ret = ILVCallManager.getInstance().rejectCall(mCurIncomingId);
-                        Log.i(TAG, "Reject Call:" + ret + "/" + mCurIncomingId);
-                    }
-                })
-                .create();
-        mIncomingDlg.setCanceledOnTouchOutside(false);
-        mIncomingDlg.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
-        mIncomingDlg.show();
-        Log.i(TAG, "Dialog show!");
+
+        Intent intent = new Intent();
+        intent.setClass(this, ComingCallActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("HostId", notification.getSponsorId());
+        intent.putExtra("CallId", callId);
+        intent.putExtra("CallType", callType);
+        startActivity(intent);
+//        mIncomingDlg = new AlertDialog.Builder(this)
+//                .setTitle("New Call From " + notification.getSender())
+//                .setMessage(notification.getNotifDesc())
+//                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        acceptCall(callId, notification.getSponsorId(), callType);
+//                        Log.i(TAG, "Accept Call :" + mCurIncomingId);
+//                    }
+//                })
+//                .setNegativeButton("Reject", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        int ret = ILVCallManager.getInstance().rejectCall(mCurIncomingId);
+//                        Log.i(TAG, "Reject Call:" + ret + "/" + mCurIncomingId);
+//                    }
+//                })
+//                .create();
+//        mIncomingDlg.setCanceledOnTouchOutside(false);
+//        mIncomingDlg.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+//        mIncomingDlg.show();
+//        Log.i(TAG, "Dialog show!");
         addCallList(notification.getSender());
     }
 

@@ -261,6 +261,8 @@
     <string name="exit">退出</string>
     <string name="exit_account">退出当前账号</string>
     <string name="exit_app">关闭微信</string>
+    <string name="cancel_bond">取消绑定</string>
+    <string name="bond_device">绑定设备</string>
 
     <!--关于-->
     <string name="app_name_in_about">高仿微信 6.5.7 (融云版)</string>

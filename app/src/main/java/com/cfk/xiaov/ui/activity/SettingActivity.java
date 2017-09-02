@@ -1,8 +1,10 @@
 package com.cfk.xiaov.ui.activity;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.model.cache.BondCache;
 import com.lqr.optionitemview.OptionItemView;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
@@ -28,6 +30,8 @@ public class SettingActivity extends BaseActivity {
     OptionItemView mOivHelpFeedback;
     @Bind(R.id.oivExit)
     OptionItemView mOivExit;
+    @Bind(R.id.oivCancelBond)
+    OptionItemView mOivCancelBond;
     private CustomDialog mExitDialog;
 
     @Override
@@ -41,6 +45,7 @@ public class SettingActivity extends BaseActivity {
                 mExitView.findViewById(R.id.tvExitAccount).setOnClickListener(v1 -> {
                     RongIMClient.getInstance().logout();
                     UserCache.clear();
+                    BondCache.clear();
                     mExitDialog.dismiss();
                     MyApp.exit();
                     jumpToActivityAndClearTask(LoginActivity.class);
@@ -53,6 +58,25 @@ public class SettingActivity extends BaseActivity {
             }
             mExitDialog.show();
         });
+        mOivCancelBond.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(BondCache.getBondId())){
+                jumpToActivity(ScanActivity.class);
+            }else{
+                BondCache.clear();
+                mOivCancelBond.setLeftText(R.string.bond_device);
+            }
+
+        });
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
+        if(TextUtils.isEmpty(BondCache.getBondId())){
+            mOivCancelBond.setLeftText(R.string.bond_device);
+        }else {
+            mOivCancelBond.setLeftText(R.string.cancel_bond);
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,14 +13,13 @@ import android.widget.TextView;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.manager.BroadcastManager;
-import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
-import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.activity.ScanActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.presenter.VideoFgPresenter;
 import com.cfk.xiaov.ui.view.IVideoFgView;
+import com.kyleduo.switchbutton.SwitchButton;
 import com.lqr.recyclerview.LQRRecyclerView;
 
 import butterknife.Bind;
@@ -34,13 +34,15 @@ public class VideoFragment extends BaseFragment<IVideoFgView, VideoFgPresenter> 
     @Bind(R.id.btAddDevice)
     ImageButton btAddDevice;
     @Bind(R.id.btMakeCall)
-    ImageButton btMakeCall;
+    ImageButton btMonitor;
     @Bind(R.id.bond_device_view)
     RelativeLayout bond_device_view;
     @Bind(R.id.video_call_view)
     RelativeLayout video_call_view;
     @Bind(R.id.bond_device_name)
     TextView mBondDeviceName;
+    @Bind(R.id.sb_start_video)
+    SwitchButton sbMakeCall;
 
     @Override
     public void init() {
@@ -52,7 +54,12 @@ public class VideoFragment extends BaseFragment<IVideoFgView, VideoFgPresenter> 
     public void initListener() {
         super.initListener();
         btAddDevice.setOnClickListener(view -> ((MainActivity)getActivity()).jumpToActivity(ScanActivity.class));
-        btMakeCall.setOnClickListener(view -> mPresenter.callBondDevice());
+        btMonitor.setOnClickListener(view -> mPresenter.monitorBondDevice());
+        sbMakeCall.setOnCheckedChangeListener((buttonView,  isChecked) ->{
+            if(isChecked){
+                mPresenter.callBondDevice();
+            }
+        });
         //btAddDevice.setOnClickListener(v -> {bond_device_view.setVisibility(View.INVISIBLE);video_call_view.setVisibility(View.VISIBLE);});
     }
 
@@ -63,6 +70,7 @@ public class VideoFragment extends BaseFragment<IVideoFgView, VideoFgPresenter> 
             mPresenter.getConversations();
         }
         hasBond();
+        sbMakeCall.setChecked(false);
     }
 
     private void hasBond(){

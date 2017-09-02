@@ -9,33 +9,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.db.DBManager;
-import com.cfk.xiaov.model.cache.BondCache;
-import com.cfk.xiaov.model.cache.UserCache;
-import com.cfk.xiaov.model.response.GetGroupInfoResponse;
-import com.cfk.xiaov.ui.presenter.ScanAtPresenter;
-import com.lqr.imagepicker.ImagePicker;
-import com.lqr.imagepicker.bean.ImageItem;
-import com.lqr.imagepicker.ui.ImageGridActivity;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.db.DBManager;
 import com.cfk.xiaov.db.model.Groups;
+import com.cfk.xiaov.model.cache.BondCache;
 import com.cfk.xiaov.model.exception.ServerException;
+import com.cfk.xiaov.model.response.GetGroupInfoResponse;
 import com.cfk.xiaov.model.response.JoinGroupResponse;
 import com.cfk.xiaov.thread.ThreadPoolFactory;
 import com.cfk.xiaov.ui.base.BaseActivity;
+import com.cfk.xiaov.ui.presenter.ScanAtPresenter;
 import com.cfk.xiaov.ui.view.IScanAtView;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
 import com.cfk.xiaov.util.UIUtils;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.Encoder;
+import com.lqr.imagepicker.ImagePicker;
+import com.lqr.imagepicker.bean.ImageItem;
+import com.lqr.imagepicker.ui.ImageGridActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import butterknife.Bind;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
@@ -58,38 +64,11 @@ public class ScanActivity extends BaseActivity<IScanAtView, ScanAtPresenter> imp
     ImageButton mIbToolbarMore;
     @Bind(R.id.zxingview)
     ZXingView mZxingview;
-
-    @Bind(R.id.llSaoma)
-    LinearLayout mLlSaoma;
-    @Bind(R.id.llFengmian)
-    LinearLayout mLlFengmian;
-    @Bind(R.id.llJiejing)
-    LinearLayout mLlJiejing;
-    @Bind(R.id.llFanyi)
-    LinearLayout mLlFanyi;
-
-    @Bind(R.id.ivSaomaNormal)
-    ImageView mIvSaomaNormal;
-    @Bind(R.id.ivSaomaPress)
-    ImageView mIvSaomaPress;
-    @Bind(R.id.ivFengmianNormal)
-    ImageView mIvFengmianNormal;
-    @Bind(R.id.ivFengmianPress)
-    ImageView mIvFengmianPress;
-    @Bind(R.id.ivJiejingNormal)
-    ImageView mIvJiejingNormal;
-    @Bind(R.id.ivJiejingPress)
-    ImageView mIvJiejingPress;
-    @Bind(R.id.ivFanyiNormal)
-    ImageView mIvFanyiNormal;
-    @Bind(R.id.ivFanyiPress)
-    ImageView mIvFanyiPress;
     private FrameLayout mView;
     private PopupWindow mPopupWindow;
 
     @Override
     public void initView() {
-        selectBottomOne(0);
         mIbToolbarMore.setVisibility(View.VISIBLE);
     }
 
@@ -97,10 +76,6 @@ public class ScanActivity extends BaseActivity<IScanAtView, ScanAtPresenter> imp
     public void initListener() {
         mIbToolbarMore.setOnClickListener(v -> showPopupMenu());
         mZxingview.setDelegate(this);
-        mLlSaoma.setOnClickListener(v -> selectBottomOne(0));
-        mLlFengmian.setOnClickListener(v -> selectBottomOne(1));
-        mLlJiejing.setOnClickListener(v -> selectBottomOne(2));
-        mLlFanyi.setOnClickListener(v -> selectBottomOne(3));
     }
 
     @Override
@@ -108,6 +83,7 @@ public class ScanActivity extends BaseActivity<IScanAtView, ScanAtPresenter> imp
         super.onStart();
         mZxingview.startCamera();
         mZxingview.startSpotAndShowRect();
+        mZxingview.startSpot();
     }
 
     @Override
@@ -166,31 +142,6 @@ public class ScanActivity extends BaseActivity<IScanAtView, ScanAtPresenter> imp
         UIUtils.showToast(UIUtils.getString(R.string.open_camera_error));
     }
 
-    public void selectBottomOne(int switchItem) {
-        mIvSaomaPress.setVisibility(View.GONE);
-        mIvFengmianPress.setVisibility(View.GONE);
-        mIvJiejingPress.setVisibility(View.GONE);
-        mIvFanyiPress.setVisibility(View.GONE);
-        switch (switchItem) {
-            case 0:
-                setToolbarTitle(UIUtils.getString(R.string.qr_cord_or_bar_code));
-                mIvSaomaPress.setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                setToolbarTitle(UIUtils.getString(R.string.cover_or_movie_poster));
-                mIvFengmianPress.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                setToolbarTitle(UIUtils.getString(R.string.street_scape));
-                mIvJiejingPress.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                setToolbarTitle(UIUtils.getString(R.string.translate));
-                mIvFanyiPress.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
     private void showPopupMenu() {
         if (mView == null) {
             mView = new FrameLayout(this);
@@ -216,6 +167,16 @@ public class ScanActivity extends BaseActivity<IScanAtView, ScanAtPresenter> imp
         mPopupWindow = PopupWindowUtils.getPopupWindowAtLocation(mView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, getWindow().getDecorView().getRootView(), Gravity.BOTTOM, 0, 0);
         mPopupWindow.setOnDismissListener(() -> PopupWindowUtils.makeWindowLight(ScanActivity.this));
         PopupWindowUtils.makeWindowDark(this);
+
+
+//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//        HashMap<EncodeHintType,ErrorCorrectionLevel> hints = new HashMap<>();
+//        try {
+//            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+//            qrCodeWriter.encode("hello", BarcodeFormat.QR_CODE,200,200,hints);
+//        } catch (WriterException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void vibrate() {

@@ -16,6 +16,9 @@ import java.util.ArrayList;
 public class VideoFgPresenter extends BasePresenter<IVideoFgView> {
 
     BaseActivity mContext;
+    final private String MODE_VIDEO = "video";
+    final private String MODE_MONITOR = "monitor";
+    private String mode;
     public VideoFgPresenter(BaseActivity context) {
         super(context);
         mContext = context;
@@ -45,11 +48,21 @@ public class VideoFgPresenter extends BasePresenter<IVideoFgView> {
         intent.putExtra("CallId", 0);
         intent.putExtra("CallType", callType);
         intent.putStringArrayListExtra("CallNumbers", nums);
+        intent.putExtra("Mode",mode);
         mContext.startActivity(intent);
     }
     public void callBondDevice(){
         ArrayList<String> nums = new ArrayList<>();
         nums.add(BondCache.getBondId());
+        mode = MODE_VIDEO;
         makeCall(ILVCallConstants.CALL_TYPE_VIDEO,nums);
+
+    }
+    public void monitorBondDevice(){
+        ArrayList<String> nums = new ArrayList<>();
+        nums.add(BondCache.getBondId());
+        mode = MODE_MONITOR;
+        makeCall(ILVCallConstants.CALL_TYPE_VIDEO,nums);
+
     }
 }

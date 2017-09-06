@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
 //                }
-//                MyApp.mAccountMgr.t_login(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
+//                MyApp.mAccountMgr.t_login(prefix+mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
 //            }).start();
             mPresenter.login();
             MyApp.mAccountMgr.t_login(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
@@ -123,7 +123,7 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
     }
 
     @Override
-    public EditText getEtPhone() {
+    public EditText getEtUserId() {
         return mEtPhone;
     }
 

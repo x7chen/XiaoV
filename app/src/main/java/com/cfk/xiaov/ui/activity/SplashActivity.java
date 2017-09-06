@@ -53,11 +53,6 @@ public class SplashActivity extends BaseActivity {
                 )
                 .request();
         if (!TextUtils.isEmpty(UserCache.getToken())) {
-//            Intent intent = new Intent(this, MainActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            jumpToActivity(intent);
-//            finish();
-//        }
             if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
                 String account = AccountCache.getAccount();
                 String user_id = AccountCache.getUserSig();

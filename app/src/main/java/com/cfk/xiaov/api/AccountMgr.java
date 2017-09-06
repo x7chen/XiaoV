@@ -166,7 +166,8 @@ public class AccountMgr {
             @Override
             public void onSuccess(Object data) {
                 Toast.makeText(MyApp.ApplicationContext, "regist success!", Toast.LENGTH_SHORT).show();
-                MyApp.ApplicationContext.startActivity(new Intent(MyApp.ApplicationContext, LoginActivity.class));
+                t_login(account,password);
+                //MyApp.ApplicationContext.startActivity(new Intent(MyApp.ApplicationContext, LoginActivity.class));
                 Log.i(TAG, "regist onSuccess:" + account + ":" + password);
             }
 
@@ -174,6 +175,7 @@ public class AccountMgr {
             public void onError(String module, int errCode, String errMsg) {
                 Toast.makeText(MyApp.ApplicationContext, "regist failed:" + module + "|" + errCode + "|" + errMsg, Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "regist onError:" + account + ":" + password);
+                Log.i(TAG, "regist onError:" + errCode + ":" + errMsg);
             }
         });
 

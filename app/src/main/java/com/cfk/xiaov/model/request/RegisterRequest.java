@@ -10,14 +10,22 @@ public class RegisterRequest {
 
     private String nickname;
 
+    private String account;
+
     private String password;
 
-    private String verification_token;
-
-    public RegisterRequest(String nickname, String password, String verification_token) {
+    public RegisterRequest(String nickname, String account , String password) {
         this.nickname = nickname;
+        this.account = account;
         this.password = password;
-        this.verification_token = verification_token;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getNickname() {
@@ -36,11 +44,4 @@ public class RegisterRequest {
         this.password = password;
     }
 
-    public String getVerification_token() {
-        return verification_token;
-    }
-
-    public void setVerification_token(String verification_token) {
-        this.verification_token = verification_token;
-    }
 }

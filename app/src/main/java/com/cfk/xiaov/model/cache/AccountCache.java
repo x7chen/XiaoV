@@ -25,7 +25,6 @@ public class AccountCache {
     public static void clear() {
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.Account.ACCOUNT);
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.Account.USER_SIG);
-        DBManager.getInstance().deleteAllUserInfo();
     }
 
 }

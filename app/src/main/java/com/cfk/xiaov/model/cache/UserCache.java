@@ -33,7 +33,7 @@ public class UserCache {
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.User.ID);
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.User.PHONE);
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.User.TOKEN);
-        DBManager.getInstance().deleteAllUserInfo();
+        //DBManager.getInstance().deleteAllUserInfo();
     }
 
 }

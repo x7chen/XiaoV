@@ -56,7 +56,7 @@ public class MyInfoActivity extends BaseActivity<IMyInfoAtView, MyInfoAtPresente
     public void initListener() {
         mIvHeader.setOnClickListener(v -> {
             Intent intent = new Intent(MyInfoActivity.this, ShowBigImageActivity.class);
-            intent.putExtra("url", mPresenter.mUserInfo.getPortraitUri().toString());
+            //intent.putExtra("url", mPresenter.mUserInfo.getPortraitUri().toString());
             jumpToActivity(intent);
         });
         mLlHeader.setOnClickListener(v -> {

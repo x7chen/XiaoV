@@ -95,26 +95,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/CSDN_LQR_personal_development"
+        android:text="@string/author"
         android:textColor="@color/gray2"
         android:textSize="12sp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/fun_and_enjoy"
-        android:textColor="@color/gray2"
-        android:textSize="12sp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="不涉及任何版权问题"
-        android:textColor="@color/gray2"
-        android:textSize="12sp"
-        android:visibility="gone"/>
+
 
 
 </com.zhy.autolayout.AutoLinearLayout>

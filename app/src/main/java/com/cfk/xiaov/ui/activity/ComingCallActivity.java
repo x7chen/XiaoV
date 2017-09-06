@@ -26,6 +26,8 @@ public class ComingCallActivity extends AppCompatActivity {
 
     MediaPlayer mediaPlayer;
 
+    Thread timeoutThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,15 @@ public class ComingCallActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        timeoutThread = new Thread(()->{
+            try {
+                Thread.sleep(30*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(this::finish);
+        });
+        timeoutThread.start();
 
     }
 
@@ -64,6 +75,7 @@ public class ComingCallActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
+        timeoutThread.interrupt();
     }
 
     private void acceptCall(int callId, String hostId, int callType) {
@@ -73,6 +85,7 @@ public class ComingCallActivity extends AppCompatActivity {
         intent.putExtra("HostId", hostId);
         intent.putExtra("CallId", callId);
         intent.putExtra("CallType", callType);
+        intent.putExtra("Mode","video");
         startActivity(intent);
     }
 }

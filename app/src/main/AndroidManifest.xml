@@ -59,73 +59,7 @@
             android:name="TencentMapSDK"
             android:value="TYQBZ-MRBKU-K7FVL-4JBW5-DOG5O-SZB4A" />
 
-        <!-- imlib config begin -->
-        <meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="n19jmcy59f1q9" />
 
-        <service
-            android:name="io.rong.imlib.ipc.RongService"
-            android:exported="true"
-            android:process=":ipc" />
-        <service
-            android:name="io.rong.imlib.ReConnectService"
-            android:exported="true" />
-
-        <receiver
-            android:name="io.rong.imlib.ConnectChangeReceiver"
-            android:exported="true" />
-        <receiver
-            android:name="io.rong.imlib.HeartbeatReceiver"
-            android:process=":ipc" />
-        <!-- imlib config end -->
-
-
-        <!-- 必选： SDK 核心功能 -->
-        <!-- 第三方相关,向第三方推送服务请求 token 的服务 -->
-        <service
-            android:name="io.rong.push.core.PushRegistrationService"
-            android:exported="false"></service>
-
-        <!-- 处理 push 消息相关的服务 -->
-        <service
-            android:name="io.rong.push.core.MessageHandleService"
-            android:exported="true"></service>
-
-        <!-- push服务 -->
-        <service
-            android:name="io.rong.push.PushService"
-            android:exported="true"
-            android:process="io.rong.push"> <!-- push进程，可以改名 -->
-        </service>
-
-        <!-- push 相关事件接收器 -->
-        <receiver
-            android:name="io.rong.push.PushReceiver"
-            android:process="io.rong.push"> <!-- 此处进程可以改名，名称需要和PushService所在进程统一 -->
-            <!-- 心跳事件 -->
-            <intent-filter>
-                <action android:name="io.rong.push.intent.action.HEART_BEAT" />
-            </intent-filter>
-            <!-- 网络变动事件 -->
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- 部分用户事件 -->
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- 必选： SDK 核心功能 -->
-
-
-        <!-- end -->
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -135,9 +69,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.SessionActivity"
-            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"></activity>
@@ -151,25 +82,7 @@
             android:name=".ui.activity.RegisterActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".ui.activity.NewFriendActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.AddFriendActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
             android:name=".ui.activity.ScanActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.SearchUserActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.UserInfoActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.PostScriptActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.SetAliasActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.activity.MyInfoActivity"
@@ -181,27 +94,9 @@
             android:name=".ui.activity.ChangeMyNameActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".ui.activity.CreateGroupActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
             android:name=".ui.activity.TakePhotoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FullWindowTheme"></activity>
-        <activity
-            android:name=".ui.activity.MyLocationActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.GroupListActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.SessionInfoActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.RemoveGroupMemberActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.SetGroupNameActivity"
-            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.activity.ShowBigImageActivity"
             android:screenOrientation="portrait"></activity>
@@ -212,80 +107,6 @@
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait"></activity>
 
-        <!-- 发红包页面 -->
-        <activity
-            android:name="com.yunzhanghu.redpacketui.ui.activity.RPRedPacketActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateVisible" />
-        <!-- 红包详情页面 -->
-        <activity
-            android:name="com.yunzhanghu.redpacketui.ui.activity.RPDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <!-- 红包记录页面 -->
-        <activity
-            android:name="com.yunzhanghu.redpacketui.ui.activity.RPRecordActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <!-- 群成员列表页面 -->
-        <activity
-            android:name="com.yunzhanghu.redpacketui.ui.activity.RPGroupMemberActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <!-- 支付宝H5支付页面 -->
-        <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <!-- 支付宝H5授权页面 -->
-        <activity
-            android:name="com.alipay.sdk.app.H5AuthActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <!-- 支付宝版 end -->
-
-        <activity
-            android:name="com.mob.tools.MobUIShell"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-
-            <!-- QQ和QQ空间分享 QQ登录的回调必须要配置的 -->
-            <intent-filter>
-                <data android:scheme="tencent100371282" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <!-- 新浪微博客户端分享回调必须配置 -->
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <!-- 微信分享回调 -->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!-- 支付宝分享回调 -->
-        <activity
-            android:name=".apshare.ShareEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".ui.activity.CallActivity"
             android:screenOrientation="landscape"/>

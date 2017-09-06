@@ -70,7 +70,7 @@
                     android:id="@+id/tvText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="phone|email|map|web"
+                    android:autoLink="email|map|web"
                     android:background="@drawable/img_bubble_receive"
                     android:gravity="left|center_vertical"
                     android:maxWidth="240dp"

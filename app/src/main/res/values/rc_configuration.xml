@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    tools:ignore="MissingTranslation"
+    xmlns:tools="http://schemas.android.com/tools">
     <!--设置语音消息的码率 (单位 bps)-->
     <integer name="rc_audio_encoding_bit_rate">7950</integer>
 

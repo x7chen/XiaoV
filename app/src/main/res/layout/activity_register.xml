@@ -182,43 +182,6 @@
             style="@style/Line"
             />
 
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="90px"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="20px">
-
-            <TextView
-                android:layout_width="120px"
-                android:layout_height="wrap_content"
-                android:text="@string/verification_code"
-                android:textColor="@color/black0"
-                android:textSize="28px"/>
-
-            <EditText
-                android:id="@+id/etVerifyCode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="请输入验证码"
-                android:text=""
-                android:textColorHint="@color/gray3"
-                android:textSize="28px"/>
-
-            <Button
-                android:id="@+id/btnSendCode"
-                android:layout_width="200px"
-                android:layout_height="70px"
-                android:background="@drawable/selector_register_send_code"
-                android:text="发送验证码"
-                android:textColor="@color/white"
-                android:textSize="28px"/>
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
         <View
             android:id="@+id/vLineVertifyCode"
             style="@style/Line"

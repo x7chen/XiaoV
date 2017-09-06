@@ -1,6 +1,7 @@
 package com.cfk.xiaov.ui.presenter;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
@@ -18,16 +19,17 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
+    String TAG = getClass().getSimpleName();
 
     public LoginAtPresenter(BaseActivity context) {
         super(context);
     }
 
     public void login() {
-        String phone = getView().getEtPhone().getText().toString().trim();
+        String userId = getView().getEtUserId().getText().toString().trim();
         String pwd = getView().getEtPwd().getText().toString().trim();
 
-        if (TextUtils.isEmpty(phone)) {
+        if (TextUtils.isEmpty(userId)) {
             UIUtils.showToast(UIUtils.getString(R.string.phone_not_empty));
             return;
         }
@@ -37,14 +39,15 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
         }
 
         mContext.showWaitingDialog(UIUtils.getString(R.string.please_wait));
-        ApiRetrofit.getInstance().login(AppConst.REGION, phone, pwd)
+        ApiRetrofit.getInstance().login(AppConst.REGION, userId, pwd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(loginResponse -> {
                     int code = loginResponse.getCode();
                     mContext.hideWaitingDialog();
+                    Log.i(TAG,"code:"+code);
                     if (code == 200) {
-                        UserCache.save(loginResponse.getResult().getId(), phone, loginResponse.getResult().getToken());
+                        UserCache.save(loginResponse.getResult().getId(), userId, loginResponse.getResult().getToken());
                         mContext.jumpToActivityAndClearTask(MainActivity.class);
                         mContext.finish();
                     } else {

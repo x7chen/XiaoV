@@ -12,7 +12,6 @@ import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.app.base.BaseApp;
 
 import static com.zhy.autolayout.utils.ScreenUtils.getStatusBarHeight;
-import static io.rong.imlib.statistics.Statistics.TAG;
 
 
 /**
@@ -243,7 +242,6 @@ public class UIUtils {
         densityDpi = dm.densityDpi;
         statusbarheight = getStatusBarHeight(context);
         navbarheight = getNavBarHeight(context);
-        Log.d(TAG, "screenWidth=" + screenWidth + " screenHeight=" + screenHeight + " density=" + density);
     }
 
     public static int getNavBarHeight(Context context) {

@@ -9,12 +9,12 @@ public class LoginRequest {
 
 
     private String region;
-    private String phone;
+    private String account;
     private String password;
 
-    public LoginRequest(String region, String phone, String password) {
+    public LoginRequest(String region, String account, String password) {
         this.region = region;
-        this.phone = phone;
+        this.account = account;
         this.password = password;
     }
 
@@ -26,12 +26,12 @@ public class LoginRequest {
         this.region = region;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getAccount() {
+        return account;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {

@@ -22,22 +22,12 @@ public class FragmentFactory {
         return mInstance;
     }
 
-    private RecentMessageFragment mRecentMessageFragment;
-    private ContactsFragment mContactsFragment;
+
     private DiscoveryFragment mDiscoveryFragment;
     private MeFragment mMeFragment;
     private VideoFragment mVideoFragment;
 
-    public RecentMessageFragment getRecentMessageFragment() {
-        if (mRecentMessageFragment == null) {
-            synchronized (FragmentFactory.class) {
-                if (mRecentMessageFragment == null) {
-                    mRecentMessageFragment = new RecentMessageFragment();
-                }
-            }
-        }
-        return mRecentMessageFragment;
-    }
+
 
     public VideoFragment getVideoFragment() {
         if (mVideoFragment == null) {
@@ -50,16 +40,6 @@ public class FragmentFactory {
         return mVideoFragment;
     }
 
-    public ContactsFragment getContactsFragment() {
-        if (mContactsFragment == null) {
-            synchronized (FragmentFactory.class) {
-                if (mContactsFragment == null) {
-                    mContactsFragment = new ContactsFragment();
-                }
-            }
-        }
-        return mContactsFragment;
-    }
 
     public DiscoveryFragment getDiscoveryFragment() {
         if (mDiscoveryFragment == null) {

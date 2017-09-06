@@ -132,7 +132,7 @@ public class TakePhotoActivity extends BaseActivity {
 
     public String saveBitmap(Bitmap bm, String dir) {
         String path = "";
-        File f = new File(dir, "CSDN_LQR_" + SystemClock.currentThreadTimeMillis() + ".png");
+        File f = new File(dir, "cfk" + SystemClock.currentThreadTimeMillis() + ".png");
         if (f.exists()) {
             f.delete();
         }

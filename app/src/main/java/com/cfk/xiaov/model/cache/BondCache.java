@@ -22,7 +22,7 @@ public class BondCache {
 
     public static void clear() {
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.Bond.BOND_ID);
-        DBManager.getInstance().deleteAllUserInfo();
+        //DBManager.getInstance().deleteAllUserInfo();
     }
 
 }

@@ -14,7 +14,6 @@ import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.widget.CustomDialog;
 
 import butterknife.Bind;
-import io.rong.imlib.RongIMClient;
 
 /**
  * @创建者 CSDN_LQR
@@ -43,7 +42,7 @@ public class SettingActivity extends BaseActivity {
                 mExitView = View.inflate(this, R.layout.dialog_exit, null);
                 mExitDialog = new CustomDialog(this, mExitView, R.style.MyDialog);
                 mExitView.findViewById(R.id.tvExitAccount).setOnClickListener(v1 -> {
-                    RongIMClient.getInstance().logout();
+
                     UserCache.clear();
                     BondCache.clear();
                     mExitDialog.dismiss();
@@ -51,7 +50,6 @@ public class SettingActivity extends BaseActivity {
                     jumpToActivityAndClearTask(LoginActivity.class);
                 });
                 mExitView.findViewById(R.id.tvExitApp).setOnClickListener(v1 -> {
-                    RongIMClient.getInstance().disconnect();
                     mExitDialog.dismiss();
                     MyApp.exit();
                 });

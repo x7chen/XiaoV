@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6px"
                 android:singleLine="true"
-                android:text="沧晓"
+                android:text=""
                 android:textColor="@color/gray0"
                 android:textSize="30px"/>
 
@@ -64,92 +64,6 @@
 
     </com.zhy.autolayout.AutoLinearLayout>
 
-    <com.lqr.optionitemview.OptionItemView
-        android:visibility="gone"
-        android:id="@+id/oivAlbum"
-        style="@style/OptionItem"
-        android:layout_marginTop="@dimen/option_item_margin_top"
-        android:background="@drawable/selector_common_item"
-        app:left_image_margin_left="@dimen/option_item_margin_left"
-        app:left_image_margin_right="@dimen/option_item_margin_right"
-        app:left_src="@mipmap/ic_photo_blue"
-        app:left_text="@string/jian_shu"
-        app:left_text_color="@color/black0"
-        app:left_text_size="16sp"/>
-
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <View
-            style="@style/Line"
-            android:layout_marginLeft="@dimen/option_item_margin_left"
-            android:layout_marginRight="@dimen/option_item_margin_right"
-            />
-    </com.zhy.autolayout.AutoRelativeLayout>
-
-    <com.lqr.optionitemview.OptionItemView
-        android:visibility="gone"
-        android:id="@+id/oivCollection"
-        style="@style/OptionItem"
-        android:background="@drawable/selector_common_item"
-        app:left_image_margin_left="@dimen/option_item_margin_left"
-        app:left_image_margin_right="@dimen/option_item_margin_right"
-        app:left_src="@mipmap/ic_sellection"
-        app:left_text="@string/csdn"
-        app:left_text_color="@color/black0"
-        app:left_text_size="16sp"/>
-
-    <com.lqr.optionitemview.OptionItemView
-        android:visibility="gone"
-        android:id="@+id/oivWallet"
-        style="@style/OptionItem"
-        android:layout_marginTop="@dimen/option_item_margin_top"
-        android:background="@drawable/selector_common_item"
-        app:left_image_margin_left="@dimen/option_item_margin_left"
-        app:left_image_margin_right="@dimen/option_item_margin_right"
-        app:left_src="@mipmap/ic_wallet_blue"
-        app:left_text="@string/oschina"
-        app:left_text_color="@color/black0"
-        app:left_text_size="16sp"/>
-
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <View
-            style="@style/Line"
-            android:layout_marginLeft="@dimen/option_item_margin_left"
-            android:layout_marginRight="@dimen/option_item_margin_right"
-            />
-    </com.zhy.autolayout.AutoRelativeLayout>
-
-    <com.lqr.optionitemview.OptionItemView
-        android:visibility="gone"
-        android:id="@+id/oivCardPaket"
-        style="@style/OptionItem"
-        android:background="@drawable/selector_common_item"
-        app:left_image_margin_left="@dimen/option_item_margin_left"
-        app:left_image_margin_right="@dimen/option_item_margin_right"
-        app:left_src="@mipmap/ic_card_pack"
-        app:left_text="@string/github"
-        app:left_text_color="@color/black0"
-        app:left_text_size="16sp"/>
-
-    <com.lqr.optionitemview.OptionItemView
-        android:id="@+id/oivEmoji"
-        style="@style/OptionItem"
-        android:layout_marginTop="@dimen/option_item_margin_top"
-        android:background="@drawable/selector_common_item"
-        android:visibility="gone"
-        app:left_image_margin_left="@dimen/option_item_margin_left"
-        app:left_image_margin_right="@dimen/option_item_margin_right"
-        app:left_src="@mipmap/ic_emo_yellow"
-        app:left_text="@string/emotion"
-        app:left_text_color="@color/black0"
-        app:left_text_size="16sp"/>
 
     <com.lqr.optionitemview.OptionItemView
         android:id="@+id/oivSetting"

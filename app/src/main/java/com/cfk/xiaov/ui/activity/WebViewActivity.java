@@ -16,8 +16,6 @@ import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.widget.ProgressWebView;
 
 import butterknife.Bind;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
  * @创建者 CSDN_LQR
@@ -156,28 +154,6 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private void showShare() {
-        ShareSDK.initSDK(this);
-        OnekeyShare oks = new OnekeyShare();
-        //关闭sso授权
-        oks.disableSSOWhenAuthorize();
-
-        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
-        oks.setTitle(mWebView.getTitle());
-        // titleUrl是标题的网络链接，QQ和QQ空间等使用
-        oks.setTitleUrl(mUrl);
-        // text是分享文本，所有平台都需要这个字段
-        oks.setText("哇，这家伙做的高仿微信跟真的一样耶");
-        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-        // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl(mUrl);
-        // site是分享此内容的网站名称，仅在QQ空间使用
-        oks.setSite(getString(com.cfk.xiaov.R.string.app_name_in_about));
-        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-        oks.setSiteUrl(mUrl);
-
-        // 启动分享GUI
-        oks.show(this);
     }
 
 }

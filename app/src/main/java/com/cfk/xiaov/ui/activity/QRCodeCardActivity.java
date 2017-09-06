@@ -22,14 +22,13 @@ import java.util.List;
 
 import butterknife.Bind;
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
-import io.rong.imlib.model.UserInfo;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class QRCodeCardActivity extends BaseActivity {
 
-    private UserInfo mUserInfo;
+
     private String mGroupId;
 
     @Bind(com.cfk.xiaov.R.id.ivHeader)
@@ -54,35 +53,7 @@ public class QRCodeCardActivity extends BaseActivity {
     }
 
     public void initData() {
-        if (TextUtils.isEmpty(mGroupId)) {
-            mUserInfo = DBManager.getInstance().getUserInfo(UserCache.getId());
-            if (mUserInfo != null) {
-                Glide.with(this).load(mUserInfo.getPortraitUri()).centerCrop().into(mIvHeader);
-                mTvName.setText(mUserInfo.getName());
-                setQRCode(AppConst.QrCodeCommon.ADD + mUserInfo.getUserId());
-            }
-        } else {
-            mNgiv.setVisibility(View.VISIBLE);
-            mIvHeader.setVisibility(View.GONE);
-            Observable.just(DBManager.getInstance().getGroupsById(mGroupId))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(groups -> {
-                        if (groups == null)
-                            return;
-                        mTvName.setText(groups.getName());
-                    });
-            mNgiv.setAdapter(new LQRNineGridImageViewAdapter<GroupMember>() {
-                @Override
-                protected void onDisplayImage(Context context, ImageView imageView, GroupMember groupMember) {
-                    Glide.with(context).load(groupMember.getPortraitUri()).centerCrop().into(imageView);
-                }
-            });
-            List<GroupMember> groupMembers = DBManager.getInstance().getGroupMembers(mGroupId);
-            mNgiv.setImagesData(groupMembers);
-            setQRCode(AppConst.QrCodeCommon.JOIN + mGroupId);
-            mTvTip.setVisibility(View.GONE);
-        }
+
     }
 
     private void setQRCode(String content) {

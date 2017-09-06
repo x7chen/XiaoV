@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    tools:ignore="MissingTranslation"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <string name="rc_quit_custom_service">客服已结束</string>
     <string name="rc_init_failed">连接客服失败</string>

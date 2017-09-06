@@ -8,11 +8,7 @@ public interface IRegisterAtView {
 
     EditText getEtNickName();
 
-    EditText getEtPhone();
+    EditText getEtUserID();
 
     EditText getEtPwd();
-
-    EditText getEtVerifyCode();
-
-    Button getBtnSendCode();
 }

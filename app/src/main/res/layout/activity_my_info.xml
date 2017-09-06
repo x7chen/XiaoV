@@ -99,19 +99,6 @@
             app:right_image_margin_right="40px"
             app:right_src="@mipmap/ic_qr_code"/>
 
-        <View
-            style="@style/Line"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
-            />
-
-        <com.lqr.optionitemview.OptionItemView
-            style="@style/OptionItem"
-            android:background="@drawable/selector_option_item"
-            app:left_text="@string/my_location"
-            app:left_text_color="@color/black0"
-            app:left_text_margin_left="30px"
-            app:left_text_size="16sp"/>
     </com.zhy.autolayout.AutoLinearLayout>
 
     <com.zhy.autolayout.AutoLinearLayout

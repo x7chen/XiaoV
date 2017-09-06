@@ -18,7 +18,8 @@ public class VideoFgPresenter extends BasePresenter<IVideoFgView> {
     BaseActivity mContext;
     final private String MODE_VIDEO = "video";
     final private String MODE_MONITOR = "monitor";
-    private String mode;
+    private String mode = MODE_MONITOR;
+
     public VideoFgPresenter(BaseActivity context) {
         super(context);
         mContext = context;
@@ -40,7 +41,7 @@ public class VideoFgPresenter extends BasePresenter<IVideoFgView> {
     /**
      * 发起呼叫
      */
-    private void makeCall(int callType, ArrayList<String> nums){
+    private void makeCall(int callType, ArrayList<String> nums) {
 
         Intent intent = new Intent();
         intent.setClass(mContext, CallActivity.class);
@@ -48,21 +49,23 @@ public class VideoFgPresenter extends BasePresenter<IVideoFgView> {
         intent.putExtra("CallId", 0);
         intent.putExtra("CallType", callType);
         intent.putStringArrayListExtra("CallNumbers", nums);
-        intent.putExtra("Mode",mode);
+        intent.putExtra("Mode", mode);
         mContext.startActivity(intent);
     }
-    public void callBondDevice(){
+
+    public void callBondDevice() {
         ArrayList<String> nums = new ArrayList<>();
         nums.add(BondCache.getBondId());
         mode = MODE_VIDEO;
-        makeCall(ILVCallConstants.CALL_TYPE_VIDEO,nums);
+        makeCall(ILVCallConstants.CALL_TYPE_VIDEO, nums);
 
     }
-    public void monitorBondDevice(){
+
+    public void monitorBondDevice() {
         ArrayList<String> nums = new ArrayList<>();
         nums.add(BondCache.getBondId());
         mode = MODE_MONITOR;
-        makeCall(ILVCallConstants.CALL_TYPE_VIDEO,nums);
+        makeCall(ILVCallConstants.CALL_TYPE_VIDEO, nums);
 
     }
 }

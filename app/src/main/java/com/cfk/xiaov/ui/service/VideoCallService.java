@@ -24,6 +24,8 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
     private int mCurIncomingId;
     ArrayList<String> callList = new ArrayList<String>();
 
+    public static final String NEW_ILIVE_NOTIFY = "com.cfk.broadcast.NEW_ILIVE_NOTIFY";
+
     public VideoCallService() {
     }
 
@@ -38,6 +40,7 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
         handler = new Handler();
         super.onCreate();
         ILVCallManager.getInstance().init(new ILVCallConfig()
+                .setTimeOut(30)
                 .setNotificationListener(this)
                 .setAutoBusy(true));
 
@@ -95,6 +98,9 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
     @Override
     public void onRecvNotification(int callid, ILVCallNotification notification) {
         Log.i(TAG, "onRecvNotification->notify id:" + notification.getNotifId() + "|" + notification.getUserInfo() + "/" + notification.getSender());
+        Intent intent = new Intent(NEW_ILIVE_NOTIFY);
+        intent.putExtra("MSG","onRecvNotification->notify id:" + notification.getNotifId() + "|" + notification.getUserInfo() + "/" + notification.getSender());
+        sendBroadcast(intent);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class AppConst {
     }
 
     public static final class WeChatUrl {
-        public static final String HELP_FEED_BACK = "https://kf.qq.com/touch/product/wechat_app.html?scene_id=kf338&code=001ls8gj1IuCnz0kiUfj15uIfj1ls8ga&state=123";
+        public static final String HELP_FEED_BACK = "http://www.runoob.com/";
         public static final String JD = "https://m.jd.com/";
         public static final String GAME = "http://h.4399.com/android/?301";
         public static final String MY_JIAN_SHU = "http://www.jianshu.com/u/f9de259236a3";

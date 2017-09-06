@@ -51,21 +51,6 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
     @Bind(com.cfk.xiaov.R.id.tvMessageCount)
     public TextView mTvMessageCount;
 
-    @Bind(com.cfk.xiaov.R.id.llContacts)
-    LinearLayout mLlContacts;
-    @Bind(com.cfk.xiaov.R.id.tvContactsNormal)
-    TextView mTvContactsNormal;
-    @Bind(com.cfk.xiaov.R.id.tvContactsPress)
-    TextView mTvContactsPress;
-    @Bind(com.cfk.xiaov.R.id.tvContactsTextNormal)
-    TextView mTvContactsTextNormal;
-    @Bind(com.cfk.xiaov.R.id.tvContactsTextPress)
-    TextView mTvContactsTextPress;
-    @Bind(com.cfk.xiaov.R.id.tvContactCount)
-    public TextView mTvContactCount;
-    @Bind(com.cfk.xiaov.R.id.tvContactRedDot)
-    public TextView mTvContactRedDot;
-
     @Bind(com.cfk.xiaov.R.id.llDiscovery)
     LinearLayout mLlDiscovery;
     @Bind(com.cfk.xiaov.R.id.tvDiscoveryNormal)
@@ -103,8 +88,7 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         mIbAddMenu.setVisibility(View.VISIBLE);
 
         //等待全局数据获取完毕
-        showWaitingDialog(UIUtils.getString(com.cfk.xiaov.R.string.please_wait));
-
+        //showWaitingDialog(UIUtils.getString(com.cfk.xiaov.R.string.please_wait));
         //默认选中第一个
         setTransparency();
         mTvMessagePress.getBackground().setAlpha(255);
@@ -115,7 +99,6 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
 
 //        mFragmentList.add(FragmentFactory.getInstance().getRecentMessageFragment());
         mFragmentList.add(FragmentFactory.getInstance().getVideoFragment());
-        mFragmentList.add(FragmentFactory.getInstance().getContactsFragment());
         mFragmentList.add(FragmentFactory.getInstance().getDiscoveryFragment());
         mFragmentList.add(FragmentFactory.getInstance().getMeFragment());
         mVpContent.setAdapter(new CommonFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList));
@@ -127,16 +110,8 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
             //显示或隐藏popupwindow
             View menuView = View.inflate(MainActivity.this, com.cfk.xiaov.R.layout.menu_main, null);
             PopupWindow popupWindow = PopupWindowUtils.getPopupWindowAtLocation(menuView, getWindow().getDecorView(), Gravity.TOP | Gravity.RIGHT, UIUtils.dip2Px(5), mAppBar.getHeight() + 30);
-            menuView.findViewById(com.cfk.xiaov.R.id.tvCreateGroup).setOnClickListener(v1 -> {
-                jumpToActivity(CreateGroupActivity.class);
-                popupWindow.dismiss();
-            });
             menuView.findViewById(com.cfk.xiaov.R.id.tvHelpFeedback).setOnClickListener(v1 -> {
                 jumpToWebViewActivity(AppConst.WeChatUrl.HELP_FEED_BACK);
-                popupWindow.dismiss();
-            });
-            menuView.findViewById(com.cfk.xiaov.R.id.tvAddFriend).setOnClickListener(v1 -> {
-                jumpToActivity(AddFriendActivity.class);
                 popupWindow.dismiss();
             });
             menuView.findViewById(com.cfk.xiaov.R.id.tvScan).setOnClickListener(v1 -> {
@@ -146,7 +121,6 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         });
 
         mLlMessage.setOnClickListener(v -> bottomBtnClick(v));
-        mLlContacts.setOnClickListener(v -> bottomBtnClick(v));
         mLlDiscovery.setOnClickListener(v -> bottomBtnClick(v));
         mLlMe.setOnClickListener(v -> bottomBtnClick(v));
         mVpContent.setOnPageChangeListener(this);
@@ -187,18 +161,13 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 mTvMessagePress.getBackground().setAlpha(255);
                 mTvMessageTextPress.setTextColor(Color.argb(255, 69, 192, 26));
                 break;
-            case com.cfk.xiaov.R.id.llContacts:
-                mVpContent.setCurrentItem(1, false);
-                mTvContactsPress.getBackground().setAlpha(255);
-                mTvContactsTextPress.setTextColor(Color.argb(255, 69, 192, 26));
-                break;
             case com.cfk.xiaov.R.id.llDiscovery:
-                mVpContent.setCurrentItem(2, false);
+                mVpContent.setCurrentItem(1, false);
                 mTvDiscoveryPress.getBackground().setAlpha(255);
                 mTvDiscoveryTextPress.setTextColor(Color.argb(255, 69, 192, 26));
                 break;
             case com.cfk.xiaov.R.id.llMe:
-                mVpContent.setCurrentItem(3, false);
+                mVpContent.setCurrentItem(2, false);
                 mTvMePress.getBackground().setAlpha(255);
                 mTvMeTextPress.setTextColor(Color.argb(255, 69, 192, 26));
                 break;
@@ -210,19 +179,18 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
      */
     private void setTransparency() {
         mTvMessageNormal.getBackground().setAlpha(255);
-        mTvContactsNormal.getBackground().setAlpha(255);
         mTvDiscoveryNormal.getBackground().setAlpha(255);
         mTvMeNormal.getBackground().setAlpha(255);
+
         mTvMessagePress.getBackground().setAlpha(1);
-        mTvContactsPress.getBackground().setAlpha(1);
         mTvDiscoveryPress.getBackground().setAlpha(1);
         mTvMePress.getBackground().setAlpha(1);
+
         mTvMessageTextNormal.setTextColor(Color.argb(255, 153, 153, 153));
-        mTvContactsTextNormal.setTextColor(Color.argb(255, 153, 153, 153));
         mTvDiscoveryTextNormal.setTextColor(Color.argb(255, 153, 153, 153));
         mTvMeTextNormal.setTextColor(Color.argb(255, 153, 153, 153));
+
         mTvMessageTextPress.setTextColor(Color.argb(0, 69, 192, 26));
-        mTvContactsTextPress.setTextColor(Color.argb(0, 69, 192, 26));
         mTvDiscoveryTextPress.setTextColor(Color.argb(0, 69, 192, 26));
         mTvMeTextPress.setTextColor(Color.argb(0, 69, 192, 26));
     }
@@ -251,24 +219,14 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
             case 0:
                 mTvMessageNormal.getBackground().setAlpha(diaphaneity_one);
                 mTvMessagePress.getBackground().setAlpha(diaphaneity_two);
-                mTvContactsNormal.getBackground().setAlpha(diaphaneity_two);
-                mTvContactsPress.getBackground().setAlpha(diaphaneity_one);
-                mTvMessageTextNormal.setTextColor(Color.argb(diaphaneity_one, 153, 153, 153));
-                mTvMessageTextPress.setTextColor(Color.argb(diaphaneity_two, 69, 192, 26));
-                mTvContactsTextNormal.setTextColor(Color.argb(diaphaneity_two, 153, 153, 153));
-                mTvContactsTextPress.setTextColor(Color.argb(diaphaneity_one, 69, 192, 26));
-                break;
-            case 1:
-                mTvContactsNormal.getBackground().setAlpha(diaphaneity_one);
-                mTvContactsPress.getBackground().setAlpha(diaphaneity_two);
                 mTvDiscoveryNormal.getBackground().setAlpha(diaphaneity_two);
                 mTvDiscoveryPress.getBackground().setAlpha(diaphaneity_one);
-                mTvContactsTextNormal.setTextColor(Color.argb(diaphaneity_one, 153, 153, 153));
-                mTvContactsTextPress.setTextColor(Color.argb(diaphaneity_two, 69, 192, 26));
+                mTvMessageTextNormal.setTextColor(Color.argb(diaphaneity_one, 153, 153, 153));
+                mTvMessageTextPress.setTextColor(Color.argb(diaphaneity_two, 69, 192, 26));
                 mTvDiscoveryTextNormal.setTextColor(Color.argb(diaphaneity_two, 153, 153, 153));
                 mTvDiscoveryTextPress.setTextColor(Color.argb(diaphaneity_one, 69, 192, 26));
                 break;
-            case 2:
+            case 1:
                 mTvDiscoveryNormal.getBackground().setAlpha(diaphaneity_one);
                 mTvDiscoveryPress.getBackground().setAlpha(diaphaneity_two);
                 mTvMeNormal.getBackground().setAlpha(diaphaneity_two);
@@ -283,22 +241,12 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
 
     @Override
     public void onPageSelected(int position) {
-        if (position == 1) {
-            //如果是“通讯录”页被选中，则显示快速导航条
-            FragmentFactory.getInstance().getContactsFragment().showQuickIndexBar(true);
-        } else {
-            FragmentFactory.getInstance().getContactsFragment().showQuickIndexBar(false);
-        }
+
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        if (state != ViewPager.SCROLL_STATE_IDLE) {
-            //滚动过程中隐藏快速导航条
-            FragmentFactory.getInstance().getContactsFragment().showQuickIndexBar(false);
-        } else {
-            FragmentFactory.getInstance().getContactsFragment().showQuickIndexBar(true);
-        }
+
     }
 
     private void registerBR() {

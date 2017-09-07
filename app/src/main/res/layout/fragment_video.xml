@@ -83,7 +83,11 @@
 
         </com.zhy.autolayout.AutoFrameLayout>
     </com.zhy.autolayout.AutoRelativeLayout>
+<com.zhy.autolayout.AutoRelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+</com.zhy.autolayout.AutoRelativeLayout>
 
 
 

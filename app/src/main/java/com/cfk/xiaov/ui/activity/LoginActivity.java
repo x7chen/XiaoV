@@ -1,7 +1,6 @@
 package com.cfk.xiaov.ui.activity;
 
 
-import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -27,9 +26,9 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
     @Bind(com.cfk.xiaov.R.id.ibAddMenu)
     ImageButton mIbAddMenu;
 
-    @Bind(com.cfk.xiaov.R.id.etPhone)
+    @Bind(com.cfk.xiaov.R.id.etUserId)
     EditText mEtPhone;
-    @Bind(com.cfk.xiaov.R.id.vLinePhone)
+    @Bind(com.cfk.xiaov.R.id.vLineUserId)
     View mVLinePhone;
 
     @Bind(com.cfk.xiaov.R.id.etPwd)

@@ -105,7 +105,7 @@
         android:layout_marginTop="40px">
 
         <EditText
-            android:id="@+id/etPhone"
+            android:id="@+id/etUserId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30px"

@@ -25,10 +25,10 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
     @Bind(R.id.vLineNick)
     View mVLineNick;
 
-    @Bind(R.id.etPhone)
+    @Bind(R.id.etUserId)
     EditText mEtUserId;
-    @Bind(R.id.vLinePhone)
-    View mVLinePhone;
+    @Bind(R.id.vLineUserId)
+    View mVLineUserId;
 
     @Bind(R.id.etPwd)
     EditText mEtPwd;
@@ -40,8 +40,6 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
 
     @Bind(R.id.btnRegister)
     Button mBtnRegister;
-
-    static final String prefix = "w";
 
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -57,6 +55,12 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         public void afterTextChanged(Editable s) {
         }
     };
+
+    @Override
+    public void initView() {
+        super.initView();
+        mBtnRegister.setEnabled(false);
+    }
 
     @Override
     public void initListener() {
@@ -80,9 +84,9 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         });
         mEtUserId.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                mVLinePhone.setBackgroundColor(UIUtils.getColor(R.color.green0));
+                mVLineUserId.setBackgroundColor(UIUtils.getColor(R.color.green0));
             } else {
-                mVLinePhone.setBackgroundColor(UIUtils.getColor(R.color.line));
+                mVLineUserId.setBackgroundColor(UIUtils.getColor(R.color.line));
             }
         });
 
@@ -100,7 +104,7 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         mBtnRegister.setOnClickListener(v -> {
             mPresenter.register();
             if(MyApp.mAccountMgr!=null)
-            MyApp.mAccountMgr.t_regist(prefix+ mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
+            MyApp.mAccountMgr.t_regist(mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
         });
     }
 
@@ -111,10 +115,15 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
     }
 
     private boolean canRegister() {
-        int nickNameLength = mEtNick.getText().toString().trim().length();
-        int pwdLength = mEtPwd.getText().toString().trim().length();
-        int phoneLength = mEtUserId.getText().toString().trim().length();
-        if (nickNameLength > 0 && pwdLength > 0 && phoneLength > 0) {
+        String nickName = mEtNick.getText().toString().trim();
+        int nickNameLength = nickName.length();
+        String passWd = mEtPwd.getText().toString().trim();
+        int pwdLength = passWd.length();
+        String userId = mEtUserId.getText().toString().trim();
+        int userIdLength = userId.length();
+        if (nickNameLength > 0 && pwdLength > 0 && userIdLength > 0)
+        if(userId.matches("^[a-zA-Z][a-zA-Z0-9_]{5,15}$"))
+        if(passWd.matches("^[a-zA-Z0-9_.]{8,18}$")){
             return true;
         }
         return false;

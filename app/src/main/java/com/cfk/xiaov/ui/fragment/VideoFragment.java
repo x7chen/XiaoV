@@ -19,6 +19,7 @@ import com.cfk.xiaov.ui.activity.ScanActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.presenter.VideoFgPresenter;
 import com.cfk.xiaov.ui.view.IVideoFgView;
+import com.google.zxing.client.android.CaptureActivity;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lqr.recyclerview.LQRRecyclerView;
 
@@ -53,7 +54,7 @@ public class VideoFragment extends BaseFragment<IVideoFgView, VideoFgPresenter> 
     @Override
     public void initListener() {
         super.initListener();
-        btAddDevice.setOnClickListener(view -> ((MainActivity)getActivity()).jumpToActivity(ScanActivity.class));
+        btAddDevice.setOnClickListener(view -> ((MainActivity)getActivity()).jumpToActivity(CaptureActivity.class));
         btMonitor.setOnClickListener(view -> mPresenter.monitorBondDevice());
         sbMakeCall.setOnCheckedChangeListener((buttonView,  isChecked) ->{
             if(isChecked){

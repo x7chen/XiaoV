@@ -47,7 +47,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="例如：陈晨"
+                        android:hint="最多六个汉字或12个字母或数字"
                         android:textColorHint="@color/gray3"
                         android:textSize="28px"/>
 
@@ -117,11 +117,11 @@
                 android:textSize="28px"/>
 
             <EditText
-                android:id="@+id/etPhone"
+                android:id="@+id/etUserId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="您的ID"
+                android:hint="您的ID(字母开头，6-16位长度)"
                 android:inputType="text"
                 android:text=""
                 android:textColorHint="@color/gray3"
@@ -130,7 +130,7 @@
         </com.zhy.autolayout.AutoLinearLayout>
 
         <View
-            android:id="@+id/vLinePhone"
+            android:id="@+id/vLineUserId"
             style="@style/Line"
             />
 
@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="56px"
                     android:background="@null"
-                    android:hint="填写密码"
+                    android:hint="填写密码（可以是字母或数字，8-18位长度）"
                     android:inputType="textPassword"
                     android:text=""
                     android:textColorHint="@color/gray3"

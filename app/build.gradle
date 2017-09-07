@@ -16,7 +16,7 @@ android {
     aaptOptions.useNewCruncher = false
     defaultConfig {
         applicationId "com.cfk.xiaov"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -102,4 +102,5 @@ dependencies {
     compile 'com.tencent.ilivesdk:ilivesdk:1.6.2'
     compile 'com.tencent.callsdk:callsdk:1.0.27'
     testCompile 'junit:junit:4.12'
+    compile project(':zxing')
 }

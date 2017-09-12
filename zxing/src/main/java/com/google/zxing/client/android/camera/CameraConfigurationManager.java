@@ -123,11 +123,11 @@ final class CameraConfigurationManager {
     screenResolution = theScreenResolution;
     Log.i(TAG, "Screen resolution in current orientation: " + screenResolution);
 
-    if (screenResolution.x < screenResolution.y) {
-      int tmp = screenResolution.x;
-      screenResolution.x = screenResolution.y;
-      screenResolution.y = tmp;
-    }
+//    if (screenResolution.x < screenResolution.y) {
+//      int tmp = screenResolution.x;
+//      screenResolution.x = screenResolution.y;
+//      screenResolution.y = tmp;
+//    }
 
     cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
 
@@ -135,15 +135,16 @@ final class CameraConfigurationManager {
     bestPreviewSize = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
 
     Log.i(TAG, "Best available preview size: " + bestPreviewSize);
-
+    cameraResolution = new Point(960,540);
+    bestPreviewSize = new Point(960,540);
     boolean isScreenPortrait = screenResolution.x < screenResolution.y;
     boolean isPreviewSizePortrait = bestPreviewSize.x < bestPreviewSize.y;
-
-    if (isScreenPortrait == isPreviewSizePortrait) {
-      previewSizeOnScreen = bestPreviewSize;
-    } else {
-      previewSizeOnScreen = new Point(bestPreviewSize.y, bestPreviewSize.x);
-    }
+    previewSizeOnScreen = bestPreviewSize;
+//    if (isScreenPortrait == isPreviewSizePortrait) {
+//
+//    } else {
+//      previewSizeOnScreen = new Point(bestPreviewSize.y, bestPreviewSize.x);
+//    }
     Log.i(TAG, "Preview size on screen: " + previewSizeOnScreen);
   }
 
@@ -195,6 +196,7 @@ final class CameraConfigurationManager {
     theCamera.setParameters(parameters);
 
     theCamera.setDisplayOrientation(cwRotationFromDisplayToCamera);
+    theCamera.setDisplayOrientation(90);
 
     Camera.Parameters afterParameters = theCamera.getParameters();
     Camera.Size afterSize = afterParameters.getPreviewSize();

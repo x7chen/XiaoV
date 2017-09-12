@@ -114,10 +114,6 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 jumpToWebViewActivity(AppConst.WeChatUrl.HELP_FEED_BACK);
                 popupWindow.dismiss();
             });
-            menuView.findViewById(com.cfk.xiaov.R.id.tvScan).setOnClickListener(v1 -> {
-                jumpToActivity(ScanActivity.class);
-                popupWindow.dismiss();
-            });
         });
 
         mLlMessage.setOnClickListener(v -> bottomBtnClick(v));

@@ -2,6 +2,7 @@ package com.cfk.xiaov.app;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.util.Log;
 
 import com.cfk.xiaov.api.AccountMgr;
 import com.cfk.xiaov.app.base.BaseApp;
@@ -35,7 +36,7 @@ import org.litepal.LitePal;
  * @描述 BaseApp的拓展，用于设置其他第三方的初始化
  */
 public class MyApp extends BaseApp {
-
+    String TAG = getClass().getSimpleName();
     public static Context ApplicationContext;
     public static AccountMgr mAccountMgr;
     @Override
@@ -66,7 +67,7 @@ public class MyApp extends BaseApp {
 
     private void initILVLive(){
         ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400037041, 14464);
-
+        Log.i(TAG,"init iLive!");
     }
 
 

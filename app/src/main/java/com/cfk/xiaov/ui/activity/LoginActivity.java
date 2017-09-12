@@ -43,8 +43,6 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
     @Bind(com.cfk.xiaov.R.id.tvOtherLogin)
     TextView mTvOtherLogin;
 
-    static final String prefix = "w";
-
     TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -94,7 +92,7 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
 //                MyApp.mAccountMgr.t_login(prefix+mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
 //            }).start();
             mPresenter.login();
-            MyApp.mAccountMgr.t_login(prefix+mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
+            MyApp.mAccountMgr.t_login(mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
 
 
 

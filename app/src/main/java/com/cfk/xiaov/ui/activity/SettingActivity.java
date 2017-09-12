@@ -1,10 +1,14 @@
 package com.cfk.xiaov.ui.activity;
 
+import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.model.cache.BondCache;
+import com.google.zxing.client.android.CaptureActivity;
 import com.lqr.optionitemview.OptionItemView;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
@@ -20,7 +24,7 @@ import butterknife.Bind;
  * @描述 设置界面
  */
 public class SettingActivity extends BaseActivity {
-
+    String TAG = getClass().getSimpleName();
     private View mExitView;
 
     @Bind(R.id.oivAbout)
@@ -57,9 +61,9 @@ public class SettingActivity extends BaseActivity {
             mExitDialog.show();
         });
         mOivCancelBond.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(BondCache.getBondId())){
-                jumpToActivity(ScanActivity.class);
-            }else{
+            if (TextUtils.isEmpty(BondCache.getBondId())) {
+                startActivityForResult(new Intent(this, CaptureActivity.class), 1001);
+            } else {
                 BondCache.clear();
                 mOivCancelBond.setLeftText(R.string.bond_device);
             }
@@ -68,11 +72,25 @@ public class SettingActivity extends BaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001) {
+            String result = data.getStringExtra("qr_result");
+            Log.i(TAG, "onActivityResult" + result);
+            if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
+                String bondID = result.substring(AppConst.QrCodeCommon.BOND.length());
+                BondCache.save(bondID);
+            }
+        }
+    }
+
+    @Override
     public void initView() {
         super.initView();
-        if(TextUtils.isEmpty(BondCache.getBondId())){
+        if (TextUtils.isEmpty(BondCache.getBondId())) {
             mOivCancelBond.setLeftText(R.string.bond_device);
-        }else {
+        } else {
             mOivCancelBond.setLeftText(R.string.cancel_bond);
         }
     }

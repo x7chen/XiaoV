@@ -13,7 +13,6 @@ import android.webkit.WebViewClient;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.ui.activity.MainActivity;
-import com.cfk.xiaov.ui.activity.ScanActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.presenter.DiscoveryFgPresenter;
 import com.cfk.xiaov.ui.view.IDiscoveryFgView;
@@ -46,7 +45,6 @@ public class DiscoveryFragment extends BaseFragment<IDiscoveryFgView, DiscoveryF
 
     @Override
     public void initListener() {
-        mOivScan.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToActivity(ScanActivity.class));
         mOivShop.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToWebViewActivity(AppConst.WeChatUrl.JD));
         mOivGame.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToWebViewActivity(AppConst.WeChatUrl.GAME));
         mFab.setOnClickListener(v -> Log.i(TAG,mDiscoveryView.getUrl()));

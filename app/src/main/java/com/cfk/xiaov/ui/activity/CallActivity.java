@@ -112,6 +112,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
 
     private void initView() {
         btnEndCall.setVisibility(View.VISIBLE);
+        avRootView.setVisibility(View.INVISIBLE);
     }
 
     private void changeCamera() {
@@ -365,6 +366,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     @Override
     public void onCallEstablish(int callId) {
         btnEndCall.setVisibility(View.VISIBLE);
+        avRootView.setVisibility(View.VISIBLE);
         if (mode != null) {
             if (mode.equals("monitor")) {
                 setCamera(false);
@@ -392,6 +394,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
         addLogMessage("setRemoteRotationFix(180)");
         addLogMessage("setLocalRotationFix(0)");
         AVVideoView majorView = avRootView.getViewByIndex(0);
+        //majorView.setMirror(true);
         addLogMessage("index[0]" + ":w=" + majorView.getImageWidth() + ",h=" + majorView.getImageHeight() + ",a=" + majorView.getImageAngle() + ",r=" + majorView.getRotation());
         // 设置点击小屏切换及可拖动
         for (int i = 1; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {
@@ -422,7 +425,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     @Override
     public void onCallEnd(int callId, int endResult, String endInfo) {
         Log.e("XDBG_END", "onCallEnd->id: " + callId + "|" + endResult + "|" + endInfo);
-        //finish();
+        finish();
     }
 
     @Override

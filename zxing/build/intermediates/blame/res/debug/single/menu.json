@@ -4,10 +4,6 @@
         "source": "C:\\G\\anProject\\XiaoV4\\zxing\\src\\main\\res\\menu\\encode.xml"
     },
     {
-        "merged": "C:\\G\\anProject\\XiaoV4\\zxing\\build\\intermediates\\res\\merged\\debug\\menu\\history.xml",
-        "source": "C:\\G\\anProject\\XiaoV4\\zxing\\src\\main\\res\\menu\\history.xml"
-    },
-    {
         "merged": "C:\\G\\anProject\\XiaoV4\\zxing\\build\\intermediates\\res\\merged\\debug\\menu\\capture.xml",
         "source": "C:\\G\\anProject\\XiaoV4\\zxing\\src\\main\\res\\menu\\capture.xml"
     }

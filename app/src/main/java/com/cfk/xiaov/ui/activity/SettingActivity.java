@@ -9,6 +9,7 @@ import android.view.View;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.model.cache.BondCache;
 import com.google.zxing.client.android.CaptureActivity;
+import com.google.zxing.client.android.Intents;
 import com.lqr.optionitemview.OptionItemView;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
@@ -62,7 +63,9 @@ public class SettingActivity extends BaseActivity {
         });
         mOivCancelBond.setOnClickListener(v -> {
             if (TextUtils.isEmpty(BondCache.getBondId())) {
-                startActivityForResult(new Intent(this, CaptureActivity.class), 1001);
+                Intent intent = new Intent(MyApp.getContext(),CaptureActivity.class);
+                intent.setAction(Intents.Scan.ACTION);
+                startActivityForResult(intent, 1001);
             } else {
                 BondCache.clear();
                 mOivCancelBond.setLeftText(R.string.bond_device);
@@ -75,7 +78,7 @@ public class SettingActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001) {
+        if (resultCode == 1001) {
             String result = data.getStringExtra("qr_result");
             Log.i(TAG, "onActivityResult" + result);
             if (result.startsWith(AppConst.QrCodeCommon.BOND)) {

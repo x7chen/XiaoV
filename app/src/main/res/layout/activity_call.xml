@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    android:background="@color/colorPrimary">
+    android:background="@color/black">
 
     <com.tencent.ilivesdk.view.AVRootView
         android:id="@+id/av_root_view"
@@ -12,6 +12,7 @@
         android:layout_height="match_parent" />
 
     <RelativeLayout
+        android:focusable="false"
         android:id="@+id/rl_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -46,7 +47,6 @@
                 android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/btn_switch_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -73,7 +73,6 @@
                 android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/btn_beauty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -118,42 +117,87 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="50dp">
-
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true">
+            <ImageButton
+                android:id="@+id/btn_switch_camera"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/recycle65"
+                android:tint="@color/yellow1"
+                android:background="@color/transparent"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                android:onClick="onClick"/>
             <ImageButton
                 android:id="@+id/btn_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_marginRight="30dp"
+                android:layout_marginTop="100dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
-                android:src="@mipmap/gd"
-                android:text="@string/tip_end_call"
-                android:textColor="@color/white"
-                android:visibility="gone" />
+                android:scaleType="fitXY"
+                android:src="@mipmap/call44"
+                android:tint="@color/yellow1" />
 
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/photo189"
+                android:tint="@color/yellow1"
+                android:background="@color/transparent"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="180dp"
+                android:layout_alignParentRight="true"
+                android:onClick="onClick"/>
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/sound32"
+                android:tint="@color/yellow1"
+                android:background="@color/transparent"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="260dp"
+                android:layout_alignParentRight="true"
+                android:onClick="onClick"/>
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/user148"
+                android:tint="@color/yellow1"
+                android:background="@color/transparent"
+                android:layout_marginRight="120dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/btn_beauty"
+                android:onClick="onClick"/>
             <com.kyleduo.switchbutton.SwitchButton
                 android:visibility="invisible"
                 android:id="@+id/sb_sw_video"
                 style="@style/SwitchButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="200dp"
                 android:layout_alignParentRight="true"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/yellow1"
                 android:textSize="16sp"
                 app:kswTextOff="视频通话"
                 app:kswTextOn="ON"
                 app:kswThumbHeight="40dp"
                 app:kswThumbWidth="40dp"
-                app:kswTintColor="#0E5AA4" />
+                app:kswTintColor="@color/yellow1" />
             <Button
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/wlog"

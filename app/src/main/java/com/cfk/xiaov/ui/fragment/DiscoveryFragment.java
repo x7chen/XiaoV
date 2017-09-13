@@ -29,10 +29,6 @@ public class DiscoveryFragment extends BaseFragment<IDiscoveryFgView, DiscoveryF
     String TAG = getClass().getSimpleName();
     @Bind(R.id.oivScan)
     OptionItemView mOivScan;
-    @Bind(R.id.oivShop)
-    OptionItemView mOivShop;
-    @Bind(R.id.oivGame)
-    OptionItemView mOivGame;
     @Bind(R.id.discovery_view)
     WebView mDiscoveryView;
     @Bind(R.id.fab)
@@ -45,8 +41,6 @@ public class DiscoveryFragment extends BaseFragment<IDiscoveryFgView, DiscoveryF
 
     @Override
     public void initListener() {
-        mOivShop.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToWebViewActivity(AppConst.WeChatUrl.JD));
-        mOivGame.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToWebViewActivity(AppConst.WeChatUrl.GAME));
         mFab.setOnClickListener(v -> Log.i(TAG,mDiscoveryView.getUrl()));
     }
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray5"
+
     android:orientation="vertical">
 
     <include layout="@layout/include_toolbar"/>
@@ -54,7 +53,7 @@
                         android:layout_width="@dimen/main_bottom_iv_horizontal_size"
                         android:layout_height="@dimen/main_bottom_iv_vertical_size"
                         android:layout_centerInParent="true"
-                        android:background="@mipmap/video_nomal"
+                        android:background="@mipmap/message_normal"
                         android:button="@null"
                         android:gravity="center"
                         android:textColor="@color/gray0"
@@ -65,10 +64,11 @@
                         android:layout_width="@dimen/main_bottom_iv_horizontal_size"
                         android:layout_height="@dimen/main_bottom_iv_vertical_size"
                         android:layout_centerInParent="true"
-                        android:background="@mipmap/video_press"
+                        android:background="@mipmap/message_press"
+                        android:backgroundTint="@color/colorPrimary"
                         android:button="@null"
                         android:gravity="center"
-                        android:textColor="@color/green0"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="12sp"/>
                 </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -106,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/message"
-                    android:textColor="@color/green0"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="24px"/>
             </com.zhy.autolayout.AutoRelativeLayout>
         </com.zhy.autolayout.AutoLinearLayout>
@@ -148,9 +148,10 @@
                         android:layout_width="@dimen/main_bottom_iv_horizontal_size"
                         android:layout_height="@dimen/main_bottom_iv_vertical_size"
                         android:background="@mipmap/discovery_press"
+                        android:backgroundTint="@color/colorPrimary"
                         android:button="@null"
                         android:gravity="center"
-                        android:textColor="@color/green0"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="24px"/>
                 </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -189,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/discovery"
-                    android:textColor="@color/green0"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="24px"/>
             </com.zhy.autolayout.AutoRelativeLayout>
         </com.zhy.autolayout.AutoLinearLayout>
@@ -231,9 +232,10 @@
                         android:layout_width="@dimen/main_bottom_iv_horizontal_size"
                         android:layout_height="@dimen/main_bottom_iv_vertical_size"
                         android:background="@mipmap/me_press"
+                        android:backgroundTint="@color/colorPrimary"
                         android:button="@null"
                         android:gravity="center"
-                        android:textColor="@color/green0"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="24px"/>
                 </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -269,7 +271,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/me"
-                    android:textColor="@color/green0"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="24px"/>
             </com.zhy.autolayout.AutoRelativeLayout>
         </com.zhy.autolayout.AutoLinearLayout>

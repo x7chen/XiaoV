@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.presenter.LoginAtPresenter;
@@ -27,9 +28,9 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
     ImageButton mIbAddMenu;
 
     @Bind(com.cfk.xiaov.R.id.etUserId)
-    EditText mEtPhone;
+    EditText mEtUserId;
     @Bind(com.cfk.xiaov.R.id.vLineUserId)
-    View mVLinePhone;
+    View mVLineUserId;
 
     @Bind(com.cfk.xiaov.R.id.etPwd)
     EditText mEtPwd;
@@ -66,19 +67,19 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
     @Override
     public void initListener() {
         mEtPwd.addTextChangedListener(watcher);
-        mEtPhone.addTextChangedListener(watcher);
+        mEtUserId.addTextChangedListener(watcher);
         mEtPwd.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                mVLinePwd.setBackgroundColor(UIUtils.getColor(com.cfk.xiaov.R.color.green0));
+                mVLinePwd.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
             } else {
                 mVLinePwd.setBackgroundColor(UIUtils.getColor(com.cfk.xiaov.R.color.line));
             }
         });
-        mEtPhone.setOnFocusChangeListener((v, hasFocus) -> {
+        mEtUserId.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                mVLinePhone.setBackgroundColor(UIUtils.getColor(com.cfk.xiaov.R.color.green0));
+                mVLineUserId.setBackgroundColor(UIUtils.getColor(com.cfk.xiaov.R.color.colorPrimary));
             } else {
-                mVLinePhone.setBackgroundColor(UIUtils.getColor(com.cfk.xiaov.R.color.line));
+                mVLineUserId.setBackgroundColor(UIUtils.getColor(com.cfk.xiaov.R.color.line));
             }
         });
 
@@ -92,16 +93,17 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
 //                MyApp.mAccountMgr.t_login(prefix+mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
 //            }).start();
             mPresenter.login();
-            MyApp.mAccountMgr.t_login(mEtPhone.getText().toString().trim(),mEtPwd.getText().toString().trim());
+            MyApp.mAccountMgr.t_login(mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
 
 
 
         });
     }
 
+
     private boolean canLogin() {
         int pwdLength = mEtPwd.getText().toString().trim().length();
-        int phoneLength = mEtPhone.getText().toString().trim().length();
+        int phoneLength = mEtUserId.getText().toString().trim().length();
         if (pwdLength > 0 && phoneLength > 0) {
             return true;
         }
@@ -121,7 +123,7 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
 
     @Override
     public EditText getEtUserId() {
-        return mEtPhone;
+        return mEtUserId;
     }
 
     @Override

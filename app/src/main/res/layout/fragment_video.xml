@@ -16,6 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/bond_device_view"
+                android:background="@drawable/shape_video_bg"
                 android:visibility="visible">
 
                 <TextView
@@ -25,33 +26,38 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
+                    android:textColor="@color/white"
                     android:text="@string/add_device"
                     android:textSize="18sp" />
 
                 <ImageButton
                     android:id="@+id/btAddDevice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_centerInParent="true"
                     android:background="@color/transparent"
-                    android:src="@mipmap/ic_cheat_add" />
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/ic_cheat_add"
+                    android:tint="@color/yellow0" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
             <com.zhy.autolayout.AutoRelativeLayout
                 android:id="@+id/video_call_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@mipmap/timg"
+                android:background="@drawable/shape_video_bg"
 
                 android:visibility="invisible">
 
                 <ImageButton
                     android:id="@+id/btMakeCall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_centerInParent="true"
                     android:background="@color/transparent"
-                    android:src="@mipmap/device_echo" />
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/video47"
+                    android:tint="@color/yellow0" />
 
                 <TextView
                     android:layout_width="wrap_content"

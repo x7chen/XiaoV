@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
@@ -36,8 +38,6 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
     ImageView mIvSeePwd;
     @Bind(R.id.vLinePwd)
     View mVLinePwd;
-
-
     @Bind(R.id.btnRegister)
     Button mBtnRegister;
 
@@ -70,21 +70,21 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
 
         mEtNick.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                mVLineNick.setBackgroundColor(UIUtils.getColor(R.color.green0));
+                mVLineNick.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
             } else {
                 mVLineNick.setBackgroundColor(UIUtils.getColor(R.color.line));
             }
         });
         mEtPwd.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                mVLinePwd.setBackgroundColor(UIUtils.getColor(R.color.green0));
+                mVLinePwd.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
             } else {
                 mVLinePwd.setBackgroundColor(UIUtils.getColor(R.color.line));
             }
         });
         mEtUserId.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                mVLineUserId.setBackgroundColor(UIUtils.getColor(R.color.green0));
+                mVLineUserId.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
             } else {
                 mVLineUserId.setBackgroundColor(UIUtils.getColor(R.color.line));
             }
@@ -104,7 +104,7 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         mBtnRegister.setOnClickListener(v -> {
             mPresenter.register();
             if(MyApp.mAccountMgr!=null)
-            MyApp.mAccountMgr.t_regist(mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
+            MyApp.mAccountMgr.t_regist(mEtNick.getText().toString().trim(),mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
         });
     }
 
@@ -128,6 +128,7 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         }
         return false;
     }
+
 
     @Override
     protected RegisterAtPresenter createPresenter() {

@@ -46,7 +46,6 @@
     <string name="register_error">注册出错</string>
 
     <!--主界面-->
-    <!--<string name="message">微信</string>-->
     <string name="message">视频</string>
     <string name="contacts">通讯录</string>
     <string name="discovery">发现</string>
@@ -91,7 +90,7 @@
     <string name="github">GitHub</string>
     <string name="emotion">表情</string>
     <string name="setting">设置</string>
-    <string name="qr_code_card_tip">扫一扫上面的二维码图案，加我微信</string>
+    <string name="qr_code_card_tip">扫一扫上面的二维码图案，加我好友</string>
 
     <!--我的个人信息-->
     <string name="header_pic">头像</string>
@@ -106,7 +105,7 @@
     <string name="no_recommend_friend">还没有推荐的朋友</string>
     <string name="no_recommend_friend_tip">你可以绑定手机/QQ账号，以便找到更多好友</string>
     <string name="add_phone_contact">添加手机联系人</string>
-    <string name="wechat_qq_phone">微信号/QQ号/手机号</string>
+    <string name="wechat_qq_phone">QQ号/手机号</string>
     <string name="agree_friend_fail">同意添加好友失败</string>
 
     <string name="create_group">发起群聊</string>
@@ -185,7 +184,7 @@
     <string name="shot">拍摄</string>
     <string name="location">位置</string>
     <string name="red_pack">红包</string>
-    <string name="wx_red_pack">微信红包</string>
+    <string name="wx_red_pack">红包</string>
     <string name="file_out_of_date">文件已过期</string>
     <string name="SET_TEXT_TYPING_TITLE">对方正在输入</string>
     <string name="SET_VOICE_TYPING_TITLE">对方正在讲话</string>
@@ -262,7 +261,7 @@
     <string name="about">关于小V</string>
     <string name="exit">退出</string>
     <string name="exit_account">退出当前账号</string>
-    <string name="exit_app">关闭微信</string>
+    <string name="exit_app">关闭APP</string>
     <string name="cancel_bond">取消绑定</string>
     <string name="bond_device">绑定设备</string>
 

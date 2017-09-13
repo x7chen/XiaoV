@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20px"
                 android:text="中国"
-                android:textColor="@color/green1"
+                android:textColor="@color/colorPrimary"
                 android:textSize="28px"/>
 
         </com.zhy.autolayout.AutoLinearLayout>
@@ -66,9 +66,10 @@
                 android:background="@null"
                 android:hint="您的ID"
                 android:inputType="text"
+                android:padding="10dp"
                 android:text=""
                 android:textColorHint="@color/gray3"
-                android:textSize="28px"/>
+                android:textSize="28px" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 
@@ -99,9 +100,10 @@
                 android:background="@null"
                 android:hint="填写密码"
                 android:inputType="textPassword"
+                android:padding="10dp"
                 android:text=""
                 android:textColorHint="@color/gray3"
-                android:textSize="28px"/>
+                android:textSize="28px" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 
@@ -117,7 +119,7 @@
             android:layout_marginBottom="30px"
             android:layout_marginTop="30px"
             android:background="@drawable/selector_login_btn"
-            android:enabled="true"
+            android:enabled="false"
             android:text="登录"
             android:textColor="@color/selector_login_btn"
             android:textSize="30px"/>

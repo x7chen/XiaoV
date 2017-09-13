@@ -1,5 +1,6 @@
 package com.cfk.xiaov.ui.presenter;
 
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.view.IMyInfoAtView;
@@ -17,6 +18,8 @@ public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
     }
 
     public void loadUserInfo() {
+        getView().getOivAccount().setRightText(AccountCache.getAccount());
+        getView().getOivName().setRightText(AccountCache.getAccount());
 
     }
 

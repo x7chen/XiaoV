@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         //默认选中第一个
         setTransparency();
         mTvMessagePress.getBackground().setAlpha(255);
-        mTvMessageTextPress.setTextColor(Color.argb(255, 69, 192, 26));
+        mTvMessageTextPress.setTextColor(Color.argb(255, 38, 170, 253));
 
         //设置ViewPager的最大缓存页面
         mVpContent.setOffscreenPageLimit(3);
@@ -155,17 +155,17 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
             case com.cfk.xiaov.R.id.llMessage:
                 mVpContent.setCurrentItem(0, false);
                 mTvMessagePress.getBackground().setAlpha(255);
-                mTvMessageTextPress.setTextColor(Color.argb(255, 69, 192, 26));
+                mTvMessageTextPress.setTextColor(Color.argb(255, 38, 170, 253));
                 break;
             case com.cfk.xiaov.R.id.llDiscovery:
                 mVpContent.setCurrentItem(1, false);
                 mTvDiscoveryPress.getBackground().setAlpha(255);
-                mTvDiscoveryTextPress.setTextColor(Color.argb(255, 69, 192, 26));
+                mTvDiscoveryTextPress.setTextColor(Color.argb(255, 38, 170, 253));
                 break;
             case com.cfk.xiaov.R.id.llMe:
                 mVpContent.setCurrentItem(2, false);
                 mTvMePress.getBackground().setAlpha(255);
-                mTvMeTextPress.setTextColor(Color.argb(255, 69, 192, 26));
+                mTvMeTextPress.setTextColor(Color.argb(255, 38, 170, 253));
                 break;
         }
     }
@@ -218,9 +218,9 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 mTvDiscoveryNormal.getBackground().setAlpha(diaphaneity_two);
                 mTvDiscoveryPress.getBackground().setAlpha(diaphaneity_one);
                 mTvMessageTextNormal.setTextColor(Color.argb(diaphaneity_one, 153, 153, 153));
-                mTvMessageTextPress.setTextColor(Color.argb(diaphaneity_two, 69, 192, 26));
+                mTvMessageTextPress.setTextColor(Color.argb(diaphaneity_two, 38, 170, 253));
                 mTvDiscoveryTextNormal.setTextColor(Color.argb(diaphaneity_two, 153, 153, 153));
-                mTvDiscoveryTextPress.setTextColor(Color.argb(diaphaneity_one, 69, 192, 26));
+                mTvDiscoveryTextPress.setTextColor(Color.argb(diaphaneity_one, 38, 170, 253));
                 break;
             case 1:
                 mTvDiscoveryNormal.getBackground().setAlpha(diaphaneity_one);
@@ -228,9 +228,9 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 mTvMeNormal.getBackground().setAlpha(diaphaneity_two);
                 mTvMePress.getBackground().setAlpha(diaphaneity_one);
                 mTvDiscoveryTextNormal.setTextColor(Color.argb(diaphaneity_one, 153, 153, 153));
-                mTvDiscoveryTextPress.setTextColor(Color.argb(diaphaneity_two, 69, 192, 26));
+                mTvDiscoveryTextPress.setTextColor(Color.argb(diaphaneity_two, 38, 170, 253));
                 mTvMeTextNormal.setTextColor(Color.argb(diaphaneity_two, 153, 153, 153));
-                mTvMeTextPress.setTextColor(Color.argb(diaphaneity_one, 69, 192, 26));
+                mTvMeTextPress.setTextColor(Color.argb(diaphaneity_one, 38, 170, 253));
                 break;
         }
     }

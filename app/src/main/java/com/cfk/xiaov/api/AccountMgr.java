@@ -125,7 +125,7 @@ public class AccountMgr {
             @Override
             public void onSuccess(Object data) {
                 Log.i(TAG, "Login CallSDK success:" + id);
-                AccountCache.save(id, userSig);
+
                 MyApp.ApplicationContext.startService(new Intent(MyApp.ApplicationContext, VideoCallService.class));
             }
 
@@ -159,7 +159,7 @@ public class AccountMgr {
     /**
      * 注册用户名(*托管模式，独立模式下请向自己私有服务器注册)
      */
-    public void t_regist(String account, String password) {
+    public void t_regist(String name,String account, String password) {
 
         Log.i(TAG, "t_regist:" + account + ":" + password);
         ILiveLoginManager.getInstance().tlsRegister(account, password, new ILiveCallBack() {
@@ -167,6 +167,7 @@ public class AccountMgr {
             public void onSuccess(Object data) {
                 Toast.makeText(MyApp.ApplicationContext, "regist success!", Toast.LENGTH_SHORT).show();
                 t_login(account,password);
+                AccountCache.save(name,account, password);
                 //MyApp.ApplicationContext.startActivity(new Intent(MyApp.ApplicationContext, LoginActivity.class));
                 Log.i(TAG, "regist onSuccess:" + account + ":" + password);
             }

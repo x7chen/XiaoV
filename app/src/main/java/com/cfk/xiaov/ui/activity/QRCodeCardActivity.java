@@ -1,15 +1,29 @@
 package com.cfk.xiaov.ui.activity;
 
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.lqr.ninegridimageview.LQRNineGridImageView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class QRCodeCardActivity extends BaseActivity {
 
@@ -35,12 +49,45 @@ public class QRCodeCardActivity extends BaseActivity {
     @Override
     public void initView() {
         mTvTip.setText(UIUtils.getString(com.cfk.xiaov.R.string.qr_code_card_tip));
+        genQRBitmap(AccountCache.getAccount());
     }
 
     public void initData() {
 
     }
 
+    public void genQRBitmap(String content) {
+
+        Observable.just(content)
+                .map(str -> {
+                    int size = 400; // 图像宽度
+                    Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+                    hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+                    hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+                    BitMatrix matrix = null;
+                    try {
+                        matrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, size, size, hints);
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                    int[] pixels = new int[size * size];
+                    for (int y = 0; y < size; y++) {
+                        for (int x = 0; x < size; x++) {
+                            if (matrix.get(x, y)) {
+                                pixels[y * size + x] = 0xff000000;
+                            } else {
+                                pixels[y * size + x] = 0xffffffff;
+                            }
+                        }
+                    }
+                    Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+                    bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
+                    return bitmap;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bitmap -> mIvCard.setImageBitmap(bitmap));
+    }
 
     private void loadQRCardError(Throwable throwable) {
         LogUtils.sf(throwable.getLocalizedMessage());

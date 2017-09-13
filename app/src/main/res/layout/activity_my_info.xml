@@ -58,7 +58,7 @@
             app:left_text_color="@color/black0"
             app:left_text_margin_left="30px"
             app:left_text_size="16sp"
-            app:right_text="CSDN_LQR"
+            app:right_text=""
             app:right_text_color="@color/gray2"
             app:right_text_margin_right="40px"
             app:right_text_size="14sp"/>
@@ -82,12 +82,6 @@
             app:right_text_margin_right="40px"
             app:right_text_size="14sp"/>
 
-        <View
-            style="@style/Line"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
-            />
-
         <com.lqr.optionitemview.OptionItemView
             android:id="@+id/oivQRCodeCard"
             style="@style/OptionItem"
@@ -107,51 +101,7 @@
         android:layout_marginTop="40px"
         android:orientation="vertical">
 
-        <com.lqr.optionitemview.OptionItemView
-            android:id="@+id/oivGender"
-            style="@style/OptionItem"
-            android:background="@drawable/selector_option_item"
-            app:left_text="@string/gender"
-            app:left_text_color="@color/black0"
-            app:left_text_margin_left="30px"
-            app:left_text_size="16sp"
-            app:right_text=""
-            app:right_text_color="@color/gray2"
-            app:right_text_margin_right="40px"
-            app:right_text_size="14sp"/>
 
-        <View
-            style="@style/Line"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
-            />
-
-        <com.lqr.optionitemview.OptionItemView
-            style="@style/OptionItem"
-            android:background="@drawable/selector_option_item"
-            app:left_text="@string/area"
-            app:left_text_color="@color/black0"
-            app:left_text_margin_left="30px"
-            app:left_text_size="16sp"/>
-
-        <View
-            style="@style/Line"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
-            />
-
-        <com.lqr.optionitemview.OptionItemView
-            android:id="@+id/oivSignature"
-            style="@style/OptionItem"
-            android:background="@drawable/selector_option_item"
-            app:left_text="@string/signature"
-            app:left_text_color="@color/black0"
-            app:left_text_margin_left="30px"
-            app:left_text_size="16sp"
-            app:right_text="@string/not_fill"
-            app:right_text_color="@color/gray2"
-            app:right_text_margin_right="40px"
-            app:right_text_size="14sp"/>
 
     </com.zhy.autolayout.AutoLinearLayout>
 

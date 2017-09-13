@@ -17,12 +17,17 @@ public class AccountCache {
     public static String getUserSig() {
             return SPUtils.getInstance(UIUtils.getContext()).getString(AppConst.Account.USER_SIG, "");
     }
-    public static void save(String account,String user_sig) {
+    public static String getName(){
+        return SPUtils.getInstance(UIUtils.getContext()).getString(AppConst.Account.NAME, "");
+    }
+    public static void save(String name,String account,String user_sig) {
+        SPUtils.getInstance(UIUtils.getContext()).putString(AppConst.Account.NAME, name);
         SPUtils.getInstance(UIUtils.getContext()).putString(AppConst.Account.ACCOUNT, account);
         SPUtils.getInstance(UIUtils.getContext()).putString(AppConst.Account.USER_SIG, user_sig);
     }
 
     public static void clear() {
+        SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.Account.NAME);
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.Account.ACCOUNT);
         SPUtils.getInstance(UIUtils.getContext()).remove(AppConst.Account.USER_SIG);
     }

@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -78,7 +80,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     SeekBar sbBeauty;
 
     @OnClick(R.id.wlog)
-    public void writeLog(Button btn){
+    public void writeLog(Button btn) {
         String logFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/cfk";
         File file = new File(logFileName);
         if (!file.exists()) {
@@ -113,6 +115,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     private void initView() {
         btnEndCall.setVisibility(View.VISIBLE);
         avRootView.setVisibility(View.INVISIBLE);
+
     }
 
     private void changeCamera() {
@@ -222,6 +225,11 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+                /*set it to be no title*/
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+       /*set it to be full screen*/
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_call);
         ButterKnife.bind(this);
         initView();
@@ -272,7 +280,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
                 setMic(false);
             }
         });
-        if (mode.equals("monitor")){
+        if (mode.equals("monitor")) {
 
             allowVideoThread = new Thread(() -> {
                 try {
@@ -394,7 +402,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
         addLogMessage("setRemoteRotationFix(180)");
         addLogMessage("setLocalRotationFix(0)");
         AVVideoView majorView = avRootView.getViewByIndex(0);
-        //majorView.setMirror(true);
+        majorView.setMirror(true);
         addLogMessage("index[0]" + ":w=" + majorView.getImageWidth() + ",h=" + majorView.getImageHeight() + ",a=" + majorView.getImageAngle() + ",r=" + majorView.getRotation());
         // 设置点击小屏切换及可拖动
         for (int i = 1; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {

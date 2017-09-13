@@ -1,5 +1,6 @@
 package com.cfk.xiaov.ui.presenter;
 
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.view.IMeFgView;
@@ -17,7 +18,7 @@ public class MeFgPresenter extends BasePresenter<IMeFgView> {
     }
 
     public void loadUserInfo() {
-
+        getView().getTvAccount().setText("账号："+AccountCache.getAccount());
     }
 
     public void refreshUserInfo() {

@@ -114,7 +114,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
 
     private void initView() {
         btnEndCall.setVisibility(View.VISIBLE);
-        avRootView.setVisibility(View.INVISIBLE);
+        //avRootView.setVisibility(View.INVISIBLE);
 
     }
 
@@ -233,6 +233,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
         setContentView(R.layout.activity_call);
         ButterKnife.bind(this);
         initView();
+        avRootView.setAutoOrientation(false);
 
         // 添加通话回调
         ILVCallManager.getInstance().addCallListener(this);
@@ -258,7 +259,6 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
         } else {  // 接听呼叫
             ILVCallManager.getInstance().acceptCall(mCallId, option);
         }
-
         ILiveLoginManager.getInstance().setUserStatusListener((error, message) -> finish());
 
         tvTitle.setText("New Call From:\n" + mHostId);
@@ -266,8 +266,6 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
         //avRootView.setAutoOrientation(false);
         ILVCallManager.getInstance().initAvView(avRootView);
 
-        avRootView.setAutoOrientation(false);
-        //avRootView.setRotation(180);
         mode = intent.getStringExtra("Mode");
         Log.i(TAG, "mode:" + mode);
         sbVideo.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -399,19 +397,18 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
         addLogMessage("onCallEstablish->0:" + avRootView.getViewByIndex(0).getIdentifier() + "/" + avRootView.getViewByIndex(1).getIdentifier());
         avRootView.swapVideoView(0, 1);
         avRootView.setRemoteRotationFix(180);
-        addLogMessage("setRemoteRotationFix(180)");
-        addLogMessage("setLocalRotationFix(0)");
-        AVVideoView majorView = avRootView.getViewByIndex(0);
-        majorView.setMirror(true);
-        addLogMessage("index[0]" + ":w=" + majorView.getImageWidth() + ",h=" + majorView.getImageHeight() + ",a=" + majorView.getImageAngle() + ",r=" + majorView.getRotation());
+//        AVVideoView majorView = avRootView.getViewByIndex(0);
+//        if (ILiveLoginManager.getInstance().getMyUserId().equals(majorView.getIdentifier())) {
+//            majorView.setMirror(false);
+//        }
+
         // 设置点击小屏切换及可拖动
         for (int i = 1; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {
             final int index = i;
             AVVideoView minorView = avRootView.getViewByIndex(i);
             if (ILiveLoginManager.getInstance().getMyUserId().equals(minorView.getIdentifier())) {
-                minorView.setMirror(true);      // 本地镜像
+                //minorView.setMirror(true);      // 本地镜像
             }
-            addLogMessage("index[" + i + "]" + ":w=" + minorView.getImageWidth() + ",h=" + minorView.getImageHeight() + ",a=" + minorView.getImageAngle() + ",r=" + minorView.getRotation());
             minorView.setDragable(true);    // 小屏可拖动
             minorView.setGestureListener(new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -444,6 +441,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     @Override
     public void onCameraEvent(String id, boolean bEnable) {
         addLogMessage("[" + id + "] " + (bEnable ? "open" : "close") + " camera");
+
     }
 
     @Override

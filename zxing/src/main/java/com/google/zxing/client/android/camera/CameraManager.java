@@ -271,10 +271,10 @@ public final class CameraManager {
 //            rect.right = rect.right * cameraResolution.x / screenResolution.x;
 //            rect.top = rect.top * cameraResolution.y / screenResolution.y;
 //            rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
-            rect.left = 330;
-            rect.right = 630;
-            rect.top = 120;
-            rect.bottom = 420;
+            rect.left = 660;
+            rect.right = 1260;
+            rect.top = 240;
+            rect.bottom = 840;
             framingRectInPreview = rect;
             Log.i(TAG, "rect after:left:" + rect.left + ",right:" + rect.right + ",top:" + rect.top + ",bottom:" + rect.bottom);
             Log.i(TAG, "screenResolution:x=" + screenResolution.x + ",y=" + screenResolution.y);

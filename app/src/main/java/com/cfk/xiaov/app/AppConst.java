@@ -37,6 +37,11 @@ public class AppConst {
     public static final String UPDATE_CURRENT_SESSION_NAME = "update_current_session_name";
     public static final String REFRESH_CURRENT_SESSION = "refresh_current_session";
     public static final String CLOSE_CURRENT_SESSION = "close_current_session";
+
+    //视频通话
+    public static final String MAKE_CALL= "make_call";
+
+
     /*================== 广播Action end ==================*/
 
 
@@ -49,6 +54,7 @@ public class AppConst {
 
     public static final class Bond {
         public static final String BOND_ID = "bond_id";
+        public static final String CONTACTS = "[]";
     }
 
     public static final class Account {

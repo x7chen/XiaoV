@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -37,9 +36,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="Android.permission.SYSTEM_ALERT_WINDOW" />
-
+    <!-- 屏幕唤醒 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
         android:name=".app.MyApp"
@@ -50,16 +49,15 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="design_width"
-            android:value="720"></meta-data>
+            android:value="720" />
         <meta-data
             android:name="design_height"
-            android:value="1280"></meta-data>
+            android:value="1280" />
 
         <!-- 地图 -->
         <meta-data
             android:name="TencentMapSDK"
             android:value="TYQBZ-MRBKU-K7FVL-4JBW5-DOG5O-SZB4A" />
-
 
         <activity
             android:name=".ui.activity.SplashActivity"
@@ -72,47 +70,46 @@
         </activity>
         <activity
             android:name=".ui.activity.WebViewActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RegisterActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MyInfoActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.QRCodeCardActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ChangeMyNameActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.TakePhotoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/FullWindowTheme"></activity>
+            android:theme="@style/FullWindowTheme" />
         <activity
             android:name=".ui.activity.ShowBigImageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AboutActivity"
-            android:screenOrientation="portrait"></activity>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.CallActivity"
-
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
 
         <service android:name=".ui.service.VideoCallService" />
 
-        <activity android:name=".ui.activity.ComingCallActivity"/>
+        <activity android:name=".ui.activity.ComingCallActivity" />
+        <activity android:name=".ui.activity.DeviceManagerActivity"></activity>
     </application>
 
 </manifest>

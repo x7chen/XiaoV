@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 
 import com.cfk.xiaov.R;
 import com.tencent.callsdk.ILVCallConstants;
+import com.tencent.callsdk.ILVCallListener;
 import com.tencent.callsdk.ILVCallManager;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ComingCallActivity extends AppCompatActivity {
+public class ComingCallActivity extends AppCompatActivity implements ILVCallListener{
     String TAG = getClass().getSimpleName();
     @Bind(R.id.ibAccept)
     ImageButton mIbAccept;
@@ -36,7 +37,8 @@ public class ComingCallActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        wakeUpAndUnlock(this);
+//        wakeUpAndUnlock(this);
+        wakeAndUnlock(this);
 
         setContentView(R.layout.activity_coming_call);
         ButterKnife.bind(this);
@@ -75,8 +77,9 @@ public class ComingCallActivity extends AppCompatActivity {
             runOnUiThread(this::finish);
         });
         timeoutThread.start();
-
+        ILVCallManager.getInstance().addCallListener(this);
     }
+
     public static void wakeUpAndUnlock(Context context){
         KeyguardManager km= (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
@@ -91,11 +94,36 @@ public class ComingCallActivity extends AppCompatActivity {
         //释放
         wl.release();
     }
+    public static void wakeAndUnlock(Context context) {
+        KeyguardManager km;
+        KeyguardManager.KeyguardLock kl;
+        PowerManager pm;
+        PowerManager.WakeLock wl;
+
+        //获取电源管理器对象
+        pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+
+        //获取PowerManager.WakeLock对象，后面的参数|表示同时传入两个值，最后的是调试用的Tag
+        wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "bright");
+
+        //点亮屏幕
+        wl.acquire();
+
+        //得到键盘锁管理器对象
+        km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        kl = km.newKeyguardLock("unLock");
+        kl.reenableKeyguard();
+        //解锁,加上会自动解锁，比较危险
+        kl.disableKeyguard();
+
+
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
         timeoutThread.interrupt();
+        ILVCallManager.getInstance().removeCallListener(this);
     }
 
     private void acceptCall(int callId, String hostId, int callType) {
@@ -107,5 +135,20 @@ public class ComingCallActivity extends AppCompatActivity {
         intent.putExtra("CallType", callType);
         intent.putExtra("Mode","video");
         startActivity(intent);
+    }
+
+    @Override
+    public void onCallEstablish(int callId) {
+
+    }
+
+    @Override
+    public void onCallEnd(int callId, int endResult, String endInfo) {
+        finish();
+    }
+
+    @Override
+    public void onException(int iExceptionId, int errCode, String errMsg) {
+
     }
 }

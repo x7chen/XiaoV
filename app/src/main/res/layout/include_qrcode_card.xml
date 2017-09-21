@@ -21,8 +21,9 @@
                 android:id="@+id/ivHeader"
                 android:layout_width="130px"
                 android:layout_height="130px"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/default_header"/>
+                android:scaleType="fitXY"
+                android:tint="@color/gray1"
+                android:src="@mipmap/user148"/>
 
             <!--九宫格头像-->
             <com.lqr.ninegridimageview.LQRNineGridImageView

@@ -1,15 +1,12 @@
 package com.cfk.xiaov.ui.activity;
 
 import android.content.Intent;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.model.cache.BondCache;
-import com.google.zxing.client.android.CaptureActivity;
-import com.google.zxing.client.android.Intents;
 import com.lqr.optionitemview.OptionItemView;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
@@ -34,8 +31,8 @@ public class SettingActivity extends BaseActivity {
     OptionItemView mOivHelpFeedback;
     @Bind(R.id.oivExit)
     OptionItemView mOivExit;
-    @Bind(R.id.oivCancelBond)
-    OptionItemView mOivCancelBond;
+    @Bind(R.id.oivDeviceManager)
+    OptionItemView mOivDeviceManager;
     private CustomDialog mExitDialog;
 
     @Override
@@ -61,22 +58,14 @@ public class SettingActivity extends BaseActivity {
             }
             mExitDialog.show();
         });
-        mOivCancelBond.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(BondCache.getBondId())) {
-                Intent intent = new Intent(MyApp.getContext(),CaptureActivity.class);
-                intent.setAction(Intents.Scan.ACTION);
-                startActivityForResult(intent, 1001);
-            } else {
-                BondCache.clear();
-                mOivCancelBond.setLeftText(R.string.bond_device);
-            }
+        mOivDeviceManager.setOnClickListener(v -> {
+            jumpToActivity(DeviceManagerActivity.class);
 
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1001) {
             String result = data.getStringExtra("qr_result");
@@ -91,11 +80,6 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        if (TextUtils.isEmpty(BondCache.getBondId())) {
-            mOivCancelBond.setLeftText(R.string.bond_device);
-        } else {
-            mOivCancelBond.setLeftText(R.string.cancel_bond);
-        }
     }
 
     @Override

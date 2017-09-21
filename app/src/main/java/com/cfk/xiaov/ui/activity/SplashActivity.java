@@ -49,7 +49,10 @@ public class SplashActivity extends BaseActivity {
                         Manifest.permission.CAMERA,
                         //存储空间
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_SETTINGS
+                        Manifest.permission.WRITE_SETTINGS,
+                        //解锁
+                        Manifest.permission.WAKE_LOCK,
+                        Manifest.permission.DISABLE_KEYGUARD
                 )
                 .request();
         if (!TextUtils.isEmpty(UserCache.getToken())) {

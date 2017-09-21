@@ -27,8 +27,9 @@
                 android:layout_width="120px"
                 android:layout_height="120px"
                 android:layout_marginLeft="10px"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/default_header"/>
+                android:scaleType="fitXY"
+                android:tint="@color/gray1"
+                android:src="@mipmap/user148"/>
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="0dp"

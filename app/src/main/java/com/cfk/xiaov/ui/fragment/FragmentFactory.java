@@ -26,7 +26,7 @@ public class FragmentFactory {
     private DiscoveryFragment mDiscoveryFragment;
     private MeFragment mMeFragment;
     private VideoFragment mVideoFragment;
-
+    private ContactsFragment mContactsFragment;
 
 
     public VideoFragment getVideoFragment() {
@@ -40,7 +40,16 @@ public class FragmentFactory {
         return mVideoFragment;
     }
 
-
+    public ContactsFragment getContactsFragment() {
+        if (mContactsFragment == null) {
+            synchronized (FragmentFactory.class) {
+                if (mContactsFragment == null) {
+                    mContactsFragment = new ContactsFragment();
+                }
+            }
+        }
+        return mContactsFragment;
+    }
     public DiscoveryFragment getDiscoveryFragment() {
         if (mDiscoveryFragment == null) {
             synchronized (FragmentFactory.class) {

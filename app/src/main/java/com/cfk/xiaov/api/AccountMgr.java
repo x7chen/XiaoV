@@ -146,6 +146,7 @@ public class AccountMgr {
             public void onSuccess(String data) {
                 loginSDK(id, data);
                 Log.i(TAG, "login onSuccess:" + id + ":" + password);
+                AccountCache.save(id, password);
             }
 
             @Override
@@ -167,7 +168,8 @@ public class AccountMgr {
             public void onSuccess(Object data) {
                 Toast.makeText(MyApp.ApplicationContext, "regist success!", Toast.LENGTH_SHORT).show();
                 t_login(account,password);
-                AccountCache.save(name,account, password);
+
+
                 //MyApp.ApplicationContext.startActivity(new Intent(MyApp.ApplicationContext, LoginActivity.class));
                 Log.i(TAG, "regist onSuccess:" + account + ":" + password);
             }

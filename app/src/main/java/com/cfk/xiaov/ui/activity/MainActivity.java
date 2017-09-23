@@ -4,49 +4,58 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.manager.BroadcastManager;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
+import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.model.data.ContactData;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
-import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.ui.presenter.MainAtPresenter;
 import com.cfk.xiaov.ui.view.IMainAtView;
+import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
+import com.cfk.xiaov.util.UIUtils;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
+import com.tencent.ilivesdk.core.ILiveLoginManager;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import butterknife.Bind;
 
 public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> implements ViewPager.OnPageChangeListener, IMainAtView {
 
+    String TAG = getClass().getSimpleName();
     private List<BaseFragment> mFragmentList = new ArrayList<>(4);
 
     @Bind(com.cfk.xiaov.R.id.ibAddMenu)
     ImageButton mIbAddMenu;
     @Bind(com.cfk.xiaov.R.id.vpContent)
     ViewPager mVpContent;
+    @Bind(R.id.status_message_layout)
+    RelativeLayout status_msg_layout;
+    @Bind(R.id.status_message)
+    TextView statusMessage;
 
     //底部
     @Bind(com.cfk.xiaov.R.id.llMessage)
@@ -99,7 +108,15 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         mIbAddMenu.setVisibility(View.VISIBLE);
 
         //等待全局数据获取完毕
-        //showWaitingDialog(UIUtils.getString(com.cfk.xiaov.R.string.please_wait));
+        showWaitingDialog(UIUtils.getString(com.cfk.xiaov.R.string.please_wait));
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                runOnUiThread(this::hideWaitingDialog);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
         //默认选中第一个
         setTransparency();
         mTvMessagePress.getBackground().setAlpha(255);
@@ -113,6 +130,7 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         mFragmentList.add(FragmentFactory.getInstance().getDiscoveryFragment());
         mFragmentList.add(FragmentFactory.getInstance().getMeFragment());
         mVpContent.setAdapter(new CommonFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList));
+        checkNetwork();
     }
 
     @Override
@@ -126,7 +144,7 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 popupWindow.dismiss();
             });
             menuView.findViewById(R.id.tvScan).setOnClickListener(v1 -> {
-                Intent intent = new Intent(MyApp.getContext(),CaptureActivity.class);
+                Intent intent = new Intent(MyApp.getContext(), CaptureActivity.class);
                 intent.setAction(Intents.Scan.ACTION);
                 startActivityForResult(intent, 1001);
             });
@@ -141,21 +159,24 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==1001){
+        if (resultCode == 1001) {
             String result = data.getStringExtra("qr_result");
             if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
                 String bondID = result.substring(AppConst.QrCodeCommon.BOND.length());
-                ContactData contactData = new ContactData(bondID,bondID,"");
-                ArrayList<ContactData> contactDatas= BondCache.getContactList();
-                for (ContactData data1:contactDatas){
-                    if(data1.getId().equals(contactData.getId())){
+                ContactData contactData = new ContactData(bondID, bondID, "");
+                ArrayList<ContactData> contactDatas = BondCache.getContactList();
+                if (contactDatas == null) {
+                    contactDatas = new ArrayList<>();
+                }
+
+                for (ContactData data1 : contactDatas) {
+                    if (data1.getId().equals(contactData.getId())) {
                         UIUtils.showToastSafely("重复绑定！");
                         return;
                     }
                 }
-                if(contactDatas==null){
-                    contactDatas = new ArrayList<ContactData>();
-                }
+
+
                 contactDatas.add(contactData);
                 BondCache.saveContacts(contactDatas);
             }
@@ -285,6 +306,36 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
 
     }
 
+    void checkNetwork(){
+
+        if (!NetUtils.isNetworkAvailable(this)) {
+            showNetworkFail();
+        }
+        else{
+            hideNetworkFail();
+            if(ILiveLoginManager.getInstance().isLogin()){
+                return;
+            }
+            if (!TextUtils.isEmpty(UserCache.getToken())) {
+                if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
+                    String account = AccountCache.getAccount();
+                    String user_id = AccountCache.getUserSig();
+                    MyApp.mAccountMgr.loginSDK(account, user_id);
+                }
+            }
+        }
+    }
+
+    void showNetworkFail() {
+        status_msg_layout.setVisibility(View.VISIBLE);
+        //statusMessage.setTextColor(0xffff00);
+        statusMessage.setText("您的网络不可用！");
+    }
+    void hideNetworkFail() {
+        status_msg_layout.setVisibility(View.GONE);
+    }
+    public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
+
     private void registerBR() {
         BroadcastManager.getInstance(this).register(AppConst.FETCH_COMPLETE, new BroadcastReceiver() {
             @Override
@@ -292,10 +343,29 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 hideWaitingDialog();
             }
         });
+        BroadcastManager.getInstance(this).register(CONNECTIVITY_CHANGE_ACTION, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (TextUtils.equals(action, CONNECTIVITY_CHANGE_ACTION)) {
+                    checkNetwork();
+                }
+            }
+        });
+        BroadcastManager.getInstance(this).register(AppConst.NET_STATUS, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.i(TAG, "您的网络不可用");
+                if (intent.getStringExtra("net_status").equals("failed")) {
+                    showNetworkFail();
+                }
+            }
+        });
     }
 
     private void unRegisterBR() {
         BroadcastManager.getInstance(this).unregister(AppConst.FETCH_COMPLETE);
+        BroadcastManager.getInstance(this).unregister(AppConst.NET_STATUS);
     }
 
     @Override

@@ -6,18 +6,37 @@
 
     android:orientation="vertical">
 
-    <include layout="@layout/include_toolbar"/>
+    <include layout="@layout/include_toolbar" />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/status_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/yellow0">
+
+        <TextView
+            android:id="@+id/status_message"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textStyle="bold">
+
+        </TextView>
+    </RelativeLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vpContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <!--底部-->
-    <View
-        style="@style/Line"
-        />
+    <View style="@style/Line" />
 
     <com.zhy.autolayout.AutoLinearLayout
         android:id="@+id/llButtom"
@@ -57,7 +76,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:textColor="@color/gray0"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvMessagePress"
@@ -69,7 +88,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </com.zhy.autolayout.AutoRelativeLayout>
 
                 <TextView
@@ -85,7 +104,7 @@
                     android:text="1"
                     android:textColor="@color/white"
                     android:textSize="24px"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
             <com.zhy.autolayout.AutoRelativeLayout
@@ -99,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/message"
                     android:textColor="@color/gray0"
-                    android:textSize="24px"/>
+                    android:textSize="24px" />
 
                 <TextView
                     android:id="@+id/tvMessageTextPress"
@@ -107,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/message"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24px"/>
+                    android:textSize="24px" />
             </com.zhy.autolayout.AutoRelativeLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 
@@ -141,7 +160,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:textColor="@color/gray0"
-                        android:textSize="24px"/>
+                        android:textSize="24px" />
 
                     <TextView
                         android:id="@+id/tvDiscoveryPress"
@@ -152,7 +171,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="24px"/>
+                        android:textSize="24px" />
                 </com.zhy.autolayout.AutoRelativeLayout>
 
                 <TextView
@@ -168,7 +187,7 @@
                     android:text="1"
                     android:textColor="@color/white"
                     android:textSize="24px"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -183,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/discovery"
                     android:textColor="@color/gray0"
-                    android:textSize="24px"/>
+                    android:textSize="24px" />
 
                 <TextView
                     android:id="@+id/tvDiscoveryTextPress"
@@ -191,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/discovery"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24px"/>
+                    android:textSize="24px" />
             </com.zhy.autolayout.AutoRelativeLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 
@@ -225,7 +244,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:textColor="@color/gray0"
-                        android:textSize="24px"/>
+                        android:textSize="24px" />
 
                     <TextView
                         android:id="@+id/tvMePress"
@@ -236,7 +255,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="24px"/>
+                        android:textSize="24px" />
                 </com.zhy.autolayout.AutoRelativeLayout>
 
                 <TextView
@@ -250,7 +269,7 @@
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="24px"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
             <com.zhy.autolayout.AutoRelativeLayout
@@ -264,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/me"
                     android:textColor="@color/gray0"
-                    android:textSize="24px"/>
+                    android:textSize="24px" />
 
                 <TextView
                     android:id="@+id/tvMeTextPress"
@@ -272,7 +291,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/me"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24px"/>
+                    android:textSize="24px" />
             </com.zhy.autolayout.AutoRelativeLayout>
         </com.zhy.autolayout.AutoLinearLayout>
     </com.zhy.autolayout.AutoLinearLayout>

@@ -9,10 +9,12 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
 
+import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.ui.activity.LoginActivity;
 import com.cfk.xiaov.ui.service.VideoCallService;
+import com.cfk.xiaov.util.BroadcastUtils;
 import com.tencent.ilivesdk.ILiveCallBack;
 import com.tencent.ilivesdk.core.ILiveLoginManager;
 
@@ -131,7 +133,7 @@ public class AccountMgr {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                Toast.makeText(MyApp.ApplicationContext, "Login failed:" + module + "|" + errCode + "|" + errMsg, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MyApp.ApplicationContext, "Login failed:" + module + "|" + errCode + "|" + errMsg, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -151,7 +153,8 @@ public class AccountMgr {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                // Toast.makeText(MyApp.ApplicationContext, "login failed:" + module + "|" + errCode + "|" + errMsg, Toast.LENGTH_SHORT).show();
+                 Toast.makeText(MyApp.ApplicationContext, "login failed:" + module + "|" + errCode + "|" + errMsg, Toast.LENGTH_SHORT).show();
+                BroadcastUtils.sendBroadcast(AppConst.NET_STATUS,"net_status","failed");
                 Log.i(TAG, "login onError:" + id + ":" + password);
             }
         });

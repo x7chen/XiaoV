@@ -41,6 +41,8 @@ public class AppConst {
     //视频通话
     public static final String MAKE_CALL= "make_call";
 
+    //视频通话
+    public static final String NET_STATUS= "net_status";
 
     /*================== 广播Action end ==================*/
 

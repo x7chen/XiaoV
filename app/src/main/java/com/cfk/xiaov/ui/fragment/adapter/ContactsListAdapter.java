@@ -75,6 +75,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
                 intent.setAction(AppConst.MAKE_CALL);
                 intent.putExtra("CallId",mAdapterData.get(getAdapterPosition()).getId());
                 mContext.sendBroadcast(intent);
+                Log.i(TAG,"Monitor OnClick");
             });
             Log.i(TAG,"Create ContactsHolder");
         }

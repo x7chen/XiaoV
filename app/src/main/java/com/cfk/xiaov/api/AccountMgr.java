@@ -1,6 +1,5 @@
 package com.cfk.xiaov.api;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.ui.activity.LoginActivity;
-import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.util.BroadcastUtils;
 import com.tencent.ilivesdk.ILiveCallBack;
 import com.tencent.ilivesdk.core.ILiveLoginManager;
@@ -127,8 +124,8 @@ public class AccountMgr {
             @Override
             public void onSuccess(Object data) {
                 Log.i(TAG, "Login CallSDK success:" + id);
-
-                MyApp.ApplicationContext.startService(new Intent(MyApp.ApplicationContext, VideoCallService.class));
+//                Intent intent = new Intent(MyApp.ApplicationContext, VideoCallService.class);
+//                MyApp.ApplicationContext.startService(intent);
             }
 
             @Override

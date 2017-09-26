@@ -333,21 +333,21 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
 
     @Override
     protected void onResume() {
-        ILVCallManager.getInstance().onResume();
+        //ILVCallManager.getInstance().onResume();
 
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        ILVCallManager.getInstance().onPause();
+        //ILVCallManager.getInstance().onPause();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         ILVCallManager.getInstance().removeCallListener(this);
-        ILVCallManager.getInstance().onDestory();
+        //ILVCallManager.getInstance().onDestory();
 
         if (allowVideoThread.isAlive()) {
             allowVideoThread.interrupt();
@@ -455,7 +455,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     public void onCallEnd(int callId, int endResult, String endInfo) {
         Log.e(TAG, "onCallEnd->id: " + callId + "|" + endResult + "|" + endInfo);
         if(!self_call_end)
-        UIUtils.showToastSafely("对方已挂断");
+        UIUtils.showToastSafely("已挂断");
         finish();
     }
 

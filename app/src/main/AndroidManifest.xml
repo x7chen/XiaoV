@@ -109,7 +109,7 @@
         <service android:name=".ui.service.VideoCallService" />
 
         <activity android:name=".ui.activity.ComingCallActivity" />
-        <activity android:name=".ui.activity.DeviceManagerActivity"></activity>
+        <activity android:name=".ui.activity.DeviceManagerActivity"/>
     </application>
 
 </manifest>

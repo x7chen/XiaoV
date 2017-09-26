@@ -8,6 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/port"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@mipmap/call_bg">
@@ -54,10 +55,10 @@
 
     <RelativeLayout
         android:id="@+id/land"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="false"
-        android:visibility="gone">
+        android:focusable="false">
 
         <com.tencent.ilivesdk.view.AVRootView
             android:id="@+id/av_root_view"
@@ -80,16 +81,17 @@
 
         <RelativeLayout
             android:id="@+id/rl_control"
-            android:layout_width="match_parent"
+            android:layout_width="360dp"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true">
 
             <ImageButton
                 android:id="@+id/btn_switch_camera"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="30dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
@@ -102,8 +104,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
+                android:layout_marginEnd="30dp"
                 android:layout_marginTop="100dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
@@ -114,8 +115,8 @@
             <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="30dp"
                 android:layout_marginTop="180dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
@@ -126,8 +127,8 @@
             <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="30dp"
                 android:layout_marginTop="260dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
@@ -139,8 +140,8 @@
                 android:id="@+id/btn_beauty"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="120dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="120dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
@@ -153,8 +154,8 @@
                 style="@style/SwitchButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="200dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="200dp"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/yellow1"
                 android:textSize="16sp"
@@ -178,8 +179,8 @@
                 android:id="@+id/sb_beauty_progress"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="120dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="120dp"
                 android:layout_marginTop="100dp"
                 android:visibility="gone" />
 

@@ -1,11 +1,10 @@
 package com.cfk.xiaov.ui.activity;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +29,7 @@ import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
 import com.cfk.xiaov.ui.presenter.MainAtPresenter;
+import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.ui.view.IMainAtView;
 import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
@@ -100,6 +100,7 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
     @Override
     public void init() {
         registerBR();
+        startVideoCallService();
     }
 
     @Override
@@ -306,14 +307,13 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
 
     }
 
-    void checkNetwork(){
+    void checkNetwork() {
 
         if (!NetUtils.isNetworkAvailable(this)) {
             showNetworkFail();
-        }
-        else{
+        } else {
             hideNetworkFail();
-            if(ILiveLoginManager.getInstance().isLogin()){
+            if (ILiveLoginManager.getInstance().isLogin()) {
                 return;
             }
             if (!TextUtils.isEmpty(UserCache.getToken())) {
@@ -331,9 +331,11 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         //statusMessage.setTextColor(0xffff00);
         statusMessage.setText("您的网络不可用！");
     }
+
     void hideNetworkFail() {
         status_msg_layout.setVisibility(View.GONE);
     }
+
     public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
 
     private void registerBR() {
@@ -361,11 +363,42 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 }
             }
         });
+        BroadcastManager.getInstance(this).register(Intent.ACTION_TIME_TICK, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                startVideoCallService();
+            }
+        });
+    }
+
+    void startVideoCallService() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(Integer.MAX_VALUE);
+        boolean isRunning = false;
+        if (serviceList == null || serviceList.size() == 0) {
+            isRunning = false;
+        } else {
+            for (ActivityManager.RunningServiceInfo info : serviceList) {
+               // Log.i(TAG,info.service.getClassName());
+
+                if (info.service.getClassName().equals(VideoCallService.class.getName())) {
+                    isRunning = true;
+                    break;
+                }
+            }
+           // Log.i(TAG,VideoCallService.class.getName());
+        }
+        if (!isRunning) {
+            Intent intent1 = new Intent(MyApp.ApplicationContext, VideoCallService.class);
+            MyApp.ApplicationContext.startService(intent1);
+        }
     }
 
     private void unRegisterBR() {
         BroadcastManager.getInstance(this).unregister(AppConst.FETCH_COMPLETE);
         BroadcastManager.getInstance(this).unregister(AppConst.NET_STATUS);
+        BroadcastManager.getInstance(this).unregister(CONNECTIVITY_CHANGE_ACTION);
+        BroadcastManager.getInstance(this).unregister(Intent.ACTION_TIME_TICK);
     }
 
     @Override

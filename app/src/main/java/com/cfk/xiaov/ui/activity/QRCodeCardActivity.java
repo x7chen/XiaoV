@@ -58,7 +58,7 @@ public class QRCodeCardActivity extends BaseActivity {
 
     public void genQRBitmap(String content) {
 
-        Observable.just(content)
+        Observable.just("bond:"+content)
                 .map(str -> {
                     int size = 400; // 图像宽度
                     Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();

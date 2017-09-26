@@ -13,7 +13,6 @@ import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.ui.activity.CallActivity;
 import com.cfk.xiaov.ui.activity.ComingCallActivity;
 import com.cfk.xiaov.util.NetUtils;
@@ -71,7 +70,8 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
         ILVCallManager.getInstance().addCallListener(this);
         Log.i(TAG, "Init CallSDK...");
     }
-    private void uninitCallManager(){
+
+    private void uninitCallManager() {
         ILVCallManager.getInstance().removeIncomingListener(this);
         ILVCallManager.getInstance().removeCallListener(this);
     }
@@ -210,20 +210,19 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.i(TAG, "onReceive:");
-                if(!NetUtils.isNetworkAvailable(VideoCallService.this)){
+                if (!NetUtils.isNetworkAvailable(VideoCallService.this)) {
                     UIUtils.showToastSafely("您的网络不可用！");
                     return;
                 }
                 if (ILiveLoginManager.getInstance().isLogin()) {
                     monitor(intent.getStringExtra("CallId"));
                 } else {
-                    if (!TextUtils.isEmpty(UserCache.getToken())) {
-                        if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
-                            String account = AccountCache.getAccount();
-                            String user_id = AccountCache.getUserSig();
-                            MyApp.mAccountMgr.loginSDK(account, user_id);
-                        }
+                    if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
+                        String account = AccountCache.getAccount();
+                        String user_id = AccountCache.getUserSig();
+                        MyApp.mAccountMgr.loginSDK(account, user_id);
                     }
+
                     UIUtils.showToastSafely("请稍等...");
                 }
             }

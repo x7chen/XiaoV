@@ -5,27 +5,20 @@ import android.util.Log;
 
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.model.cache.UserCache;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.response.LoginResponse;
 import com.cfk.xiaov.model.response.RegisterResponse;
-import com.cfk.xiaov.model.response.SendCodeResponse;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.view.IRegisterAtView;
 import com.cfk.xiaov.util.LogUtils;
-import com.cfk.xiaov.util.RegularUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.model.exception.ServerException;
-import com.cfk.xiaov.model.response.CheckPhoneResponse;
 import com.cfk.xiaov.ui.base.BasePresenter;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -78,7 +71,7 @@ public class RegisterAtPresenter extends BasePresenter<IRegisterAtView> {
                 .subscribe(loginResponse -> {
                     int responseCode = loginResponse.getCode();
                     if (responseCode == 200) {
-                        UserCache.save(loginResponse.getResult().getId(), userId, loginResponse.getResult().getToken());
+                        AccountCache.save(userId,loginResponse.getResult().getToken());
                         mContext.jumpToActivityAndClearTask(MainActivity.class);
                         mContext.finish();
                     } else {

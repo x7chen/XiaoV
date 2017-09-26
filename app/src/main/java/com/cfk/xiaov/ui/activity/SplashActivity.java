@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.UIUtils;
@@ -55,17 +54,17 @@ public class SplashActivity extends BaseActivity {
                         Manifest.permission.DISABLE_KEYGUARD
                 )
                 .request();
-        if (!TextUtils.isEmpty(UserCache.getToken())) {
-            if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
-                String account = AccountCache.getAccount();
-                String user_id = AccountCache.getUserSig();
-                MyApp.mAccountMgr.loginSDK(account, user_id);
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                jumpToActivity(intent);
-                finish();
-            }
+
+        if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
+            String account = AccountCache.getAccount();
+            String userSig = AccountCache.getUserSig();
+            MyApp.mAccountMgr.loginSDK(account, userSig);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            jumpToActivity(intent);
+            finish();
         }
+
     }
 
     @Override

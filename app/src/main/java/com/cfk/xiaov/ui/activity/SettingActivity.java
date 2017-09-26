@@ -1,16 +1,15 @@
 package com.cfk.xiaov.ui.activity;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
 import com.lqr.optionitemview.OptionItemView;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.widget.CustomDialog;
@@ -44,8 +43,7 @@ public class SettingActivity extends BaseActivity {
                 mExitView = View.inflate(this, R.layout.dialog_exit, null);
                 mExitDialog = new CustomDialog(this, mExitView, R.style.MyDialog);
                 mExitView.findViewById(R.id.tvExitAccount).setOnClickListener(v1 -> {
-
-                    UserCache.clear();
+                    AccountCache.clear();
                     BondCache.clear();
                     mExitDialog.dismiss();
                     MyApp.exit();

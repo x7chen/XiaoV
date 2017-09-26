@@ -103,8 +103,8 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
 
         mBtnRegister.setOnClickListener(v -> {
             mPresenter.register();
-            if(MyApp.mAccountMgr!=null)
-            MyApp.mAccountMgr.t_regist(mEtNick.getText().toString().trim(),mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
+//            if(MyApp.mAccountMgr!=null)
+//            MyApp.mAccountMgr.t_regist(mEtNick.getText().toString().trim(),mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
         });
     }
 

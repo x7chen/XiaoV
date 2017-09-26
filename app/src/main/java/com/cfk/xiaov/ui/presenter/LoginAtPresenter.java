@@ -6,12 +6,14 @@ import android.util.Log;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.model.cache.UserCache;
+import com.cfk.xiaov.app.MyApp;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.view.ILoginAtView;
+import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 
@@ -47,11 +49,13 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
                     mContext.hideWaitingDialog();
                     Log.i(TAG,"code:"+code);
                     if (code == 200) {
-                        UserCache.save(loginResponse.getResult().getId(), userId, loginResponse.getResult().getToken());
+                        MyApp.mAccountMgr.loginSDK(userId,loginResponse.getResult().getToken());
+                        AccountCache.save(userId,loginResponse.getResult().getToken());
                         mContext.jumpToActivityAndClearTask(MainActivity.class);
                         mContext.finish();
                     } else {
                         loginError(new ServerException(UIUtils.getString(R.string.login_error) + code));
+                        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS,"net_status","failed");
                     }
                 }, this::loginError);
     }

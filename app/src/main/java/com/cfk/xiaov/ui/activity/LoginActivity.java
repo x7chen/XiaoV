@@ -93,7 +93,6 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
 //                MyApp.mAccountMgr.t_login(prefix+mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
 //            }).start();
             mPresenter.login();
-            MyApp.mAccountMgr.t_login(mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
 
 
 

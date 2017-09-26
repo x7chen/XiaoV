@@ -22,7 +22,6 @@ import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
-import com.cfk.xiaov.model.cache.UserCache;
 import com.cfk.xiaov.model.data.ContactData;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
@@ -316,14 +315,13 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
             if (ILiveLoginManager.getInstance().isLogin()) {
                 return;
             }
-            if (!TextUtils.isEmpty(UserCache.getToken())) {
-                if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
-                    String account = AccountCache.getAccount();
-                    String user_id = AccountCache.getUserSig();
-                    MyApp.mAccountMgr.loginSDK(account, user_id);
-                }
+            if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
+                String account = AccountCache.getAccount();
+                String user_id = AccountCache.getUserSig();
+                MyApp.mAccountMgr.loginSDK(account, user_id);
             }
         }
+
     }
 
     void showNetworkFail() {
@@ -379,14 +377,14 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
             isRunning = false;
         } else {
             for (ActivityManager.RunningServiceInfo info : serviceList) {
-               // Log.i(TAG,info.service.getClassName());
+                // Log.i(TAG,info.service.getClassName());
 
                 if (info.service.getClassName().equals(VideoCallService.class.getName())) {
                     isRunning = true;
                     break;
                 }
             }
-           // Log.i(TAG,VideoCallService.class.getName());
+            // Log.i(TAG,VideoCallService.class.getName());
         }
         if (!isRunning) {
             Intent intent1 = new Intent(MyApp.ApplicationContext, VideoCallService.class);

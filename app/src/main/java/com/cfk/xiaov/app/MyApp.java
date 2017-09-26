@@ -96,7 +96,7 @@ public class MyApp extends BaseApp {
         imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
     }
     public void initILVLive(){
-        ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400037041, 14464);
+        ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400036822, 14464);
         Log.i(TAG,"init iLive!");
     }
 

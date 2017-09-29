@@ -23,8 +23,7 @@
             android:layout_marginLeft="30px"
             android:layout_marginRight="@dimen/option_item_margin_right"
             android:scaleType="fitXY"
-            android:tint="@color/gray1"
-            android:src="@mipmap/user148"/>
+            android:tint="@color/gray1" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="0dp"

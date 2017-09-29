@@ -41,8 +41,7 @@
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:scaleType="fitXY"
-                android:tint="@color/gray1"
-                android:src="@mipmap/user148"/>
+                android:tint="@color/gray1" />
         </com.zhy.autolayout.AutoLinearLayout>
 
         <View

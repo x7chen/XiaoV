@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/splash"
+    android:background="@mipmap/splash1"
     >
 
     <include
@@ -17,6 +17,7 @@
         android:layout_height="match_parent">
 
         <Button
+            android:visibility="gone"
             android:id="@+id/btnLogin"
             android:layout_width="260px"
             android:layout_height="90px"
@@ -30,6 +31,7 @@
             android:textSize="32px"/>
 
         <Button
+            android:visibility="gone"
             android:id="@+id/btnRegister"
             android:layout_width="260px"
             android:layout_height="90px"

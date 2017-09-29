@@ -8,6 +8,7 @@ import com.cfk.xiaov.model.response.GetGroupResponse;
 import com.cfk.xiaov.model.response.GetTokenResponse;
 import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
 import com.cfk.xiaov.model.response.LoginResponse;
+import com.cfk.xiaov.model.response.QiNiuDownloadResponse;
 import com.cfk.xiaov.model.response.QiNiuTokenResponse;
 import com.cfk.xiaov.model.response.RegisterResponse;
 import com.cfk.xiaov.model.response.SetNameResponse;
@@ -20,6 +21,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
 
@@ -79,11 +81,13 @@ public interface MyApi {
     @GET("group/{groupId}/members")
     Observable<GetGroupMemberResponse> getGroupMember(@Path("groupId") String groupId);
 
-
+//http://www.abc-workflow.com/qiniu/requst_upload_token
     //得到七牛的token
-    @GET("user/get_image_token")
+    @GET("qiniu/request_upload_token")
     Observable<QiNiuTokenResponse> getQiNiuToken();
 
+    @GET("qiniu/request_download_url")
+    Observable<QiNiuDownloadResponse> getQiNiuDownloadUrl(@Query("key") String key);
 
     //下载图片
     @GET

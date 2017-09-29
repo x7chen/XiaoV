@@ -22,8 +22,7 @@
                 android:layout_width="130px"
                 android:layout_height="130px"
                 android:scaleType="fitXY"
-                android:tint="@color/gray1"
-                android:src="@mipmap/user148"/>
+                android:tint="@color/gray1" />
 
             <!--九宫格头像-->
             <com.lqr.ninegridimageview.LQRNineGridImageView

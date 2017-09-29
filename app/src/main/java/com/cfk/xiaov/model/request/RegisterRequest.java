@@ -7,17 +7,26 @@ package com.cfk.xiaov.model.request;
  */
 public class RegisterRequest {
 
-
+private String region;
     private String nickname;
 
     private String account;
 
     private String password;
 
-    public RegisterRequest(String nickname, String account , String password) {
+    public RegisterRequest(String region, String nickname, String account , String password) {
+        this.region = region;
         this.nickname = nickname;
         this.account = account;
         this.password = password;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getAccount() {

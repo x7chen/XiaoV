@@ -53,7 +53,8 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApp.activities.add(this);
-        init();
+
+
 
         //判断是否使用MVP模式
         mPresenter = createPresenter();
@@ -69,7 +70,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
 
         //沉浸式状态栏
         StatusBarUtil.setColor(this, UIUtils.getColor(com.cfk.xiaov.R.color.colorPrimaryDark), 10);
-
+        init();
         initView();
         initData();
         initListener();

@@ -62,6 +62,7 @@ public class AppConst {
     public static final class Account {
         public static final String NAME = "name";
         public static final String ACCOUNT = "account";
+        public static final String PASSWORD = "password";
         public static final String USER_SIG = "user_sig";
     }
 

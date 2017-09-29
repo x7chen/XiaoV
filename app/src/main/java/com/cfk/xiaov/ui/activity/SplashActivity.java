@@ -3,19 +3,27 @@ package com.cfk.xiaov.ui.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
+import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.jaeger.library.StatusBarUtil;
 
 import butterknife.Bind;
 import kr.co.namee.permissiongen.PermissionGen;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @创建者 CSDN_LQR
@@ -58,13 +66,34 @@ public class SplashActivity extends BaseActivity {
         if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
             String account = AccountCache.getAccount();
             String userSig = AccountCache.getUserSig();
-            MyApp.mAccountMgr.loginSDK(account, userSig);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            jumpToActivity(intent);
-            finish();
+            String password = AccountCache.getPassword();
+            ApiRetrofit.getInstance().login(AppConst.REGION, account, password)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(loginResponse -> {
+                        int code = loginResponse.getCode();
+                        if (code == 200) {
+                            MyApp.mAccountMgr.loginSDK(account, userSig);
+                            Intent intent = new Intent(this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            jumpToActivity(intent);
+                            finish();
+                        } else {
+                            loginError(new ServerException(UIUtils.getString(R.string.login_error) + code));
+                        }
+                    }, this::loginError);
+        }else {
+            mBtnLogin.setVisibility(View.VISIBLE);
+            mBtnRegister.setVisibility(View.VISIBLE);
         }
+    }
 
+
+    private void loginError(Throwable throwable) {
+        LogUtils.e(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
+        mBtnLogin.setVisibility(View.VISIBLE);
+        mBtnRegister.setVisibility(View.VISIBLE);
     }
 
     @Override

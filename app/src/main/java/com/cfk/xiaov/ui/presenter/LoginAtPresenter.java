@@ -50,7 +50,7 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
                     Log.i(TAG,"code:"+code);
                     if (code == 200) {
                         MyApp.mAccountMgr.loginSDK(userId,loginResponse.getResult().getToken());
-                        AccountCache.save(userId,loginResponse.getResult().getToken());
+                        AccountCache.save(userId,loginResponse.getResult().getToken(),pwd);
                         mContext.jumpToActivityAndClearTask(MainActivity.class);
                         mContext.finish();
                     } else {

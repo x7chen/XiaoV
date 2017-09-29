@@ -9,7 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.db.DBManager;
+import com.cfk.xiaov.db.model.Friend;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.ui.activity.MainActivity;
@@ -89,10 +94,21 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
     private void showQRCard() {
         if (mQrCardDialog == null) {
             View qrCardView = View.inflate(getActivity(), com.cfk.xiaov.R.layout.include_qrcode_card, null);
-            ImageView ivHeader = (ImageView) qrCardView.findViewById(com.cfk.xiaov.R.id.ivHeader);
+            final ImageView ivHeader = (ImageView) qrCardView.findViewById(R.id.ivHeader);
             TextView tvName = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvName);
             ImageView ivCard = (ImageView) qrCardView.findViewById(com.cfk.xiaov.R.id.ivCard);
             TextView tvTip = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvTip);
+            Friend friend = DBManager.getInstance().getFriendById(AccountCache.getAccount());
+            ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(qiNiuDownloadResponse -> {
+                        if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
+                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                            Glide.with(this).load(pic).centerCrop().into(ivHeader);
+                        }
+                    });
+            tvName.setText(friend.getName());
             tvTip.setText(UIUtils.getString(com.cfk.xiaov.R.string.qr_code_card_tip));
             Observable.just(AccountCache.getAccount())
                     .map(str -> {
@@ -110,7 +126,7 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
                         for (int y = 0; y < size; y++) {
                             for (int x = 0; x < size; x++) {
                                 if (matrix.get(x, y)) {
-                                    pixels[y * size + x] = 0xff000000;
+                                    pixels[y * size + x] = 0xff006080;
                                 } else {
                                     pixels[y * size + x] = 0xffffffff;
                                 }

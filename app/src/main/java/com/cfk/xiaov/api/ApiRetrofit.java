@@ -13,6 +13,7 @@ import com.cfk.xiaov.model.response.GetGroupResponse;
 import com.cfk.xiaov.model.response.GetTokenResponse;
 import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
 import com.cfk.xiaov.model.response.LoginResponse;
+import com.cfk.xiaov.model.response.QiNiuDownloadResponse;
 import com.cfk.xiaov.model.response.QiNiuTokenResponse;
 import com.cfk.xiaov.model.response.RegisterResponse;
 import com.cfk.xiaov.model.response.SetNameResponse;
@@ -25,6 +26,7 @@ import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -70,8 +72,8 @@ public class ApiRetrofit extends BaseApiRetrofit {
     }
 
     //登录
-    public Observable<LoginResponse> login(String region, String phone, String password) {
-        return mApi.login(getRequestBody(new LoginRequest(region, phone, password)));
+    public Observable<LoginResponse> login(String region, String userid, String password) {
+        return mApi.login(getRequestBody(new LoginRequest(region, userid, password)));
     }
 
     //注册
@@ -79,8 +81,8 @@ public class ApiRetrofit extends BaseApiRetrofit {
         return mApi.checkAvailable(getRequestBody(new CheckPhoneRequest(phone, region)));
     }
 
-    public Observable<RegisterResponse> register(String nickname, String userid, String password) {
-        return mApi.register(getRequestBody(new RegisterRequest(nickname, userid, password)));
+    public Observable<RegisterResponse> register(String region,String nickname, String userid, String password) {
+        return mApi.register(getRequestBody(new RegisterRequest(region,nickname, userid, password)));
     }
 
     public Observable<GetTokenResponse> getToken() {
@@ -121,6 +123,9 @@ public class ApiRetrofit extends BaseApiRetrofit {
     //其他
     public Observable<QiNiuTokenResponse> getQiNiuToken() {
         return mApi.getQiNiuToken();
+    }
+    public Observable<QiNiuDownloadResponse> getQiNiuDownloadUrl(String key) {
+        return mApi.getQiNiuDownloadUrl(key);
     }
 
 

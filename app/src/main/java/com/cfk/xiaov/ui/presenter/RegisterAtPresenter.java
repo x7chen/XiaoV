@@ -6,15 +6,15 @@ import android.util.Log;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.response.LoginResponse;
 import com.cfk.xiaov.model.response.RegisterResponse;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.base.BaseActivity;
+import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.view.IRegisterAtView;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
-import com.cfk.xiaov.model.exception.ServerException;
-import com.cfk.xiaov.ui.base.BasePresenter;
 
 import rx.Observable;
 import rx.Subscription;
@@ -52,13 +52,13 @@ public class RegisterAtPresenter extends BasePresenter<IRegisterAtView> {
         }
 
 
-        ApiRetrofit.getInstance().register(nickName, userId, password)
+        ApiRetrofit.getInstance().register(AppConst.REGION, nickName, userId, password)
                 .flatMap(new Func1<RegisterResponse, Observable<LoginResponse>>() {
                     @Override
                     public Observable<LoginResponse> call(RegisterResponse registerResponse) {
                         int code = registerResponse.getCode();
                         if (code == 200) {
-                            Log.i(TAG,"hello");
+                            Log.i(TAG, "hello");
                             return ApiRetrofit.getInstance().login(AppConst.REGION, userId, password);
                         } else {
                             return Observable.error(new ServerException(UIUtils.getString(com.cfk.xiaov.R.string.register_error) + code));
@@ -71,14 +71,15 @@ public class RegisterAtPresenter extends BasePresenter<IRegisterAtView> {
                 .subscribe(loginResponse -> {
                     int responseCode = loginResponse.getCode();
                     if (responseCode == 200) {
-                        AccountCache.save(userId,loginResponse.getResult().getToken());
-                        mContext.jumpToActivityAndClearTask(MainActivity.class);
+                        AccountCache.save(userId, loginResponse.getResult().getToken(), password);
                         mContext.finish();
+                        mContext.jumpToActivityAndClearTask(MainActivity.class);
+
                     } else {
                         UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.login_error));
 
                     }
-                },this::registerError);
+                }, this::registerError);
     }
 
     private void registerError(Throwable throwable) {

@@ -17,9 +17,9 @@ import com.bumptech.glide.Glide;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.PopupWindowUtils;
+import com.cfk.xiaov.util.UIUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +29,7 @@ import java.io.InputStream;
 
 import butterknife.Bind;
 import okhttp3.ResponseBody;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -62,7 +63,16 @@ public class ShowBigImageActivity extends BaseActivity {
             return;
         }
         mPv.enable();// 启用图片缩放功能
-        Glide.with(this).load(Uri.parse(mUrl)).placeholder(com.cfk.xiaov.R.mipmap.default_image).centerCrop().into(mPv);
+        ApiRetrofit.getInstance().getQiNiuDownloadUrl(mUrl)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(qiNiuDownloadResponse -> {
+                    if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                        Glide.with(this).load(pic).placeholder(com.cfk.xiaov.R.mipmap.default_image).into(mPv);
+                    }
+                });
+        //Glide.with(this).load(Uri.parse(mUrl)).placeholder(com.cfk.xiaov.R.mipmap.default_image).centerCrop().into(mPv);
     }
 
     @Override

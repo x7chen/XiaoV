@@ -1,12 +1,7 @@
 package com.cfk.xiaov.api;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.util.BroadcastUtils;
 import com.tencent.ilivesdk.ILiveCallBack;
 import com.tencent.ilivesdk.core.ILiveLoginManager;
 
@@ -16,24 +11,73 @@ import com.tencent.ilivesdk.core.ILiveLoginManager;
 public class AccountMgr {
     private final static String TAG = "AccountMgr";
 
+    private boolean loginSuccess;
+    private boolean isLogining;
+    private boolean isRunning = false;
+
     /**
      * 使用userSig登录iLiveSDK(独立模式下获有userSig直接调用登录)
      */
-    public void loginSDK(final String id, final String userSig) {
-        ILiveLoginManager.getInstance().iLiveLogin(id, userSig, new ILiveCallBack() {
-            @Override
-            public void onSuccess(Object data) {
-                Log.i(TAG, "Login CallSDK success:" + id);
-            }
+    public void loginSDK(String id, String userSig) {
+        if(isRunning){
+            return;
+        }
+        loginSuccess = false;
+        isLogining = false;
+        new Thread(() -> {
+            isRunning = true;
+            //开始登录，最多10次
+            for (int i = 0; i < 10; i++) {
+                //如果正在登陆，等待返回结果...
+                while (true) {
+                    if (isLogining) {
+                        try {
+                            Thread.sleep(20);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
-            @Override
-            public void onError(String module, int errCode, String errMsg) {
+                    } else {
+                        break;
+                    }
+
+                }
+
+                if (!loginSuccess) {
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(TAG, "----------Login try:"+i);
+                    ILiveLoginManager.getInstance().iLiveLogin(id, userSig, callBack);
+                    isLogining = true;
+                } else {
+                    break;
+                }
 
             }
-        });
+            isRunning = false;
+        }).start();
+
+
     }
 
+    private ILiveCallBack callBack = new ILiveCallBack() {
+        @Override
+        public void onSuccess(Object data) {
+            Log.i(TAG, "Login CallSDK success.");
+            loginSuccess = true;
+            isLogining = false;
+        }
 
+        @Override
+        public void onError(String module, int errCode, String errMsg) {
+            Log.i(TAG, "Login CallSDK error:" + errCode + "/" + errMsg);
+            loginSuccess = false;
+            isLogining = false;
+        }
+    };
 
 
 }

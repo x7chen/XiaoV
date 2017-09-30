@@ -41,15 +41,30 @@ public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
         mUserInfo = new UserInfo(friend.getUserId(),friend.getName(),friend.getPortraitUri());
         getView().getOivAccount().setRightText(AccountCache.getAccount());
         getView().getOivName().setRightText(friend.getName());
-        ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(qiNiuDownloadResponse -> {
-                    if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
-                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                        Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
-                    }
-                });
+
+        if(mUserInfo.getPortraitUri().startsWith("file://")) {
+            Glide.with(mContext).load(mUserInfo.getPortraitUri()).centerCrop().into(getView().getIvHeader());
+        }else {
+            ApiRetrofit.getInstance().getQiNiuDownloadUrl(mUserInfo.getPortraitUri())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(qiNiuDownloadResponse -> {
+                        if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                            Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
+                        }
+                    });
+
+        }
+//        ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(qiNiuDownloadResponse -> {
+//                    if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
+//                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+//                        Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
+//                    }
+//                });
     }
 
     public void setPortrait(ImageItem imageItem) {

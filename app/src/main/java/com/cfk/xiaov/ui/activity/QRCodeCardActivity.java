@@ -55,15 +55,29 @@ public class QRCodeCardActivity extends BaseActivity {
     @Override
     public void initView() {
         Friend friend = DBManager.getInstance().getFriendById(AccountCache.getAccount());
-        ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(qiNiuDownloadResponse -> {
-                    if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
-                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                        Glide.with(this).load(pic).centerCrop().into(mIvHeader);
-                    }
-                });
+//        ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(qiNiuDownloadResponse -> {
+//                    if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
+//                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+//                        Glide.with(this).load(pic).centerCrop().into(mIvHeader);
+//                    }
+//                });
+        if(friend.getPortraitUri().startsWith("file://")) {
+            Glide.with(this).load(friend.getPortraitUri()).centerCrop().into(mIvHeader);
+        }else {
+            ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(qiNiuDownloadResponse -> {
+                        if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                            Glide.with(this).load(pic).centerCrop().into(mIvHeader);
+                        }
+                    });
+
+        }
         mTvName.setText(friend.getName());
         mTvTip.setText(UIUtils.getString(com.cfk.xiaov.R.string.qr_code_card_tip));
         genQRBitmap(AccountCache.getAccount());
@@ -91,7 +105,7 @@ public class QRCodeCardActivity extends BaseActivity {
                     for (int y = 0; y < size; y++) {
                         for (int x = 0; x < size; x++) {
                             if (matrix.get(x, y)) {
-                                pixels[y * size + x] = 0xff000000;
+                                pixels[y * size + x] = 0xff006080;
                             } else {
                                 pixels[y * size + x] = 0xffffffff;
                             }

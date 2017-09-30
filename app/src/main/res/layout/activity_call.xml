@@ -21,15 +21,14 @@
             android:padding="40dp">
 
             <ImageView
-                android:id="@+id/ibAccept"
+                android:id="@+id/ivHeader"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
-                android:tint="@color/gray"
-                android:src="@mipmap/user148" />
+                android:tint="@color/gray" />
             <TextView
                 android:id="@+id/connecting"
                 android:layout_width="wrap_content"

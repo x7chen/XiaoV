@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
 import com.tencent.callsdk.ILVCallConstants;
 import com.tencent.callsdk.ILVCallListener;
 import com.tencent.callsdk.ILVCallManager;
@@ -22,14 +25,19 @@ import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ComingCallActivity extends AppCompatActivity implements ILVCallListener{
+public class ComingCallActivity extends AppCompatActivity implements ILVCallListener {
     String TAG = getClass().getSimpleName();
     @Bind(R.id.ibAccept)
     ImageButton mIbAccept;
     @Bind(R.id.ibDeny)
     ImageButton mIbDeny;
-
+    @Bind(R.id.coming_call_user_pic)
+    ImageView mUserPic;
+    @Bind(R.id.coming_call_user_name)
+    TextView mUserName;
     MediaPlayer mediaPlayer;
 
     Thread timeoutThread;
@@ -46,6 +54,26 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
         int callId = mIntent.getIntExtra("CallId", 0);
         String hostId = mIntent.getStringExtra("HostId");
         int callType = mIntent.getIntExtra("CallType", ILVCallConstants.CALL_TYPE_VIDEO);
+        String callUserId = mIntent.getStringExtra("CallUserId");
+
+        ApiRetrofit.getInstance().getUserInfoById(callUserId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getUserInfoByIdResponse -> {
+                    if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
+                        GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
+                        mUserName.setText(res.getNickname());
+                        ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(qiNiuDownloadResponse -> {
+                                    if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                                        Glide.with(this).load(pic).centerCrop().into(mUserPic);
+                                    }
+                                });
+                    }
+                });
         mIbAccept.setOnClickListener(v -> {
             acceptCall(callId, hostId, callType);
             Log.i(TAG, "Accept Call :" + callId);
@@ -61,16 +89,16 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
         AssetFileDescriptor fileDescriptor = null;
         try {
             fileDescriptor = getAssets().openFd("8521.wav");
-            mediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),fileDescriptor.getStartOffset(), fileDescriptor.getLength());
+            mediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(), fileDescriptor.getStartOffset(), fileDescriptor.getLength());
             mediaPlayer.setLooping(true);
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        timeoutThread = new Thread(()->{
+        timeoutThread = new Thread(() -> {
             try {
-                Thread.sleep(30*1000);
+                Thread.sleep(30 * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -80,20 +108,21 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
         ILVCallManager.getInstance().addCallListener(this);
     }
 
-    public static void wakeUpAndUnlock(Context context){
-        KeyguardManager km= (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+    public static void wakeUpAndUnlock(Context context) {
+        KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
         //解锁
         kl.disableKeyguard();
         //获取电源管理器对象
-        PowerManager pm=(PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK,"bright");
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
         //点亮屏幕
         wl.acquire();
         //释放
         wl.release();
     }
+
     public static void wakeAndUnlock(Context context) {
         KeyguardManager km;
         KeyguardManager.KeyguardLock kl;
@@ -118,6 +147,7 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
 
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -133,7 +163,7 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
         intent.putExtra("HostId", hostId);
         intent.putExtra("CallId", callId);
         intent.putExtra("CallType", callType);
-        intent.putExtra("Mode","video");
+        intent.putExtra("Mode", "video");
         startActivity(intent);
     }
 

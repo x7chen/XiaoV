@@ -56,8 +56,8 @@
 
         <ImageView
             android:id="@+id/ivQRCordCard"
-            android:layout_width="40px"
-            android:layout_height="40px"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/option_item_margin_right"
             android:src="@mipmap/ic_qr_code"/>

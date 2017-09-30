@@ -92,25 +92,42 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
     }
 
     private void showQRCard() {
-        if (mQrCardDialog == null) {
-            View qrCardView = View.inflate(getActivity(), com.cfk.xiaov.R.layout.include_qrcode_card, null);
+        if(mQrCardDialog!=null){
+            mQrCardDialog.dismiss();
+        }
+//        if (mQrCardDialog == null) {
+            View qrCardView = View.inflate(getContext(), com.cfk.xiaov.R.layout.include_qrcode_card, null);
             final ImageView ivHeader = (ImageView) qrCardView.findViewById(R.id.ivHeader);
             TextView tvName = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvName);
             ImageView ivCard = (ImageView) qrCardView.findViewById(com.cfk.xiaov.R.id.ivCard);
             TextView tvTip = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvTip);
             Friend friend = DBManager.getInstance().getFriendById(AccountCache.getAccount());
-            ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(qiNiuDownloadResponse -> {
-                        if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
-                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                            Glide.with(this).load(pic).centerCrop().into(ivHeader);
-                        }
-                    });
+//            ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(qiNiuDownloadResponse -> {
+//                        if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
+//                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+//                            Glide.with(this).load(pic).centerCrop().into(ivHeader);
+//                        }
+//                    });
+            if(friend.getPortraitUri().startsWith("file://")) {
+                Glide.with(this).load(friend.getPortraitUri()).centerCrop().into(ivHeader);
+            }else {
+                ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(qiNiuDownloadResponse -> {
+                            if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                                String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                                Glide.with(this).load(pic).centerCrop().into(ivHeader);
+                            }
+                        });
+
+            }
             tvName.setText(friend.getName());
             tvTip.setText(UIUtils.getString(com.cfk.xiaov.R.string.qr_code_card_tip));
-            Observable.just(AccountCache.getAccount())
+            Observable.just("bond:"+AccountCache.getAccount())
                     .map(str -> {
                         int size = 400; // 图像宽度
                         Map<EncodeHintType, Object> hints = new HashMap<>();
@@ -139,8 +156,8 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(ivCard::setImageBitmap);
-            mQrCardDialog = new CustomDialog(getActivity(), 300, 400, qrCardView, com.cfk.xiaov.R.style.MyDialog);
-        }
+            mQrCardDialog = new CustomDialog(getContext(), 300, 400, qrCardView, com.cfk.xiaov.R.style.MyDialog);
+//        }
         mQrCardDialog.show();
     }
 

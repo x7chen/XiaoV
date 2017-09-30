@@ -1,6 +1,7 @@
 package com.cfk.xiaov.ui.presenter;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.cfk.xiaov.api.ApiRetrofit;
@@ -20,6 +21,8 @@ import rx.schedulers.Schedulers;
 
 
 public class MeFgPresenter extends BasePresenter<IMeFgView> {
+
+    String TAG = getClass().getSimpleName();
 
     private UserInfo mUserInfo;
     private boolean isFirst = true;
@@ -64,16 +67,21 @@ public class MeFgPresenter extends BasePresenter<IMeFgView> {
 
     public void fillView() {
         if (mUserInfo != null) {
-            ApiRetrofit.getInstance().getQiNiuDownloadUrl(mUserInfo.getPortraitUri())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(qiNiuDownloadResponse -> {
-                        if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
-                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                            Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
-                        }
-                    });
+            if(mUserInfo.getPortraitUri().startsWith("file://")) {
+                Glide.with(mContext).load(mUserInfo.getPortraitUri()).centerCrop().into(getView().getIvHeader());
+            }else {
+                ApiRetrofit.getInstance().getQiNiuDownloadUrl(mUserInfo.getPortraitUri())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(qiNiuDownloadResponse -> {
+                            if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                                String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                                Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
+                            }
+                        });
 
+            }
+            Log.i(TAG,mUserInfo.getPortraitUri());
             getView().getTvAccount().setText(UIUtils.getString(com.cfk.xiaov.R.string.my_chat_account)+mUserInfo.getId());
             getView().getTvName().setText(mUserInfo.getName());
         }

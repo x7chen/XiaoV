@@ -17,12 +17,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
+import com.cfk.xiaov.db.DBManager;
+import com.cfk.xiaov.db.model.Friend;
+import com.cfk.xiaov.db.model.UserInfo;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
 import com.cfk.xiaov.model.data.ContactData;
+import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
@@ -30,6 +35,7 @@ import com.cfk.xiaov.ui.fragment.FragmentFactory;
 import com.cfk.xiaov.ui.presenter.MainAtPresenter;
 import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.ui.view.IMainAtView;
+import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
 import com.cfk.xiaov.util.UIUtils;
@@ -41,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> implements ViewPager.OnPageChangeListener, IMainAtView {
 
@@ -100,6 +108,7 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
     public void init() {
         registerBR();
         startVideoCallService();
+        //DBManager.getInstance().deleteAllUserInfo();
     }
 
     @Override
@@ -179,8 +188,30 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
 
                 contactDatas.add(contactData);
                 BondCache.saveContacts(contactDatas);
+
+                ApiRetrofit.getInstance().getUserInfoById(bondID)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(getUserInfoByIdResponse -> {
+                            if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
+                                GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
+
+                                UserInfo mUserInfo = new UserInfo(bondID, res.getNickname(), res.getPortraitUri());
+                                if (TextUtils.isEmpty(mUserInfo.getPortraitUri())) {
+                                    mUserInfo.setPortraitUri(DBManager.getInstance().getPortraitUri(mUserInfo));
+                                }
+                                DBManager.getInstance().saveOrUpdateFriend(new Friend(mUserInfo.getUserId(), mUserInfo.getName(), mUserInfo.getPortraitUri()));
+
+                            }
+                        }, this::loadError);
             }
         }
+    }
+
+
+    private void loadError(Throwable throwable) {
+        LogUtils.sf(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
     }
 
     @Override

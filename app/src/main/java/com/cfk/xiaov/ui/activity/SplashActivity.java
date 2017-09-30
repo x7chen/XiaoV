@@ -91,7 +91,7 @@ public class SplashActivity extends BaseActivity {
 
     private void loginError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
-        UIUtils.showToast(throwable.getLocalizedMessage());
+        UIUtils.showToast("请检查网络连接！");
         mBtnLogin.setVisibility(View.VISIBLE);
         mBtnRegister.setVisibility(View.VISIBLE);
     }

@@ -96,6 +96,7 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
         intent.putExtra("HostId", hostId);
         intent.putExtra("CallId", mCurIncomingId);
         intent.putExtra("CallType", callType);
+
         startActivity(intent);
     }
 
@@ -147,6 +148,7 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
         intent.putExtra("HostId", notification.getSponsorId());
         intent.putExtra("CallId", callId);
         intent.putExtra("CallType", callType);
+        intent.putExtra("CallUserId",notification.getSender());
         startActivity(intent);
 //        mIncomingDlg = new AlertDialog.Builder(this)
 //                .setTitle("New Call From " + notification.getSender())
@@ -223,7 +225,15 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
                         MyApp.mAccountMgr.loginSDK(account, user_id);
                     }
 
-                    UIUtils.showToastSafely("请稍等...");
+                    new Thread(() -> {
+                        while (true) {
+                            if (ILiveLoginManager.getInstance().isLogin()) {
+                                monitor(intent.getStringExtra("CallId"));
+                                break;
+                            }
+                        }
+                    }).start();
+                    //UIUtils.showToastSafely("请稍等...");
                 }
             }
         });

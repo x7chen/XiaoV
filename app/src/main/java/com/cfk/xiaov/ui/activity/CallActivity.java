@@ -15,12 +15,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.db.DBManager;
+import com.cfk.xiaov.db.model.Friend;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.util.UIUtils;
 import com.kyleduo.switchbutton.SwitchButton;
@@ -42,6 +48,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -50,6 +57,8 @@ import java.util.TimerTask;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * 通话界面
@@ -78,7 +87,8 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     RelativeLayout portView;
     @Bind(R.id.land)
     RelativeLayout landView;
-
+    @Bind(com.cfk.xiaov.R.id.ivHeader)
+    ImageView mIvHeader;
 
 
 
@@ -104,6 +114,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     private int mCallId;
     private int mCallType;
     private int mBeautyRate;
+    private String mCallUser;
 
     private boolean bCameraEnable = true;
     private boolean bMicEnable = true;
@@ -263,6 +274,25 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
             }
             portView.setVisibility(View.VISIBLE);
             landView.setVisibility(View.INVISIBLE);
+            Friend friend = DBManager.getInstance().getFriendById(nums.get(0));
+            if(friend!=null) {
+                if (friend.getPortraitUri().startsWith("file://")) {
+                    Glide.with(this).load(friend.getPortraitUri()).centerCrop().into(mIvHeader);
+                } else {
+                    ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(qiNiuDownloadResponse -> {
+                                if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                                    String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                                    Glide.with(this).load(pic).centerCrop().into(mIvHeader);
+                                }
+                            });
+
+                }
+            }else {
+
+            }
 
         } else {  // 接听呼叫
             ILVCallManager.getInstance().acceptCall(mCallId, option);

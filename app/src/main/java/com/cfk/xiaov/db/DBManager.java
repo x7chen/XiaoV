@@ -271,7 +271,7 @@ public class DBManager {
      * 清除所有用户数据
      */
     public void deleteAllUserInfo() {
-//        deleteFriends();
+        deleteFriends();
 //        deleteGroups();
 //        deleteGroupMembers();
         DataSupport.deleteAll(Friend.class);
@@ -542,14 +542,14 @@ public class DBManager {
     public String getPortraitUri(UserInfo userInfo) {
         if (userInfo != null) {
             if (userInfo.getPortraitUri() != null) {
-                if (TextUtils.isEmpty(userInfo.getPortraitUri().toString())) {
+                if (TextUtils.isEmpty(userInfo.getPortraitUri())) {
                     if (userInfo.getName() != null) {
                         return RongGenerate.generateDefaultAvatar(userInfo);
                     } else {
                         return null;
                     }
                 } else {
-                    return userInfo.getPortraitUri().toString();
+                    return userInfo.getPortraitUri();
                 }
             } else {
                 if (userInfo.getName() != null) {

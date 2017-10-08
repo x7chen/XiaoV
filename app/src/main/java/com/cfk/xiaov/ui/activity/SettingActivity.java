@@ -56,10 +56,10 @@ public class SettingActivity extends BaseActivity {
             }
             mExitDialog.show();
         });
-        mOivDeviceManager.setOnClickListener(v -> {
-            jumpToActivity(DeviceManagerActivity.class);
-
-        });
+//        mOivDeviceManager.setOnClickListener(v -> {
+//            jumpToActivity(DeviceManagerActivity.class);
+//
+//        });
     }
 
     @Override

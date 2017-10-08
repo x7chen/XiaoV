@@ -1,13 +1,20 @@
 package com.cfk.xiaov.ui.presenter;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.db.DBManager;
 import com.cfk.xiaov.db.model.Friend;
 import com.cfk.xiaov.db.model.UserInfo;
+import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.response.QiNiuTokenResponse;
 import com.cfk.xiaov.ui.base.BaseActivity;
@@ -51,7 +58,17 @@ public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
                     .subscribe(qiNiuDownloadResponse -> {
                         if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
                             String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                            Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
+                            //Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
+                            ImageView mPhoto = getView().getIvHeader();
+                            Glide.with(mContext).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mPhoto) {
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    view.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
                         }
                     });
 
@@ -102,16 +119,27 @@ public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
                                                     friend.setPortraitUri(imageUrl);
                                                     DBManager.getInstance().saveOrUpdateFriend(friend);
                                                     DBManager.getInstance().updateGroupMemberPortraitUri(AccountCache.getAccount(), imageUrl);
+                                                    //第五步 加载头像
                                                     ApiRetrofit.getInstance().getQiNiuDownloadUrl(imageUrl)
                                                             .subscribeOn(Schedulers.io())
                                                             .observeOn(AndroidSchedulers.mainThread())
                                                             .subscribe(qiNiuDownloadResponse -> {
                                                                 if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
                                                                  String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                                                                    Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
+                                                                    //Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
+                                                                    ImageView mPhoto = getView().getIvHeader();
+                                                                    Glide.with(mContext).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mPhoto) {
+                                                                        @Override
+                                                                        protected void setResource(Bitmap resource) {
+                                                                            RoundedBitmapDrawable circularBitmapDrawable =
+                                                                                    RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                                                                            circularBitmapDrawable.setCircular(true);
+                                                                            mPhoto.setImageDrawable(circularBitmapDrawable);
+                                                                        }
+                                                                    });
                                                                 }
                                                             },this::uploadError);
-//                                                    BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
+                                                    BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
 //                                                    BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_CONVERSATIONS);
 //                                                    BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_GROUP);
                                                     UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.set_success));

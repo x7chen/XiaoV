@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.db.DBManager;
 import com.cfk.xiaov.model.cache.BondCache;
 import com.cfk.xiaov.ui.activity.adapter.DeviceManagerAdapter;
 
@@ -29,7 +30,7 @@ public class DeviceManagerActivity extends Activity {
         mrvDevices.setLayoutManager(new LinearLayoutManager(this));
         mrvDevices.setItemAnimator(new DefaultItemAnimator());
         deviceManagerAdapter = new DeviceManagerAdapter(this);
-        //contactsListAdapter.setAdapterData(BondCache.getContactList());
+        //contactsListAdapter.setAdapterData(BondCache.getBondList());
         mrvDevices.setAdapter(deviceManagerAdapter);
 
 
@@ -40,7 +41,7 @@ public class DeviceManagerActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        deviceManagerAdapter.setAdapterData(BondCache.getContactList());
+        deviceManagerAdapter.setAdapterData(DBManager.getInstance().getFriends());
         deviceManagerAdapter.notifyDataSetChanged();
     }
 }

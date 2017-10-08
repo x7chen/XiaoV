@@ -27,7 +27,7 @@ public class BondCache {
     }
 
     public static void save(String id) {
-
+        SPUtils.getInstance(UIUtils.getContext()).putString(AppConst.Bond.BOND_ID, id);
 
     }
 
@@ -37,16 +37,16 @@ public class BondCache {
         //DBManager.getInstance().deleteAllUserInfo();
     }
 
-    public static ArrayList<ContactData> getContactList(){
+    public static ArrayList<ContactData> getBondList(){
         String src= SPUtils.getInstance(UIUtils.getContext()).getString(AppConst.Bond.CONTACTS, "");
         Type listType = new TypeToken<ArrayList<ContactData>>(){}.getType();
         Gson gson = new Gson();
         return gson.fromJson(src, listType);
     }
-    public static void saveContacts(List<ContactData> contactDatas){
+    public static void saveBondList(List<ContactData> contactlist){
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<ContactData>>(){}.getType();
-        String contacts = gson.toJson(contactDatas,listType);
+        String contacts = gson.toJson(contactlist,listType);
         SPUtils.getInstance(UIUtils.getContext()).putString(AppConst.Bond.CONTACTS, contacts);
         Log.i(TAG,contacts);
     }

@@ -26,7 +26,6 @@ import com.cfk.xiaov.db.model.UserInfo;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
-import com.cfk.xiaov.model.data.ContactData;
 import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
@@ -171,39 +170,41 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         if (resultCode == 1001) {
             String result = data.getStringExtra("qr_result");
             if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
-                String bondID = result.substring(AppConst.QrCodeCommon.BOND.length());
-                ContactData contactData = new ContactData(bondID, bondID, "");
-                ArrayList<ContactData> contactDatas = BondCache.getContactList();
-                if (contactDatas == null) {
-                    contactDatas = new ArrayList<>();
-                }
+                String targetId = result.substring(AppConst.QrCodeCommon.BOND.length());
+                ApiRetrofit.getInstance().getUserInfoById(targetId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(getUserInfoByIdResponse -> {
+                            if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
+                                GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
+                                UserInfo mUserInfo = new UserInfo(targetId, res.getNickname(), res.getPortraitUri());
+                                    if (targetId.equals(BondCache.getBondId())) {
+                                        UIUtils.showToastSafely("不要重复绑定！");
+                                        return;
+                                    }
+                                BondCache.save(targetId);
+                                FragmentFactory.getInstance().getContactsFragment().updateView();
+                            }
+                        }, this::loadError);
 
-                for (ContactData data1 : contactDatas) {
-                    if (data1.getId().equals(contactData.getId())) {
-                        UIUtils.showToastSafely("重复绑定！");
-                        return;
-                    }
-                }
-
-
-                contactDatas.add(contactData);
-                BondCache.saveContacts(contactDatas);
-
-                ApiRetrofit.getInstance().getUserInfoById(bondID)
+            } else if (result.startsWith(AppConst.QrCodeCommon.ADD)) {
+                String targetId = result.substring(AppConst.QrCodeCommon.ADD.length());
+                ApiRetrofit.getInstance().getUserInfoById(targetId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(getUserInfoByIdResponse -> {
                             if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
                                 GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
 
-                                UserInfo mUserInfo = new UserInfo(bondID, res.getNickname(), res.getPortraitUri());
+                                UserInfo mUserInfo = new UserInfo(targetId, res.getNickname(), res.getPortraitUri());
                                 if (TextUtils.isEmpty(mUserInfo.getPortraitUri())) {
                                     mUserInfo.setPortraitUri(DBManager.getInstance().getPortraitUri(mUserInfo));
                                 }
                                 DBManager.getInstance().saveOrUpdateFriend(new Friend(mUserInfo.getUserId(), mUserInfo.getName(), mUserInfo.getPortraitUri()));
-
+                                FragmentFactory.getInstance().getContactsFragment().updateView();
                             }
                         }, this::loadError);
+
             }
         }
     }

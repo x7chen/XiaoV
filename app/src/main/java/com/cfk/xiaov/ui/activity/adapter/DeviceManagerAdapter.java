@@ -1,8 +1,6 @@
 package com.cfk.xiaov.ui.activity.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.db.model.Friend;
 import com.cfk.xiaov.model.cache.BondCache;
 import com.cfk.xiaov.model.data.ContactData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,12 +30,12 @@ public class DeviceManagerAdapter extends RecyclerView.Adapter<DeviceManagerAdap
     Context mContext;
     LayoutInflater mLayoutInflater;
 
-    ArrayList<ContactData> mContactDataList;
+    List<Friend> mContactDataList;
     public DeviceManagerAdapter(Context context){
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
     }
-    public void setAdapterData(ArrayList<ContactData> contactDatas){
+    public void setAdapterData(List<Friend> contactDatas){
         mContactDataList=contactDatas;
     }
     @Override
@@ -67,8 +67,8 @@ public class DeviceManagerAdapter extends RecyclerView.Adapter<DeviceManagerAdap
                 alertDialogBuilder.setMessage("删除？");
                 alertDialogBuilder.setNegativeButton("确定", (dialog, which) -> {
                     mContactDataList.remove(getAdapterPosition());
-                    BondCache.saveContacts(mContactDataList);
-                    DeviceManagerAdapter.this.setAdapterData(BondCache.getContactList());
+                    //BondCache.saveBondList(mContactDataList);
+                    //DeviceManagerAdapter.this.setAdapterData(BondCache.getBondList());
                     DeviceManagerAdapter.this.notifyDataSetChanged();
                 });
                 alertDialogBuilder.setPositiveButton("取消", (dialog, which) -> {

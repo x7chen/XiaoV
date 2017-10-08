@@ -35,7 +35,7 @@ public class VideoFragment extends BaseFragment<IVideoFgView, VideoFgPresenter> 
     private boolean isFirst = true;
     @Bind(R.id.btAddDevice)
     ImageButton btAddDevice;
-    @Bind(R.id.btMakeCall)
+    @Bind(R.id.imgHeader)
     ImageButton btMonitor;
     @Bind(R.id.bond_device_view)
     RelativeLayout bond_device_view;

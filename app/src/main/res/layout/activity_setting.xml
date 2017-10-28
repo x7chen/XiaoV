@@ -111,6 +111,7 @@
         android:background="@color/white"
         android:orientation="vertical">
         <com.lqr.optionitemview.OptionItemView
+            android:visibility="gone"
             android:id="@+id/oivDeviceManager"
             style="@style/OptionItem"
             android:background="@drawable/selector_option_item"
@@ -120,6 +121,7 @@
             app:left_text_size="16sp"/>
 
         <View
+            android:visibility="gone"
             style="@style/Line"
             android:layout_marginLeft="30px"
             android:layout_marginRight="30px"

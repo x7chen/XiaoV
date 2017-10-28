@@ -1,18 +1,20 @@
 package com.cfk.xiaov.ui.activity;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.BondCache;
-import com.lqr.optionitemview.OptionItemView;
-import com.cfk.xiaov.R;
-import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
+import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.widget.CustomDialog;
+import com.lqr.optionitemview.OptionItemView;
 
 import butterknife.Bind;
 
@@ -56,10 +58,15 @@ public class SettingActivity extends BaseActivity {
             }
             mExitDialog.show();
         });
-//        mOivDeviceManager.setOnClickListener(v -> {
-//            jumpToActivity(DeviceManagerActivity.class);
-//
-//        });
+
+            mOivDeviceManager.setOnClickListener(v -> {
+                if (TextUtils.isEmpty(BondCache.getBondId())) {
+                    UIUtils.showToastSafely("没有绑定设备");
+                }else {
+                    jumpToActivity(DeviceInfoActivity.class);
+                }
+            });
+
     }
 
     @Override

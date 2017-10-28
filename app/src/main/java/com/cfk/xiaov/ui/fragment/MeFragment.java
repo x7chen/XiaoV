@@ -114,7 +114,7 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
             if(friend.getPortraitUri().startsWith("file://")) {
                 Glide.with(this).load(friend.getPortraitUri()).centerCrop().into(ivHeader);
             }else {
-                ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+                ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri()+"?imageView2/1/w/200/h/200")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(qiNiuDownloadResponse -> {

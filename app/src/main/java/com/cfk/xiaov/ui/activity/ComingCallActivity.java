@@ -4,9 +4,12 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
@@ -63,13 +67,22 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
                     if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
                         GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
                         mUserName.setText(res.getNickname());
-                        ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri())
+                        ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri()+"?imageView2/1/w/200/h/200")
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(qiNiuDownloadResponse -> {
                                     if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
                                         String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                                        Glide.with(this).load(pic).centerCrop().into(mUserPic);
+                                        Glide.with(this).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mUserPic) {
+                                            @Override
+                                            protected void setResource(Bitmap resource) {
+                                                RoundedBitmapDrawable circularBitmapDrawable =
+                                                        RoundedBitmapDrawableFactory.create(getResources(), resource);
+                                                circularBitmapDrawable.setCircular(true);
+                                                view.setImageDrawable(circularBitmapDrawable);
+                                            }
+                                        });
+//                                        Glide.with(this).load(pic).centerCrop().into(mUserPic);
                                     }
                                 });
                     }

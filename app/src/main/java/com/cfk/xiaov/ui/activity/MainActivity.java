@@ -169,26 +169,26 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1001) {
             String result = data.getStringExtra("qr_result");
-            if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
-                String targetId = result.substring(AppConst.QrCodeCommon.BOND.length());
-                ApiRetrofit.getInstance().getUserInfoById(targetId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(getUserInfoByIdResponse -> {
-                            if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
-                                GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
-                                UserInfo mUserInfo = new UserInfo(targetId, res.getNickname(), res.getPortraitUri());
-                                    if (targetId.equals(BondCache.getBondId())) {
-                                        UIUtils.showToastSafely("不要重复绑定！");
-                                        return;
-                                    }
-                                BondCache.save(targetId);
-                                FragmentFactory.getInstance().getContactsFragment().updateView();
-                            }
-                        }, this::loadError);
+            if (result.startsWith(AppConst.QrCodeCommon.ADD)) {
+//                String targetId = result.substring(AppConst.QrCodeCommon.ADD.length());
+//                ApiRetrofit.getInstance().getUserInfoById(targetId)
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(getUserInfoByIdResponse -> {
+//                            if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
+//                                GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
+//                                UserInfo mUserInfo = new UserInfo(targetId, res.getNickname(), res.getPortraitUri());
+//                                    if (targetId.equals(BondCache.getBondId())) {
+//                                        UIUtils.showToastSafely("不要重复绑定！");
+//                                        return;
+//                                    }
+//                                BondCache.save(targetId);
+//                                FragmentFactory.getInstance().getContactsFragment().updateView();
+//                            }
+//                        }, this::loadError);
 
-            } else if (result.startsWith(AppConst.QrCodeCommon.ADD)) {
-                String targetId = result.substring(AppConst.QrCodeCommon.ADD.length());
+            } else if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
+                String targetId = result.substring(AppConst.QrCodeCommon.BOND.length());
                 ApiRetrofit.getInstance().getUserInfoById(targetId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

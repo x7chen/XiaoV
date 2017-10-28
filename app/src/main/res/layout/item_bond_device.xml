@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/video_call_view"
+    android:layout_width="130dp"
+    android:layout_height="130dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/selector_option_item"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <ImageView
+        android:id="@+id/imgHeader"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
+        android:tint="@color/yellow0" />
+
+    <TextView
+        android:id="@+id/bond_device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_below="@+id/imgHeader"
+        android:layout_centerHorizontal="true" />
+</com.zhy.autolayout.AutoRelativeLayout>
+

@@ -53,7 +53,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
 
     @Override
     public ContactsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ContactsHolder(mLayoutInflater.inflate(R.layout.item_contacts,parent,false));
+        return new ContactsHolder(mLayoutInflater.inflate(R.layout.item_bond_device,parent,false));
     }
 
     @Override
@@ -67,22 +67,22 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
         ImageView mPhoto = holder.imgHeader;
         Friend friend = DBManager.getInstance().getFriendById(mAdapterData.get(position).getUserId());
         holder.friendName.setText(friend.getName());
-        ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
+        ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri()+"?imageView2/1/w/200/h/200")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(qiNiuDownloadResponse -> {
                     if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
                         String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                        Glide.with(mContext).load(pic).centerCrop().into(mPhoto);
-//                        Glide.with(mContext).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mPhoto) {
-//                            @Override
-//                            protected void setResource(Bitmap resource) {
-//                                RoundedBitmapDrawable circularBitmapDrawable =
-//                                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-//                                circularBitmapDrawable.setCircular(true);
-//                                view.setImageDrawable(circularBitmapDrawable);
-//                            }
-//                        });
+                        //Glide.with(mContext).load(pic).centerCrop().into(mPhoto);
+                        Glide.with(mContext).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mPhoto) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                view.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
                     }
                 });
 

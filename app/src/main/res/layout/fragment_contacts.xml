@@ -8,83 +8,89 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.zhy.autolayout.AutoRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="240dp">
-
-            <com.zhy.autolayout.AutoRelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_video_bg">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:text="智能设备" />
-                <com.zhy.autolayout.AutoRelativeLayout
-                    android:id="@+id/not_bond_device_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="30dp"
-                        android:text="请点击[扫一扫]绑定设备"
-                        android:textSize="16sp" />
-                </com.zhy.autolayout.AutoRelativeLayout>
-
-
-                <com.zhy.autolayout.AutoRelativeLayout
-                    android:id="@+id/bond_device_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/bt_camera"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/camera" />
-
-                    <TextView
-                        android:id="@+id/tv_camera_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/bt_camera"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="20dp"
-                        android:text="在线"
-                        android:textColor="@color/white" />
-
-                </com.zhy.autolayout.AutoRelativeLayout>
-            </com.zhy.autolayout.AutoRelativeLayout>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvContacts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
-
-            </android.support.v7.widget.RecyclerView>
-        </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F7EED6">
+            android:background="@drawable/shape_video_bg">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
+                android:text="智能设备"
                 android:textSize="14sp"
-                android:text="朋友" />
+                android:textStyle="bold" />
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/not_bond_device_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="30dp"
+                    android:text="请点击[扫一扫]绑定设备"
+                    android:textSize="16sp" />
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/bond_device_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/bond_device_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true">
+
+                </android.support.v7.widget.RecyclerView>
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/bond_device_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/bt_camera"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/camera" />
+
+                <TextView
+                    android:id="@+id/tv_camera_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bt_camera"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="在线"
+                    android:textColor="@color/white" />
+
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F7EED6"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="朋友"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvFriend"
@@ -99,13 +105,15 @@
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
+                android:text="相册"
                 android:textSize="14sp"
-                android:text="相册" />
+                android:textStyle="bold" />
+
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -115,7 +123,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvPhotos"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
             </android.support.v7.widget.RecyclerView>
 

@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-
+apply plugin: 'org.greenrobot.greendao'
 android {
     signingConfigs {
         config {
@@ -11,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     defaultConfig {
@@ -57,10 +56,10 @@ dependencies {
     compile project(':zxing')
     compile 'com.lqr.imagepicker:library:1.0.0'
     compile 'com.lqr.imagepicker:library:1.0.0'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:cardview-v7:25.4.0'
     compile 'com.lqr.adapter:library:1.0.2'
     compile 'com.lqr.recyclerview:library:1.0.2'
     compile 'com.lqr.ninegridimageview:library:1.0.0'
@@ -70,7 +69,6 @@ dependencies {
     compile 'cjt.library.wheel:camera:0.1.9'
     compile 'com.zhy:autolayout:1.4.5'
     compile 'com.jaeger.statusbaruitl:library:1.3.5'
-    compile 'org.litepal.android:core:1.5.0'
     compile 'cn.bingoogolapple:bga-refreshlayout:1.1.7'
     compile 'me.drakeet.materialdialog:library:1.3.1'
     compile 'com.kyleduo.switchbutton:library:1.4.6'
@@ -78,18 +76,21 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.lovedise:permissiongen:0.0.6'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.squareup.okio:okio:1.12.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okio:okio:1.13.0'
     compile 'com.qiniu:qiniu-android-sdk:7.3.3'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.bm.photoview:library:1.4.1'
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     compile 'com.tencent.ilivesdk:ilivesdk:1.6.2'
     compile 'com.tencent.callsdk:callsdk:1.0.27'
+    compile 'org.greenrobot:greendao:3.2.2'
+    compile name: 'SMSSDK-3.0.0', ext: 'aar'
     testCompile 'junit:junit:4.12'
 }

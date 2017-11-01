@@ -11,12 +11,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.db.DBManager;
-import com.cfk.xiaov.db.model.Friend;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.activity.MyInfoActivity;
 import com.cfk.xiaov.ui.activity.SettingActivity;
@@ -37,7 +35,7 @@ import com.lqr.optionitemview.OptionItemView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -50,18 +48,18 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
 
     private CustomDialog mQrCardDialog;
 
-    @Bind(com.cfk.xiaov.R.id.llMyInfo)
+    @BindView(com.cfk.xiaov.R.id.llMyInfo)
     LinearLayout mLlMyInfo;
-    @Bind(com.cfk.xiaov.R.id.ivHeader)
+    @BindView(com.cfk.xiaov.R.id.ivHeader)
     ImageView mIvHeader;
-    @Bind(com.cfk.xiaov.R.id.tvName)
+    @BindView(com.cfk.xiaov.R.id.tvName)
     TextView mTvName;
-    @Bind(com.cfk.xiaov.R.id.tvAccount)
+    @BindView(com.cfk.xiaov.R.id.tvAccount)
     TextView mTvAccount;
-    @Bind(com.cfk.xiaov.R.id.ivQRCordCard)
+    @BindView(com.cfk.xiaov.R.id.ivQRCordCard)
     ImageView mIvQRCordCard;
 
-    @Bind(com.cfk.xiaov.R.id.oivSetting)
+    @BindView(com.cfk.xiaov.R.id.oivSetting)
     OptionItemView mOivSetting;
 
     @Override
@@ -92,71 +90,48 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
     }
 
     private void showQRCard() {
-        if(mQrCardDialog!=null){
+        if (mQrCardDialog != null) {
             mQrCardDialog.dismiss();
         }
 //        if (mQrCardDialog == null) {
-            View qrCardView = View.inflate(getContext(), com.cfk.xiaov.R.layout.include_qrcode_card, null);
-            final ImageView ivHeader = (ImageView) qrCardView.findViewById(R.id.ivHeader);
-            TextView tvName = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvName);
-            ImageView ivCard = (ImageView) qrCardView.findViewById(com.cfk.xiaov.R.id.ivCard);
-            TextView tvTip = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvTip);
-            Friend friend = DBManager.getInstance().getFriendById(AccountCache.getAccount());
-//            ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(qiNiuDownloadResponse -> {
-//                        if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
-//                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-//                            Glide.with(this).load(pic).centerCrop().into(ivHeader);
-//                        }
-//                    });
-            if(friend.getPortraitUri().startsWith("file://")) {
-                Glide.with(this).load(friend.getPortraitUri()).centerCrop().into(ivHeader);
-            }else {
-                ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri()+"?imageView2/1/w/200/h/200")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(qiNiuDownloadResponse -> {
-                            if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
-                                String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                                Glide.with(this).load(pic).centerCrop().into(ivHeader);
-                            }
-                        });
-
-            }
-            tvName.setText(friend.getName());
-            tvTip.setText(UIUtils.getString(com.cfk.xiaov.R.string.qr_code_card_tip));
-            Observable.just("bond:"+AccountCache.getAccount())
-                    .map(str -> {
-                        int size = 400; // 图像宽度
-                        Map<EncodeHintType, Object> hints = new HashMap<>();
-                        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-                        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-                        BitMatrix matrix = null;
-                        try {
-                            matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, size, size, hints);
-                        } catch (WriterException e) {
-                            e.printStackTrace();
-                        }
-                        int[] pixels = new int[size * size];
-                        for (int y = 0; y < size; y++) {
-                            for (int x = 0; x < size; x++) {
-                                if (matrix.get(x, y)) {
-                                    pixels[y * size + x] = 0xff006080;
-                                } else {
-                                    pixels[y * size + x] = 0xffffffff;
-                                }
+        View qrCardView = View.inflate(getContext(), com.cfk.xiaov.R.layout.include_qrcode_card, null);
+        final ImageView ivHeader = (ImageView) qrCardView.findViewById(R.id.ivHeader);
+        TextView tvName = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvName);
+        ImageView ivCard = (ImageView) qrCardView.findViewById(com.cfk.xiaov.R.id.ivCard);
+        TextView tvTip = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvTip);
+        Glide.with(this).load(MyInfoCache.getAvatarUri()).centerCrop().into(ivHeader);
+        tvName.setText(MyInfoCache.getNickName());
+        tvTip.setText(UIUtils.getString(com.cfk.xiaov.R.string.qr_code_card_tip));
+        Observable.just("bond:" + AccountCache.getAccount())
+                .map(str -> {
+                    int size = 400; // 图像宽度
+                    Map<EncodeHintType, Object> hints = new HashMap<>();
+                    hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+                    hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+                    BitMatrix matrix = null;
+                    try {
+                        matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, size, size, hints);
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                    int[] pixels = new int[size * size];
+                    for (int y = 0; y < size; y++) {
+                        for (int x = 0; x < size; x++) {
+                            if (matrix.get(x, y)) {
+                                pixels[y * size + x] = 0xff006080;
+                            } else {
+                                pixels[y * size + x] = 0xffffffff;
                             }
                         }
-                        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-                        bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-                        return bitmap;
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(ivCard::setImageBitmap);
-            mQrCardDialog = new CustomDialog(getContext(), 300, 400, qrCardView, com.cfk.xiaov.R.style.MyDialog);
+                    }
+                    Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+                    bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
+                    return bitmap;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(ivCard::setImageBitmap);
+        mQrCardDialog = new CustomDialog(getContext(), 300, 400, qrCardView, com.cfk.xiaov.R.style.MyDialog);
 //        }
         mQrCardDialog.show();
     }

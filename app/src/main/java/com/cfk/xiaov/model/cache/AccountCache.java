@@ -1,7 +1,6 @@
 package com.cfk.xiaov.model.cache;
 
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.db.DBManager;
 import com.cfk.xiaov.util.SPUtils;
 import com.cfk.xiaov.util.UIUtils;
 

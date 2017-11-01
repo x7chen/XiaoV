@@ -20,20 +20,17 @@ import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.db.DBManager;
-import com.cfk.xiaov.db.model.Friend;
-import com.cfk.xiaov.db.model.UserInfo;
+import com.cfk.xiaov.db.model.BondDevice;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.cache.BondCache;
+import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
+import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
-import com.cfk.xiaov.ui.presenter.MainAtPresenter;
 import com.cfk.xiaov.ui.service.VideoCallService;
-import com.cfk.xiaov.ui.view.IMainAtView;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
@@ -45,69 +42,71 @@ import com.tencent.ilivesdk.core.ILiveLoginManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> implements ViewPager.OnPageChangeListener, IMainAtView {
+import static com.cfk.xiaov.util.ResponseBodyStore.writeResponseBodyToDisk;
+
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     String TAG = getClass().getSimpleName();
     private List<BaseFragment> mFragmentList = new ArrayList<>(4);
 
-    @Bind(com.cfk.xiaov.R.id.ibAddMenu)
+    @BindView(com.cfk.xiaov.R.id.ibAddMenu)
     ImageButton mIbAddMenu;
-    @Bind(com.cfk.xiaov.R.id.vpContent)
+    @BindView(com.cfk.xiaov.R.id.vpContent)
     ViewPager mVpContent;
-    @Bind(R.id.status_message_layout)
+    @BindView(R.id.status_message_layout)
     RelativeLayout status_msg_layout;
-    @Bind(R.id.status_message)
+    @BindView(R.id.status_message)
     TextView statusMessage;
 
     //底部
-    @Bind(com.cfk.xiaov.R.id.llMessage)
+    @BindView(com.cfk.xiaov.R.id.llMessage)
     LinearLayout mLlMessage;
-    @Bind(com.cfk.xiaov.R.id.tvMessageNormal)
+    @BindView(com.cfk.xiaov.R.id.tvMessageNormal)
     TextView mTvMessageNormal;
-    @Bind(com.cfk.xiaov.R.id.tvMessagePress)
+    @BindView(com.cfk.xiaov.R.id.tvMessagePress)
     TextView mTvMessagePress;
-    @Bind(com.cfk.xiaov.R.id.tvMessageTextNormal)
+    @BindView(com.cfk.xiaov.R.id.tvMessageTextNormal)
     TextView mTvMessageTextNormal;
-    @Bind(com.cfk.xiaov.R.id.tvMessageTextPress)
+    @BindView(com.cfk.xiaov.R.id.tvMessageTextPress)
     TextView mTvMessageTextPress;
-    @Bind(com.cfk.xiaov.R.id.tvMessageCount)
+    @BindView(com.cfk.xiaov.R.id.tvMessageCount)
     public TextView mTvMessageCount;
 
-    @Bind(com.cfk.xiaov.R.id.llDiscovery)
+    @BindView(com.cfk.xiaov.R.id.llDiscovery)
     LinearLayout mLlDiscovery;
-    @Bind(com.cfk.xiaov.R.id.tvDiscoveryNormal)
+    @BindView(com.cfk.xiaov.R.id.tvDiscoveryNormal)
     TextView mTvDiscoveryNormal;
-    @Bind(com.cfk.xiaov.R.id.tvDiscoveryPress)
+    @BindView(com.cfk.xiaov.R.id.tvDiscoveryPress)
     TextView mTvDiscoveryPress;
-    @Bind(com.cfk.xiaov.R.id.tvDiscoveryTextNormal)
+    @BindView(com.cfk.xiaov.R.id.tvDiscoveryTextNormal)
     TextView mTvDiscoveryTextNormal;
-    @Bind(com.cfk.xiaov.R.id.tvDiscoveryTextPress)
+    @BindView(com.cfk.xiaov.R.id.tvDiscoveryTextPress)
     TextView mTvDiscoveryTextPress;
-    @Bind(com.cfk.xiaov.R.id.tvDiscoveryCount)
+    @BindView(com.cfk.xiaov.R.id.tvDiscoveryCount)
     public TextView mTvDiscoveryCount;
 
-    @Bind(com.cfk.xiaov.R.id.llMe)
+    @BindView(com.cfk.xiaov.R.id.llMe)
     LinearLayout mLlMe;
-    @Bind(com.cfk.xiaov.R.id.tvMeNormal)
+    @BindView(com.cfk.xiaov.R.id.tvMeNormal)
     TextView mTvMeNormal;
-    @Bind(com.cfk.xiaov.R.id.tvMePress)
+    @BindView(com.cfk.xiaov.R.id.tvMePress)
     TextView mTvMePress;
-    @Bind(com.cfk.xiaov.R.id.tvMeTextNormal)
+    @BindView(com.cfk.xiaov.R.id.tvMeTextNormal)
     TextView mTvMeTextNormal;
-    @Bind(com.cfk.xiaov.R.id.tvMeTextPress)
+    @BindView(com.cfk.xiaov.R.id.tvMeTextPress)
     TextView mTvMeTextPress;
-    @Bind(com.cfk.xiaov.R.id.tvMeCount)
+    @BindView(com.cfk.xiaov.R.id.tvMeCount)
     public TextView mTvMeCount;
 
     @Override
     public void init() {
         registerBR();
         startVideoCallService();
-        //DBManager.getInstance().deleteAllUserInfo();
     }
 
     @Override
@@ -116,15 +115,15 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         mIbAddMenu.setVisibility(View.VISIBLE);
 
         //等待全局数据获取完毕
-        showWaitingDialog(UIUtils.getString(com.cfk.xiaov.R.string.please_wait));
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-                runOnUiThread(this::hideWaitingDialog);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+//        showWaitingDialog(UIUtils.getString(com.cfk.xiaov.R.string.please_wait));
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(1000);
+//                runOnUiThread(this::hideWaitingDialog);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
         //默认选中第一个
         setTransparency();
         mTvMessagePress.getBackground().setAlpha(255);
@@ -155,7 +154,9 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
                 Intent intent = new Intent(MyApp.getContext(), CaptureActivity.class);
                 intent.setAction(Intents.Scan.ACTION);
                 startActivityForResult(intent, 1001);
+                popupWindow.dismiss();
             });
+
         });
 
         mLlMessage.setOnClickListener(v -> bottomBtnClick(v));
@@ -165,50 +166,48 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
     }
 
     @Override
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        final String[] account = new String[1];
+        final String[] nickname = new String[1];
         if (resultCode == 1001) {
             String result = data.getStringExtra("qr_result");
-            if (result.startsWith(AppConst.QrCodeCommon.ADD)) {
-//                String targetId = result.substring(AppConst.QrCodeCommon.ADD.length());
-//                ApiRetrofit.getInstance().getUserInfoById(targetId)
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(getUserInfoByIdResponse -> {
-//                            if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
-//                                GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
-//                                UserInfo mUserInfo = new UserInfo(targetId, res.getNickname(), res.getPortraitUri());
-//                                    if (targetId.equals(BondCache.getBondId())) {
-//                                        UIUtils.showToastSafely("不要重复绑定！");
-//                                        return;
-//                                    }
-//                                BondCache.save(targetId);
-//                                FragmentFactory.getInstance().getContactsFragment().updateView();
-//                            }
-//                        }, this::loadError);
-
-            } else if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
+            if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
                 String targetId = result.substring(AppConst.QrCodeCommon.BOND.length());
+                //获取用户信息
                 ApiRetrofit.getInstance().getUserInfoById(targetId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(getUserInfoByIdResponse -> {
+                        .flatMap(getUserInfoByIdResponse -> {
                             if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
                                 GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
-
-                                UserInfo mUserInfo = new UserInfo(targetId, res.getNickname(), res.getPortraitUri());
-                                if (TextUtils.isEmpty(mUserInfo.getPortraitUri())) {
-                                    mUserInfo.setPortraitUri(DBManager.getInstance().getPortraitUri(mUserInfo));
-                                }
-                                DBManager.getInstance().saveOrUpdateFriend(new Friend(mUserInfo.getUserId(), mUserInfo.getName(), mUserInfo.getPortraitUri()));
-                                FragmentFactory.getInstance().getContactsFragment().updateView();
+                                account[0] = res.getId();
+                                nickname[0] = res.getNickname();
+                                return ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri());
+                            } else {
+                                return Observable.error(new ServerException((UIUtils.getString(R.string.login_error))));
                             }
+                        })
+                        .flatMap(qiNiuDownloadResponse -> {
+                            if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                                return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
+                            } else {
+                                return Observable.error(new ServerException((UIUtils.getString(R.string.login_error))));
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(ResponseBody -> {
+                            BondDevice device = new BondDevice(account[0], nickname[0], writeResponseBodyToDisk(ResponseBody));
+                            MyApp.getBondDeviceDao().insertOrReplace(device);
+                            FragmentFactory.getInstance().getContactsFragment().updateView();
                         }, this::loadError);
-
             }
         }
     }
-
 
     private void loadError(Throwable throwable) {
         LogUtils.sf(throwable.getLocalizedMessage());
@@ -284,10 +283,6 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         mTvMeTextPress.setTextColor(Color.argb(0, 69, 192, 26));
     }
 
-    @Override
-    protected MainAtPresenter createPresenter() {
-        return new MainAtPresenter(this);
-    }
 
     @Override
     protected int provideContentViewId() {
@@ -349,11 +344,31 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
             }
             if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
                 String account = AccountCache.getAccount();
-                String user_id = AccountCache.getUserSig();
-                MyApp.mAccountMgr.loginSDK(account, user_id);
+                String userSig = AccountCache.getUserSig();
+                String password = AccountCache.getPassword();
+                ApiRetrofit.getInstance().login(AppConst.REGION, account, password)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(loginResponse -> {
+                            int code = loginResponse.getCode();
+                            if (code == 200) {
+                                MyApp.mAccountMgr.loginSDK(account, userSig);
+                                MyApp.isLogin = true;
+                                UIUtils.showToastSafely("登录成功！");
+                            } else {
+                                loginError(new ServerException(UIUtils.getString(R.string.login_error) + code));
+                                MyApp.isLogin = false;
+                            }
+                        }, this::loginError);
             }
         }
 
+    }
+
+    private void loginError(Throwable throwable) {
+        LogUtils.e(throwable.getLocalizedMessage());
+        UIUtils.showToast("请检查网络连接！");
+        MyApp.isLogin = false;
     }
 
     void showNetworkFail() {
@@ -431,8 +446,4 @@ public class MainActivity extends BaseActivity<IMainAtView, MainAtPresenter> imp
         BroadcastManager.getInstance(this).unregister(Intent.ACTION_TIME_TICK);
     }
 
-    @Override
-    public TextView getTvMessageCount() {
-        return mTvMessageCount;
-    }
 }

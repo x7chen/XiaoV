@@ -25,20 +25,8 @@ public class FragmentFactory {
 
     private DiscoveryFragment mDiscoveryFragment;
     private MeFragment mMeFragment;
-    private VideoFragment mVideoFragment;
     private ContactsFragment mContactsFragment;
 
-
-    public VideoFragment getVideoFragment() {
-        if (mVideoFragment == null) {
-            synchronized (FragmentFactory.class) {
-                if (mVideoFragment == null) {
-                    mVideoFragment = new VideoFragment();
-                }
-            }
-        }
-        return mVideoFragment;
-    }
 
     public ContactsFragment getContactsFragment() {
         if (mContactsFragment == null) {

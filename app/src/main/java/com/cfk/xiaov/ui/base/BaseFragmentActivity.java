@@ -21,7 +21,7 @@ import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.widget.CustomDialog;
 import com.zhy.autolayout.AutoLinearLayout;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -32,21 +32,21 @@ public abstract class BaseFragmentActivity<V, T extends BaseFragmentPresenter<V>
     private MaterialDialog mMaterialDialog;
 
     //以下是所有Activity中可能会出现的控件
-    @Bind(R.id.appBar)
+    @BindView(R.id.appBar)
     protected AppBarLayout mAppBar;
     //    @Bind(R.id.toolbar)
     //    protected Toolbar mToolbar;
-    @Bind(R.id.flToolbar)
+    @BindView(R.id.flToolbar)
     public FrameLayout mToolbar;
-    @Bind(R.id.ivToolbarNavigation)
+    @BindView(R.id.ivToolbarNavigation)
     public ImageView mToolbarNavigation;
-    @Bind(R.id.vToolbarDivision)
+    @BindView(R.id.vToolbarDivision)
     public View mToolbarDivision;
-    @Bind(R.id.llToolbarTitle)
+    @BindView(R.id.llToolbarTitle)
     public AutoLinearLayout mLlToolbarTitle;
-    @Bind(R.id.tvToolbarTitle)
+    @BindView(R.id.tvToolbarTitle)
     public TextView mToolbarTitle;
-    @Bind(R.id.tvToolbarSubTitle)
+    @BindView(R.id.tvToolbarSubTitle)
     public TextView mToolbarSubTitle;
 
     @Override

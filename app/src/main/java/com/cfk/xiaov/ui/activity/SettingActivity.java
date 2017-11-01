@@ -1,22 +1,18 @@
 package com.cfk.xiaov.ui.activity;
 
-import android.content.Intent;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.cache.BondCache;
+import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
-import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.widget.CustomDialog;
 import com.lqr.optionitemview.OptionItemView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @创建者 CSDN_LQR
@@ -26,13 +22,13 @@ public class SettingActivity extends BaseActivity {
     String TAG = getClass().getSimpleName();
     private View mExitView;
 
-    @Bind(R.id.oivAbout)
+    @BindView(R.id.oivAbout)
     OptionItemView mOivAbout;
-    @Bind(R.id.oivHelpFeedback)
+    @BindView(R.id.oivHelpFeedback)
     OptionItemView mOivHelpFeedback;
-    @Bind(R.id.oivExit)
+    @BindView(R.id.oivExit)
     OptionItemView mOivExit;
-    @Bind(R.id.oivDeviceManager)
+    @BindView(R.id.oivDeviceManager)
     OptionItemView mOivDeviceManager;
     private CustomDialog mExitDialog;
 
@@ -46,7 +42,8 @@ public class SettingActivity extends BaseActivity {
                 mExitDialog = new CustomDialog(this, mExitView, R.style.MyDialog);
                 mExitView.findViewById(R.id.tvExitAccount).setOnClickListener(v1 -> {
                     AccountCache.clear();
-                    BondCache.clear();
+                    MyInfoCache.clear();
+                    MyApp.getBondDeviceDao().deleteAll();
                     mExitDialog.dismiss();
                     MyApp.exit();
                     jumpToActivityAndClearTask(LoginActivity.class);
@@ -59,27 +56,7 @@ public class SettingActivity extends BaseActivity {
             mExitDialog.show();
         });
 
-            mOivDeviceManager.setOnClickListener(v -> {
-                if (TextUtils.isEmpty(BondCache.getBondId())) {
-                    UIUtils.showToastSafely("没有绑定设备");
-                }else {
-                    jumpToActivity(DeviceInfoActivity.class);
-                }
-            });
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 1001) {
-            String result = data.getStringExtra("qr_result");
-            Log.i(TAG, "onActivityResult" + result);
-            if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
-                String bondID = result.substring(AppConst.QrCodeCommon.BOND.length());
-                BondCache.save(bondID);
-            }
-        }
     }
 
     @Override

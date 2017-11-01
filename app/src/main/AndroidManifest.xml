@@ -109,8 +109,13 @@
         <service android:name=".ui.service.VideoCallService" />
 
         <activity android:name=".ui.activity.ComingCallActivity" />
-        <activity android:name=".ui.activity.DeviceManagerActivity" />
-        <activity android:name=".ui.activity.DeviceInfoActivity"></activity>
+        <activity android:name=".ui.activity.RegisterByPhoneActivity" />
+        <activity android:name=".ui.activity.LoginByPhoneActivity"></activity>
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

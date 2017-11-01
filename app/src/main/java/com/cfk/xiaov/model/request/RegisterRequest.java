@@ -14,11 +14,14 @@ private String region;
 
     private String password;
 
-    public RegisterRequest(String region, String nickname, String account , String password) {
+    private String type;
+
+    public RegisterRequest(String region, String nickname, String account , String password,String type) {
         this.region = region;
         this.nickname = nickname;
         this.account = account;
         this.password = password;
+        this.type = type;
     }
 
     public String getRegion() {
@@ -53,4 +56,11 @@ private String region;
         this.password = password;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

@@ -23,10 +23,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -82,7 +84,7 @@ public class ApiRetrofit extends BaseApiRetrofit {
     }
 
     public Observable<RegisterResponse> register(String region,String nickname, String userid, String password) {
-        return mApi.register(getRequestBody(new RegisterRequest(region,nickname, userid, password)));
+        return mApi.register(getRequestBody(new RegisterRequest(region,nickname, userid, password,"2")));
     }
 
     public Observable<GetTokenResponse> getToken() {
@@ -128,5 +130,8 @@ public class ApiRetrofit extends BaseApiRetrofit {
         return mApi.getQiNiuDownloadUrl(key);
     }
 
+    public Observable<ResponseBody> downloadPic(String url){
+        return mApi.downloadPic(url);
+    }
 
 }

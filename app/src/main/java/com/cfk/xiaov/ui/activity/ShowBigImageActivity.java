@@ -2,7 +2,6 @@ package com.cfk.xiaov.ui.activity;
 
 import android.net.Uri;
 import android.os.SystemClock;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import android.widget.TextView;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
-import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.PopupWindowUtils;
@@ -27,10 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import okhttp3.ResponseBody;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @创建者 CSDN_LQR
@@ -38,41 +35,24 @@ import rx.schedulers.Schedulers;
  */
 public class ShowBigImageActivity extends BaseActivity {
 
-    private String mUrl;
 
-    @Bind(com.cfk.xiaov.R.id.ibToolbarMore)
+    @BindView(com.cfk.xiaov.R.id.ibToolbarMore)
     ImageButton mIbToolbarMore;
-    @Bind(com.cfk.xiaov.R.id.pv)
+    @BindView(com.cfk.xiaov.R.id.pv)
     PhotoView mPv;
-    @Bind(com.cfk.xiaov.R.id.pb)
+    @BindView(com.cfk.xiaov.R.id.pb)
     ProgressBar mPb;
     private FrameLayout mView;
     private PopupWindow mPopupWindow;
 
     @Override
-    public void init() {
-        mUrl = getIntent().getStringExtra("url");
-    }
-
-    @Override
     public void initView() {
         setToolbarTitle(UIUtils.getString(com.cfk.xiaov.R.string.header_pic));
         mIbToolbarMore.setVisibility(View.VISIBLE);
-        if (TextUtils.isEmpty(mUrl)) {
-            finish();
-            return;
-        }
         mPv.enable();// 启用图片缩放功能
-        ApiRetrofit.getInstance().getQiNiuDownloadUrl(mUrl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(qiNiuDownloadResponse -> {
-                    if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
-                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                        Glide.with(this).load(pic).placeholder(com.cfk.xiaov.R.mipmap.default_image).into(mPv);
-                    }
-                });
-        //Glide.with(this).load(Uri.parse(mUrl)).placeholder(com.cfk.xiaov.R.mipmap.default_image).centerCrop().into(mPv);
+
+        Glide.with(this).load(MyInfoCache.getAvatarUri()).placeholder(com.cfk.xiaov.R.mipmap.default_image).into(mPv);
+
     }
 
     @Override
@@ -107,25 +87,12 @@ public class ShowBigImageActivity extends BaseActivity {
             mView.addView(tv);
 
             tv.setOnClickListener(v -> {
-                        if (mUrl.startsWith("file")) {
-                            File file = new File(Uri.parse(mUrl).getPath());
-                            UIUtils.showToast(copyToDisk(file) ? UIUtils.getString(com.cfk.xiaov.R.string.save_success) : UIUtils.getString(com.cfk.xiaov.R.string.save_fail));
-                            mPopupWindow.dismiss();
-                            mPopupWindow = null;
-                        } else {
-                            ApiRetrofit.getInstance()
-                                    .mApi
-                                    .downloadPic(mUrl)
-                                    .subscribeOn(Schedulers.newThread())
-                                    .subscribe(responseBody -> {
-                                        UIUtils.showToast(saveToDisk(responseBody) ? UIUtils.getString(com.cfk.xiaov.R.string.save_success) : UIUtils.getString(com.cfk.xiaov.R.string.save_fail));
-                                        mPopupWindow.dismiss();
-                                        mPopupWindow = null;
-                                    });
-                        }
+                File file = new File(Uri.parse(MyInfoCache.getAvatarUri()).getPath());
+                UIUtils.showToast(copyToDisk(file) ? UIUtils.getString(com.cfk.xiaov.R.string.save_success) : UIUtils.getString(com.cfk.xiaov.R.string.save_fail));
+                mPopupWindow.dismiss();
+                mPopupWindow = null;
 
-                    }
-            );
+            });
         }
         mPopupWindow = PopupWindowUtils.getPopupWindowAtLocation(mView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, getWindow().getDecorView().getRootView(), Gravity.BOTTOM, 0, 0);
         mPopupWindow.setOnDismissListener(() -> PopupWindowUtils.makeWindowLight(ShowBigImageActivity.this));

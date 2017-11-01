@@ -27,20 +27,20 @@ import com.tencent.callsdk.ILVCallManager;
 
 import java.io.IOException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ComingCallActivity extends AppCompatActivity implements ILVCallListener {
     String TAG = getClass().getSimpleName();
-    @Bind(R.id.ibAccept)
+    @BindView(R.id.ibAccept)
     ImageButton mIbAccept;
-    @Bind(R.id.ibDeny)
+    @BindView(R.id.ibDeny)
     ImageButton mIbDeny;
-    @Bind(R.id.coming_call_user_pic)
+    @BindView(R.id.coming_call_user_pic)
     ImageView mUserPic;
-    @Bind(R.id.coming_call_user_name)
+    @BindView(R.id.coming_call_user_name)
     TextView mUserName;
     MediaPlayer mediaPlayer;
 

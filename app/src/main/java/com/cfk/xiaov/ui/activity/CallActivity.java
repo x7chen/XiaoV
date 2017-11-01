@@ -27,11 +27,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.db.DBManager;
-import com.cfk.xiaov.db.model.Friend;
-import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.app.MyApp;
+import com.cfk.xiaov.db.model.BondDevice;
 import com.cfk.xiaov.ui.service.VideoCallService;
+import com.cfk.xiaov.util.FileUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.tencent.av.sdk.AVAudioCtrl;
@@ -49,20 +48,19 @@ import com.tencent.ilivesdk.view.AVRootView;
 import com.tencent.ilivesdk.view.AVVideoView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * 通话界面
@@ -70,30 +68,27 @@ import rx.schedulers.Schedulers;
 public class CallActivity extends Activity implements ILVCallListener, ILVBCallMemberListener, View.OnClickListener {
     String TAG = getClass().getSimpleName();
     boolean self_call_end = false;
-
-
-    @Bind(R.id.sb_sw_video)
+    @BindView(R.id.sb_sw_video)
     SwitchButton sbVideo;
-    @Bind(R.id.av_root_view)
+    @BindView(R.id.av_root_view)
     AVRootView avRootView;
-    @Bind(R.id.btn_end)
+    @BindView(R.id.btn_end)
     ImageButton btnEndCall;
-    @Bind(R.id.ibDeny)
+    @BindView(R.id.ibDeny)
     ImageButton mDeny;
 
-    @Bind(R.id.tv_log)
+    @BindView(R.id.tv_log)
     TextView tvLog;
-    @Bind(R.id.rl_control)
+    @BindView(R.id.rl_control)
     RelativeLayout rlControl;
-    @Bind(R.id.sb_beauty_progress)
+    @BindView(R.id.sb_beauty_progress)
     SeekBar sbBeauty;
-    @Bind(R.id.port)
+    @BindView(R.id.port)
     RelativeLayout portView;
-    @Bind(R.id.land)
+    @BindView(R.id.land)
     RelativeLayout landView;
-    @Bind(com.cfk.xiaov.R.id.ivHeader)
+    @BindView(com.cfk.xiaov.R.id.ivHeader)
     ImageView mIvHeader;
-
 
 
     @OnClick(R.id.wlog)
@@ -127,7 +122,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     String mode;
     BroadcastReceiver receiver;
     boolean isAlive = false;
-    Timer timer,timer1;
+    Timer timer, timer1;
     boolean isInCall = false;
 
     private void initView() {
@@ -278,33 +273,24 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
             }
             portView.setVisibility(View.VISIBLE);
             landView.setVisibility(View.INVISIBLE);
-            Friend friend = DBManager.getInstance().getFriendById(nums.get(0));
-            if(friend!=null) {
-                if (friend.getPortraitUri().startsWith("file://")) {
-                    Glide.with(this).load(friend.getPortraitUri()).centerCrop().into(mIvHeader);
-                } else {
-                    ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri()+"?imageView2/1/w/200/h/200")
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(qiNiuDownloadResponse -> {
-                                if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
-                                    String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-//                                    Glide.with(this).load(pic).centerCrop().into(mIvHeader);
-                                    Glide.with(this).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mIvHeader) {
-                                        @Override
-                                        protected void setResource(Bitmap resource) {
-                                            RoundedBitmapDrawable circularBitmapDrawable =
-                                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
-                                            circularBitmapDrawable.setCircular(true);
-                                            view.setImageDrawable(circularBitmapDrawable);
-                                        }
-                                    });
-                                }
-                            });
-
+            List<BondDevice> devices = MyApp.getBondDeviceDao().loadAll();
+            BondDevice device = null;
+            for (BondDevice d : devices) {
+                if (d.getAccount().equals(nums.get(0))) {
+                    device = d;
+                    break;
                 }
-            }else {
-
+            }
+            if (device != null) {
+                Glide.with(this).load(device.getAvatarUri()).asBitmap().centerCrop().into(new BitmapImageViewTarget(mIvHeader) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        view.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
             }
 
         } else {  // 接听呼叫
@@ -338,7 +324,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
             @Override
             public void onReceive(Context context, Intent intent) {
                 String msg = intent.getStringExtra("MSG");
-                Log.i(TAG,"notify:"+msg);
+                Log.i(TAG, "notify:" + msg);
                 addLogMessage(msg);
                 isAlive = true;
             }
@@ -352,7 +338,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     Thread allowVideoThread = new Thread(() -> {
         try {
             Thread.sleep(8000);
-            if(!isInCall){
+            if (!isInCall) {
                 UIUtils.showToastSafely("对方不在线");
             }
         } catch (InterruptedException e) {
@@ -421,12 +407,31 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
             switchCamera();
         } else if (v.getId() == R.id.btn_beauty) {
             setBeauty();
-        }else if (v.getId() == R.id.ibDeny){
+        } else if (v.getId() == R.id.ibDeny) {
             ILVCallManager.getInstance().endCall(mCallId);
             finish();
+        }else if(v.getId() == R.id.btn_capture){
+            Bitmap bitmap=avRootView.getDrawingCache();
+            saveBitmap(bitmap,String.valueOf(System.currentTimeMillis()));
         }
     }
 
+    //private static String SAVEADDRESS = UIUtils.getContext().getFilesDir().getPath();// /data/data/<application package>/files
+    private static String SAVEADDRESS = FileUtils.getExternalStoragePath();
+    private static final String SCHEMA = "file://";
+    private  void saveBitmap(Bitmap bm, String imageUrlName) {
+        File f = new File(SAVEADDRESS, imageUrlName);
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 会话建立回调
@@ -464,10 +469,10 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
 
         AVVideoView majorView = avRootView.getViewByIndex(0);
         if (ILiveLoginManager.getInstance().getMyUserId().equals(majorView.getIdentifier())) {
-           // majorView.setMirror(false);
+            // majorView.setMirror(false);
             //avRootView.swapVideoView(0, 1);
         }
-        Log.d(TAG, "onCallEstablish->"+0+":" + avRootView.getViewByIndex(0).getIdentifier());
+        Log.d(TAG, "onCallEstablish->" + 0 + ":" + avRootView.getViewByIndex(0).getIdentifier());
         // 设置点击小屏切换及可拖动
         for (int i = 1; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {
             final int index = i;
@@ -475,7 +480,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
             if (ILiveLoginManager.getInstance().getMyUserId().equals(minorView.getIdentifier())) {
                 //minorView.setMirror(true);      // 本地镜像
             }
-            Log.d(TAG, "onCallEstablish->"+i+":" + avRootView.getViewByIndex(i).getIdentifier());
+            Log.d(TAG, "onCallEstablish->" + i + ":" + avRootView.getViewByIndex(i).getIdentifier());
             minorView.setDragable(true);    // 小屏可拖动
             minorView.setGestureListener(new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -497,8 +502,8 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     @Override
     public void onCallEnd(int callId, int endResult, String endInfo) {
         Log.e(TAG, "onCallEnd->id: " + callId + "|" + endResult + "|" + endInfo);
-        if(!self_call_end)
-        UIUtils.showToastSafely("已挂断");
+        if (!self_call_end)
+            UIUtils.showToastSafely("已挂断");
         finish();
     }
 

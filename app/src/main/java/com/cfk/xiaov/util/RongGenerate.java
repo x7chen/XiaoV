@@ -9,8 +9,6 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.cfk.xiaov.db.model.UserInfo;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -62,13 +60,6 @@ public class RongGenerate {
         int textTop = (int) (height - width / 2 + Math.abs(fm.ascent) / 2 - 25);
         canvas.drawText(s, textLeft, textTop, paint);
         return saveBitmap(bitmap, string + "_" + userid);
-    }
-
-    public static String generateDefaultAvatar(UserInfo userInfo) {
-        if (userInfo == null)
-            return null;
-        else
-            return generateDefaultAvatar(userInfo.getName(), userInfo.getUserId());
     }
 
     private static void createDir(String saveaddress) {

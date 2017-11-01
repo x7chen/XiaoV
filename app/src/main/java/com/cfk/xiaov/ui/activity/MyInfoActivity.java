@@ -19,7 +19,7 @@ import com.cfk.xiaov.ui.presenter.MyInfoAtPresenter;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 
 /**
@@ -30,15 +30,15 @@ public class MyInfoActivity extends BaseActivity<IMyInfoAtView, MyInfoAtPresente
 
     public static final int REQUEST_IMAGE_PICKER = 1000;
 
-    @Bind(R.id.llHeader)
+    @BindView(R.id.llHeader)
     LinearLayout mLlHeader;
-    @Bind(R.id.ivHeader)
+    @BindView(R.id.ivHeader)
     ImageView mIvHeader;
-    @Bind(R.id.oivName)
+    @BindView(R.id.oivName)
     OptionItemView mOivName;
-    @Bind(R.id.oivAccount)
+    @BindView(R.id.oivAccount)
     OptionItemView mOivAccount;
-    @Bind(R.id.oivQRCodeCard)
+    @BindView(R.id.oivQRCodeCard)
     OptionItemView mOivQRCodeCard;
 
     @Override
@@ -56,7 +56,6 @@ public class MyInfoActivity extends BaseActivity<IMyInfoAtView, MyInfoAtPresente
     public void initListener() {
         mIvHeader.setOnClickListener(v -> {
             Intent intent = new Intent(MyInfoActivity.this, ShowBigImageActivity.class);
-            intent.putExtra("url", mPresenter.mUserInfo.getPortraitUri());
             jumpToActivity(intent);
         });
         mLlHeader.setOnClickListener(v -> {

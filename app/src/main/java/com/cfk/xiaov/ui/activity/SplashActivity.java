@@ -8,22 +8,14 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
-import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.jaeger.library.StatusBarUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import kr.co.namee.permissiongen.PermissionGen;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @创建者 CSDN_LQR
@@ -31,12 +23,9 @@ import rx.schedulers.Schedulers;
  */
 public class SplashActivity extends BaseActivity {
 
-    @Bind(com.cfk.xiaov.R.id.rlButton)
-    RelativeLayout mRlButton;
-    @Bind(com.cfk.xiaov.R.id.btnLogin)
-    Button mBtnLogin;
-    @Bind(com.cfk.xiaov.R.id.btnRegister)
-    Button mBtnRegister;
+    @BindView(com.cfk.xiaov.R.id.rlButton) RelativeLayout mRlButton;
+    @BindView(com.cfk.xiaov.R.id.btnLogin) Button mBtnLogin;
+    @BindView(com.cfk.xiaov.R.id.btnRegister) Button mBtnRegister;
 
     @Override
     public void init() {
@@ -64,24 +53,10 @@ public class SplashActivity extends BaseActivity {
                 .request();
 
         if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
-            String account = AccountCache.getAccount();
-            String userSig = AccountCache.getUserSig();
-            String password = AccountCache.getPassword();
-            ApiRetrofit.getInstance().login(AppConst.REGION, account, password)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(loginResponse -> {
-                        int code = loginResponse.getCode();
-                        if (code == 200) {
-                            MyApp.mAccountMgr.loginSDK(account, userSig);
-                            Intent intent = new Intent(this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            jumpToActivity(intent);
-                            finish();
-                        } else {
-                            loginError(new ServerException(UIUtils.getString(R.string.login_error) + code));
-                        }
-                    }, this::loginError);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            jumpToActivity(intent);
+            finish();
         }else {
             mBtnLogin.setVisibility(View.VISIBLE);
             mBtnRegister.setVisibility(View.VISIBLE);
@@ -89,12 +64,7 @@ public class SplashActivity extends BaseActivity {
     }
 
 
-    private void loginError(Throwable throwable) {
-        LogUtils.e(throwable.getLocalizedMessage());
-        UIUtils.showToast("请检查网络连接！");
-        mBtnLogin.setVisibility(View.VISIBLE);
-        mBtnRegister.setVisibility(View.VISIBLE);
-    }
+
 
     @Override
     public void initView() {

@@ -1,21 +1,20 @@
 package com.cfk.xiaov.ui.presenter;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.db.DBManager;
-import com.cfk.xiaov.db.model.Friend;
 import com.cfk.xiaov.db.model.UserInfo;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.cache.MyInfoCache;
+import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.response.QiNiuTokenResponse;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
@@ -29,8 +28,11 @@ import com.qiniu.android.storage.UploadManager;
 
 import java.io.File;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.cfk.xiaov.util.ResponseBodyStore.writeResponseBodyToDisk;
 
 public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
 
@@ -44,44 +46,17 @@ public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
     }
 
     public void loadUserInfo() {
-        Friend friend = DBManager.getInstance().getFriendById(AccountCache.getAccount());
-        mUserInfo = new UserInfo(friend.getUserId(),friend.getName(),friend.getPortraitUri());
         getView().getOivAccount().setRightText(AccountCache.getAccount());
-        getView().getOivName().setRightText(friend.getName());
-
-        if(mUserInfo.getPortraitUri().startsWith("file://")) {
-            Glide.with(mContext).load(mUserInfo.getPortraitUri()).centerCrop().into(getView().getIvHeader());
-        }else {
-            ApiRetrofit.getInstance().getQiNiuDownloadUrl(mUserInfo.getPortraitUri())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(qiNiuDownloadResponse -> {
-                        if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
-                            String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                            //Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
-                            ImageView mPhoto = getView().getIvHeader();
-                            Glide.with(mContext).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mPhoto) {
-                                @Override
-                                protected void setResource(Bitmap resource) {
-                                    RoundedBitmapDrawable circularBitmapDrawable =
-                                            RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-                                    circularBitmapDrawable.setCircular(true);
-                                    view.setImageDrawable(circularBitmapDrawable);
-                                }
-                            });
-                        }
-                    });
-
-        }
-//        ApiRetrofit.getInstance().getQiNiuDownloadUrl(friend.getPortraitUri())
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(qiNiuDownloadResponse -> {
-//                    if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
-//                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-//                        Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
-//                    }
-//                });
+        getView().getOivName().setRightText(MyInfoCache.getNickName());
+        Glide.with(mContext).load(MyInfoCache.getAvatarUri()).asBitmap().centerCrop().into(new BitmapImageViewTarget(getView().getIvHeader()) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        });
     }
 
     public void setPortrait(ImageItem imageItem) {
@@ -99,65 +74,54 @@ public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
                         }
                         File imageFile = new File(imageItem.path);
                         QiNiuTokenResponse.ResultEntity result = qiNiuTokenResponse.getResult();
-                        String domain = result.getDomain();
                         String token = result.getToken();
                         // 第二步 上传到七牛
-                        mUploadManager.put(imageFile, null, token, (s, responseInfo, jsonObject) -> {
-                            if (responseInfo.isOK()) {
-                                String key = jsonObject.optString("key");
-                                String imageUrl = key;
-                                Log.i(TAG,"imageUrl:"+imageUrl);
-                                // 第三步 修改自己服务器头像链接
+                        mUploadManager.put(imageFile, null, token, (key, info, response) -> {
+                            if (info.isOK()) {
+                                String key1 = response.optString("key");
+                                String imageUrl = key1;
                                 ApiRetrofit.getInstance().setPortrait(imageUrl)
+                                        .flatMap(setPortraitResponse -> {
+                                            if (setPortraitResponse != null && setPortraitResponse.getCode() == 200) {
+                                                //第五步 加载头像
+                                                return ApiRetrofit.getInstance().getQiNiuDownloadUrl(imageUrl);
+                                            } else {
+                                                return Observable.error(new ServerException((UIUtils.getString(R.string.change_fail))));
+                                            }
+                                        })
+                                        .flatMap(qiNiuDownloadResponse -> {
+                                            if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                                                return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
+                                            } else {
+                                                return Observable.error(new ServerException((UIUtils.getString(R.string.change_fail))));
+                                            }
+                                        })
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        // 第四步 设置本地数据库头像链接
-                                        .subscribe(setPortraitResponse -> {
-                                            if (setPortraitResponse != null && setPortraitResponse.getCode() == 200) {
-                                                Friend friend = DBManager.getInstance().getFriendById(AccountCache.getAccount());
-                                                if (friend != null) {
-                                                    friend.setPortraitUri(imageUrl);
-                                                    DBManager.getInstance().saveOrUpdateFriend(friend);
-                                                    DBManager.getInstance().updateGroupMemberPortraitUri(AccountCache.getAccount(), imageUrl);
-                                                    //第五步 加载头像
-                                                    ApiRetrofit.getInstance().getQiNiuDownloadUrl(imageUrl)
-                                                            .subscribeOn(Schedulers.io())
-                                                            .observeOn(AndroidSchedulers.mainThread())
-                                                            .subscribe(qiNiuDownloadResponse -> {
-                                                                if(qiNiuDownloadResponse !=null&&qiNiuDownloadResponse.getCode()==200){
-                                                                 String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                                                                    //Glide.with(mContext).load(pic).centerCrop().into(getView().getIvHeader());
-                                                                    ImageView mPhoto = getView().getIvHeader();
-                                                                    Glide.with(mContext).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mPhoto) {
-                                                                        @Override
-                                                                        protected void setResource(Bitmap resource) {
-                                                                            RoundedBitmapDrawable circularBitmapDrawable =
-                                                                                    RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-                                                                            circularBitmapDrawable.setCircular(true);
-                                                                            mPhoto.setImageDrawable(circularBitmapDrawable);
-                                                                        }
-                                                                    });
-                                                                }
-                                                            },this::uploadError);
-                                                    BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
-//                                                    BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_CONVERSATIONS);
-//                                                    BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_GROUP);
-                                                    UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.set_success));
+                                        .subscribe(ResponseBody -> {
+                                            MyInfoCache.setAvatarUri(writeResponseBodyToDisk(ResponseBody));
+                                            ImageView mPhoto = getView().getIvHeader();
+                                            Glide.with(mContext).load(MyInfoCache.getAvatarUri()).asBitmap().centerCrop().into(new BitmapImageViewTarget(mPhoto) {
+                                                @Override
+                                                protected void setResource(Bitmap resource) {
+                                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                                            RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                                                    circularBitmapDrawable.setCircular(true);
+                                                    mPhoto.setImageDrawable(circularBitmapDrawable);
                                                 }
-                                                mContext.hideWaitingDialog();
-                                            } else {
-                                                uploadError(null);
-                                            }
+                                            });
+                                            mContext.hideWaitingDialog();
+                                            BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
+//                                            BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_CONVERSATIONS);
+//                                            BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_GROUP);
+                                            UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.set_success));
                                         }, this::uploadError);
-                            } else {
-                                Log.i(TAG,"responseInfo:"+responseInfo.error);
-                                uploadError(null);
                             }
                         }, null);
-                    } else {
-                        uploadError(null);
                     }
                 }, this::uploadError);
+
+
     }
 
     private void uploadError(Throwable throwable) {

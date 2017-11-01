@@ -1,40 +1,34 @@
 package com.cfk.xiaov.ui.fragment;
 
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
-import com.cfk.xiaov.ui.presenter.DiscoveryFgPresenter;
-import com.cfk.xiaov.ui.view.IDiscoveryFgView;
+import com.cfk.xiaov.ui.base.BasePresenter;
 import com.lqr.optionitemview.OptionItemView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @创建者 CSDN_LQR
  * @描述 发现界面
  */
-public class DiscoveryFragment extends BaseFragment<IDiscoveryFgView, DiscoveryFgPresenter> implements IDiscoveryFgView {
+public class DiscoveryFragment extends BaseFragment {
 
     String TAG = getClass().getSimpleName();
-    @Bind(R.id.oivScan)
+    @BindView(R.id.oivScan)
     OptionItemView mOivScan;
-    @Bind(R.id.discovery_view)
+    @BindView(R.id.discovery_view)
     WebView mDiscoveryView;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton mFab;
 
 //    String url = "http://m.kugou.com/";
@@ -45,6 +39,11 @@ public class DiscoveryFragment extends BaseFragment<IDiscoveryFgView, DiscoveryF
     @Override
     public void initListener() {
         mFab.setOnClickListener(v -> Log.i(TAG,mDiscoveryView.getUrl()));
+    }
+
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
     @Override
@@ -77,10 +76,6 @@ public class DiscoveryFragment extends BaseFragment<IDiscoveryFgView, DiscoveryF
         }
     }
 
-    @Override
-    protected DiscoveryFgPresenter createPresenter() {
-        return new DiscoveryFgPresenter((MainActivity) getActivity());
-    }
 
     @Override
     protected int provideContentViewId() {

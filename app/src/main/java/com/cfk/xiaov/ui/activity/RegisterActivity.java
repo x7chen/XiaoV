@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
@@ -18,28 +19,30 @@ import com.cfk.xiaov.ui.presenter.RegisterAtPresenter;
 import com.cfk.xiaov.ui.view.IRegisterAtView;
 import com.cfk.xiaov.util.UIUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPresenter> implements IRegisterAtView {
 
-    @Bind(R.id.etNick)
+    @BindView(R.id.etNick)
     EditText mEtNick;
-    @Bind(R.id.vLineNick)
+    @BindView(R.id.vLineNick)
     View mVLineNick;
 
-    @Bind(R.id.etUserId)
+    @BindView(R.id.etUserId)
     EditText mEtUserId;
-    @Bind(R.id.vLineUserId)
+    @BindView(R.id.vLineUserId)
     View mVLineUserId;
 
-    @Bind(R.id.etPwd)
+    @BindView(R.id.etPwd)
     EditText mEtPwd;
-    @Bind(R.id.ivSeePwd)
+    @BindView(R.id.ivSeePwd)
     ImageView mIvSeePwd;
-    @Bind(R.id.vLinePwd)
+    @BindView(R.id.vLinePwd)
     View mVLinePwd;
-    @Bind(R.id.btnRegister)
+    @BindView(R.id.btnRegister)
     Button mBtnRegister;
+    @BindView(R.id.tvRegisterByPhone)
+    TextView tvRegisterByPhone;
 
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -103,8 +106,10 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
 
         mBtnRegister.setOnClickListener(v -> {
             mPresenter.register();
-//            if(MyApp.mAccountMgr!=null)
-//            MyApp.mAccountMgr.t_regist(mEtNick.getText().toString().trim(),mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
+        });
+        tvRegisterByPhone.setOnClickListener(view ->{
+            jumpToActivity(RegisterByPhoneActivity.class);
+            finish();
         });
     }
 

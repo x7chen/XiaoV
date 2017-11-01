@@ -35,11 +35,9 @@
         android:name="android.hardware.wifi"
         android:required="false" />
 
-    <meta-data
-        android:name="android.support.VERSION"
-        android:value="25.3.1" />
-
-    <application android:allowBackup="true" >
+    <application
+        android:allowBackup="true"
+        android:debuggable="true" >
         <uses-library android:name="android.test.runner" />
 
         <activity
@@ -132,6 +130,10 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="android.support.VERSION"
+            android:value="25.4.0" />
     </application>
 
 </manifest>

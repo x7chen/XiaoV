@@ -10,13 +10,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.presenter.LoginAtPresenter;
 import com.cfk.xiaov.ui.view.ILoginAtView;
 import com.cfk.xiaov.util.UIUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @创建者 CSDN_LQR
@@ -24,25 +23,22 @@ import butterknife.Bind;
  */
 public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> implements ILoginAtView {
 
-    @Bind(com.cfk.xiaov.R.id.ibAddMenu)
+    @BindView(R.id.ibAddMenu)
     ImageButton mIbAddMenu;
 
-    @Bind(com.cfk.xiaov.R.id.etUserId)
+    @BindView(R.id.etUserId)
     EditText mEtUserId;
-    @Bind(com.cfk.xiaov.R.id.vLineUserId)
+    @BindView(R.id.vLineUserId)
     View mVLineUserId;
 
-    @Bind(com.cfk.xiaov.R.id.etPwd)
+    @BindView(R.id.etPwd)
     EditText mEtPwd;
-    @Bind(com.cfk.xiaov.R.id.vLinePwd)
+    @BindView(R.id.vLinePwd)
     View mVLinePwd;
-
-    @Bind(com.cfk.xiaov.R.id.tvProblems)
-    TextView mTvProblems;
-    @Bind(com.cfk.xiaov.R.id.btnLogin)
+    @BindView(R.id.btnLogin)
     Button mBtnLogin;
-    @Bind(com.cfk.xiaov.R.id.tvOtherLogin)
-    TextView mTvOtherLogin;
+    @BindView(R.id.tvLoginByPhone)
+    TextView tvLoginByPhone;
 
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -84,18 +80,11 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
         });
 
         mBtnLogin.setOnClickListener(v -> {
-//            new Thread(() -> {
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                MyApp.mAccountMgr.t_login(prefix+mEtUserId.getText().toString().trim(),mEtPwd.getText().toString().trim());
-//            }).start();
             mPresenter.login();
-
-
-
+        });
+        tvLoginByPhone.setOnClickListener(v -> {
+            jumpToActivity(LoginByPhoneActivity.class);
+            finish();
         });
     }
 

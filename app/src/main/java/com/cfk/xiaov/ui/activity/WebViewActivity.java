@@ -15,7 +15,7 @@ import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.widget.ProgressWebView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @创建者 CSDN_LQR
@@ -30,9 +30,9 @@ public class WebViewActivity extends BaseActivity {
 
     private boolean isLoading = false;
 
-    @Bind(com.cfk.xiaov.R.id.ibToolbarMore)
+    @BindView(com.cfk.xiaov.R.id.ibToolbarMore)
     ImageButton mIbToolbarMore;
-    @Bind(com.cfk.xiaov.R.id.webview)
+    @BindView(com.cfk.xiaov.R.id.webview)
     public ProgressWebView mWebView;
 
     @Override

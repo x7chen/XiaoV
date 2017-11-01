@@ -65,7 +65,11 @@ public class AppConst {
         public static final String PASSWORD = "password";
         public static final String USER_SIG = "user_sig";
     }
-
+    public static final class MyInfo {
+        public static final String NICK_NAME = "name";
+        public static final String ACCOUNT = "account";
+        public static final String AVATAR_URI = "avatarUri";
+    }
     public static final class WeChatUrl {
         public static final String HELP_FEED_BACK = "http://www.runoob.com/";
         public static final String JD = "https://m.jd.com/";

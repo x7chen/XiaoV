@@ -1,14 +1,15 @@
 package com.cfk.xiaov.ui.presenter;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
-import com.cfk.xiaov.model.response.LoginResponse;
-import com.cfk.xiaov.model.response.RegisterResponse;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
@@ -19,8 +20,9 @@ import com.cfk.xiaov.util.UIUtils;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import static com.cfk.xiaov.util.ResponseBodyStore.writeResponseBodyToDisk;
 
 public class RegisterAtPresenter extends BasePresenter<IRegisterAtView> {
     String TAG = getClass().getSimpleName();
@@ -38,7 +40,7 @@ public class RegisterAtPresenter extends BasePresenter<IRegisterAtView> {
         String nickName = getView().getEtNickName().getText().toString().trim();
 
         if (TextUtils.isEmpty(userId)) {
-            UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.phone_not_empty));
+            UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.account_not_empty));
             return;
         }
 
@@ -53,32 +55,51 @@ public class RegisterAtPresenter extends BasePresenter<IRegisterAtView> {
 
 
         ApiRetrofit.getInstance().register(AppConst.REGION, nickName, userId, password)
-                .flatMap(new Func1<RegisterResponse, Observable<LoginResponse>>() {
-                    @Override
-                    public Observable<LoginResponse> call(RegisterResponse registerResponse) {
-                        int code = registerResponse.getCode();
-                        if (code == 200) {
-                            Log.i(TAG, "hello");
-                            return ApiRetrofit.getInstance().login(AppConst.REGION, userId, password);
-                        } else {
-                            return Observable.error(new ServerException(UIUtils.getString(com.cfk.xiaov.R.string.register_error) + code));
-                        }
+                .flatMap(registerResponse -> {
+                    int code = registerResponse.getCode();
+                    if (code == 200) {
+                        Log.i(TAG, "hello");
+                        return ApiRetrofit.getInstance().login(AppConst.REGION, userId, password);
+                    } else {
+                        return Observable.error(new ServerException(UIUtils.getString(R.string.register_error) + code));
+                    }
 
+                })
+                .flatMap(loginResponse -> {
+                    int code = loginResponse.getCode();
+                    if (code == 200) {
+                        AccountCache.save(loginResponse.getResult().getId(), loginResponse.getResult().getToken(), password);
+                        return ApiRetrofit.getInstance().getUserInfoById(loginResponse.getResult().getId());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.load_error) + code)));
+                    }
+                })
+                .flatMap(getUserInfoByIdResponse -> {
+                    int code = getUserInfoByIdResponse.getCode();
+                    if (code == 200) {
+                        MyInfoCache.setAccount(getUserInfoByIdResponse.getResult().getId());
+                        MyInfoCache.setNickName(getUserInfoByIdResponse.getResult().getNickname());
+                        return ApiRetrofit.getInstance().getQiNiuDownloadUrl(getUserInfoByIdResponse.getResult().getPortraitUri());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.load_error) + code)));
+                    }
+                })
+                .flatMap(qiNiuDownloadResponse -> {
+
+                    int code = qiNiuDownloadResponse.getCode();
+                    if (code == 200) {
+                        return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.load_error) + code)));
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(loginResponse -> {
-                    int responseCode = loginResponse.getCode();
-                    if (responseCode == 200) {
-                        AccountCache.save(userId, loginResponse.getResult().getToken(), password);
-                        mContext.finish();
-                        mContext.jumpToActivityAndClearTask(MainActivity.class);
-
-                    } else {
-                        UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.login_error));
-
-                    }
+                .subscribe(responseBody -> {
+                    MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
+                    mContext.sendBroadcast(new Intent(AppConst.CHANGE_INFO_FOR_ME));
+                    mContext.finish();
+                    mContext.jumpToActivityAndClearTask(MainActivity.class);
                 }, this::registerError);
     }
 

@@ -8,17 +8,14 @@ import android.widget.EditText;
 
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.db.DBManager;
-import com.cfk.xiaov.db.model.Friend;
-import com.cfk.xiaov.db.model.UserInfo;
 import com.cfk.xiaov.manager.BroadcastManager;
-import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -28,18 +25,17 @@ import rx.schedulers.Schedulers;
  */
 public class ChangeMyNameActivity extends BaseActivity {
 
-    @Bind(com.cfk.xiaov.R.id.btnToolbarSend)
+    @BindView(com.cfk.xiaov.R.id.btnToolbarSend)
     Button mBtnToolbarSend;
-    @Bind(com.cfk.xiaov.R.id.etName)
+    @BindView(com.cfk.xiaov.R.id.etName)
     EditText mEtName;
 
     @Override
     public void initView() {
         mBtnToolbarSend.setText(UIUtils.getString(com.cfk.xiaov.R.string.save));
         mBtnToolbarSend.setVisibility(View.VISIBLE);
-        UserInfo userInfo = DBManager.getInstance().getUserInfo(AccountCache.getAccount());
-        if (userInfo != null)
-            mEtName.setText(userInfo.getName());
+
+        mEtName.setText(MyInfoCache.getNickName());
         mEtName.setSelection(mEtName.getText().toString().trim().length());
     }
 
@@ -77,14 +73,9 @@ public class ChangeMyNameActivity extends BaseActivity {
                 .subscribe(setNameResponse -> {
                     hideWaitingDialog();
                     if (setNameResponse.getCode() == 200) {
-                        Friend friend = DBManager.getInstance().getFriendById(AccountCache.getAccount());
-                        if (friend != null) {
-                            friend.setName(nickName);
-                            friend.setDisplayName(nickName);
-                            DBManager.getInstance().saveOrUpdateFriend(friend);
-                            BroadcastManager.getInstance(ChangeMyNameActivity.this).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
-                            BroadcastManager.getInstance(ChangeMyNameActivity.this).sendBroadcast(AppConst.CHANGE_INFO_FOR_CHANGE_NAME);
-                        }
+                        MyInfoCache.setNickName(nickName);
+                        BroadcastManager.getInstance(ChangeMyNameActivity.this).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
+                        BroadcastManager.getInstance(ChangeMyNameActivity.this).sendBroadcast(AppConst.CHANGE_INFO_FOR_CHANGE_NAME);
                         finish();
                     }
                 }, this::loadError);

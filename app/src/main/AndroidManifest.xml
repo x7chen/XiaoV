@@ -54,11 +54,6 @@
             android:name="design_height"
             android:value="1280" />
 
-        <!-- 地图 -->
-        <meta-data
-            android:name="TencentMapSDK"
-            android:value="TYQBZ-MRBKU-K7FVL-4JBW5-DOG5O-SZB4A" />
-
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -72,6 +67,7 @@
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:launchMode="singleInstance"
             android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -103,6 +99,7 @@
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:launchMode="singleInstance"
             android:name=".ui.activity.CallActivity"
             android:screenOrientation="landscape" />
 

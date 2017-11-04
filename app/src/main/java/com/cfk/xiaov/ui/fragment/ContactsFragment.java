@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.manager.BroadcastManager;
+import com.cfk.xiaov.ui.ActionEvent.RecyclerViewClickListener;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.adapter.ContactsListAdapter;
@@ -63,6 +65,23 @@ public class ContactsFragment extends BaseFragment {
         //contactsListAdapter.setAdapterData(BondCache.getBondList());
         rvBondDevice.setAdapter(contactsListAdapter);
         rvBondDevice.setNestedScrollingEnabled(false);
+        rvBondDevice.addOnItemTouchListener(new RecyclerViewClickListener(getContext(), rvBondDevice,new RecyclerViewClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent();
+                intent.setAction(AppConst.MAKE_CALL);
+                intent.putExtra("CallId", contactsListAdapter.getAdapterData().get(position).getAccount());
+                getContext().sendBroadcast(intent);
+                Log.i(TAG, "Monitor OnClick");
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
+
     }
 
     public void updateView() {

@@ -11,11 +11,13 @@ public class LoginRequest {
     private String region;
     private String account;
     private String password;
+    private String phone;
 
-    public LoginRequest(String region, String account, String password) {
+    public LoginRequest(String region, String account, String password,String phone) {
         this.region = region;
         this.account = account;
         this.password = password;
+        this.phone =phone;
     }
 
     public String getRegion() {
@@ -40,5 +42,13 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

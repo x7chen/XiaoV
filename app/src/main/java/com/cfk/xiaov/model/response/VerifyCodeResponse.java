@@ -7,16 +7,7 @@ package com.cfk.xiaov.model.response;
  */
 public class VerifyCodeResponse {
 
-
-    /**
-     * code : 200
-     * result : {"verification_token":"86bd3a00-b80a-11e5-b5ab-433619959d67"}
-     */
-
     private int code;
-    /**
-     * verification_token : 86bd3a00-b80a-11e5-b5ab-433619959d67
-     */
 
     private ResultEntity result;
 
@@ -24,12 +15,12 @@ public class VerifyCodeResponse {
         this.code = code;
     }
 
-    public void setResult(ResultEntity result) {
-        this.result = result;
-    }
-
     public int getCode() {
         return code;
+    }
+
+    public void setResult(ResultEntity result) {
+        this.result = result;
     }
 
     public ResultEntity getResult() {
@@ -37,14 +28,23 @@ public class VerifyCodeResponse {
     }
 
     public static class ResultEntity {
-        private String verification_token;
+        private int status;
+        private String error;
 
-        public void setVerification_token(String verification_token) {
-            this.verification_token = verification_token;
+        public int getStatus() {
+            return status;
         }
 
-        public String getVerification_token() {
-            return verification_token;
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getError() {
+            return error;
+        }
+
+        public void setError(String error) {
+            this.error = error;
         }
     }
 }

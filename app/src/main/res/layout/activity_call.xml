@@ -8,10 +8,10 @@
 
     <RelativeLayout
         android:id="@+id/port"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/call_bg">
+        android:background="@mipmap/call_bg"
+        android:visibility="invisible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -29,24 +29,25 @@
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
                 android:tint="@color/gray" />
+
             <TextView
                 android:id="@+id/connecting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="140dp"
-                android:textColor="@color/white"
-                android:text="连接中 ..."/>
+                android:text="连接中 ..."
+                android:textColor="@color/white" />
 
             <ImageButton
                 android:id="@+id/ibDeny"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
-                android:scaleType="fitXY"
                 android:onClick="onClick"
+                android:scaleType="fitXY"
                 android:src="@mipmap/call44"
                 android:tint="@color/red0" />
         </RelativeLayout>
@@ -54,137 +55,128 @@
 
     <RelativeLayout
         android:id="@+id/land"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="false">
+        android:focusable="false"
+        android:visibility="visible">
 
         <com.tencent.ilivesdk.view.AVRootView
             android:id="@+id/av_root_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ScrollView
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/rl_control"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fadingEdge="vertical"
-            android:scrollbars="vertical">
-
-            <TextView
-                android:id="@+id/tv_log"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/assist_red"
-                android:visibility="gone" />
-        </ScrollView>
-
-        <RelativeLayout
-            android:id="@+id/rl_control"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true">
 
             <ImageButton
                 android:id="@+id/btn_switch_camera"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="30dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
                 android:src="@mipmap/recycle65"
-                android:tint="@color/yellow1" />
+                android:tint="@color/yellow1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/btn_end"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="30dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
                 android:src="@mipmap/call44"
-                android:tint="@color/yellow1" />
+                android:tint="@color/yellow1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_switch_camera" />
 
             <ImageButton
                 android:id="@+id/btn_capture"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="30dp"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
                 android:src="@mipmap/photo189"
-                android:tint="@color/yellow1" />
+                android:tint="@color/yellow1"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/silent" />
 
             <ImageButton
+                android:id="@+id/silent"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="30dp"
-                android:layout_marginTop="260dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
                 android:src="@mipmap/sound32"
-                android:tint="@color/yellow1" />
+                android:tint="@color/yellow1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_end" />
 
             <ImageButton
                 android:id="@+id/btn_beauty"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="120dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="30dp"
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
-                android:src="@mipmap/user148"
-                android:tint="@color/yellow1" />
+                android:src="@mipmap/meiyan"
+                android:tint="@color/yellow1"
+                app:layout_constraintEnd_toStartOf="@+id/btn_switch_camera"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.kyleduo.switchbutton.SwitchButton
                 android:id="@+id/sb_sw_video"
                 style="@style/SwitchButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="200dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="30dp"
                 android:textColor="@color/yellow1"
                 android:textSize="16sp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:kswTextOff="视频通话"
                 app:kswTextOn="ON"
                 app:kswThumbHeight="40dp"
                 app:kswThumbWidth="40dp"
-                app:kswTintColor="@color/yellow1" />
-
-            <Button
-                android:id="@+id/wlog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="写log"
-                android:visibility="gone" />
+                app:kswTintColor="@color/yellow1"
+                app:layout_constraintEnd_toStartOf="@+id/btn_beauty"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <SeekBar
                 android:id="@+id/sb_beauty_progress"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="120dp"
-                android:layout_marginTop="100dp"
-                android:visibility="gone" />
+                android:layout_marginBottom="30dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:thumbTint="@color/yellow1"
+                android:progressTint="@color/yellow1"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
     </RelativeLayout>
 
 </RelativeLayout>

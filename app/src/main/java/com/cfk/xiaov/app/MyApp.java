@@ -20,6 +20,8 @@ import com.lqr.imagepicker.view.CropImageView;
 import com.mob.MobSDK;
 import com.tencent.ilivesdk.ILiveSDK;
 
+import cn.smssdk.SMSSDK;
+
 
 public class MyApp extends BaseApp {
     String TAG = getClass().getSimpleName();
@@ -36,6 +38,8 @@ public class MyApp extends BaseApp {
         initGreenDao();
         initILVLive();
         MobSDK.init(this, "220f487e81dea", "740a5362635c39d421ee8a510b0ceec3");
+        // 如果希望在读取通信录的时候提示用户，可以添加下面的代码，并且必须在其他代码调用之前，否则不起作用；如果没这个需求，可以不加这行代码
+        SMSSDK.setAskPermisionOnReadContact(false);
     }
 
     public static String getCurProcessName(Context context) {

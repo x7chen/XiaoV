@@ -4,7 +4,7 @@ package com.cfk.xiaov.model.response;
  * Created by AMing on 16/1/4.
  * Company RongCloud
  */
-public class GetUserInfoByIdResponse {
+public class GetUserInfoResponse {
 
     /**
      * code : 200

@@ -81,7 +81,6 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
         ILVCallManager.getInstance().removeIncomingListener(this);
         ILVCallManager.getInstance().removeCallListener(this);
     }
-
     @Override
     public void onDestroy() {
         ILVCallManager.getInstance().onDestory();

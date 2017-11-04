@@ -20,7 +20,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
+import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.model.exception.ServerException;
+import com.cfk.xiaov.model.response.GetUserInfoResponse;
+import com.cfk.xiaov.util.BroadcastUtils;
+import com.cfk.xiaov.util.LogUtils;
+import com.cfk.xiaov.util.UIUtils;
 import com.tencent.callsdk.ILVCallConstants;
 import com.tencent.callsdk.ILVCallListener;
 import com.tencent.callsdk.ILVCallManager;
@@ -29,6 +34,7 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -59,34 +65,35 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
         String hostId = mIntent.getStringExtra("HostId");
         int callType = mIntent.getIntExtra("CallType", ILVCallConstants.CALL_TYPE_VIDEO);
         String callUserId = mIntent.getStringExtra("CallUserId");
-
+        final String[] nickName = new String[1];
         ApiRetrofit.getInstance().getUserInfoById(callUserId)
+                .flatMap(getUserInfoResponse -> {
+                    if (getUserInfoResponse != null && getUserInfoResponse.getCode() == 200) {
+                        GetUserInfoResponse.ResultEntity res = getUserInfoResponse.getResult();
+                        nickName[0] = res.getNickname();
+                        return ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri() + "?imageView2/1/w/200/h/200");
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.load_error))));
+                    }
+                })
+                // 线程分配必须放到subscribe之前flatMap之后
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getUserInfoByIdResponse -> {
-                    if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
-                        GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
-                        mUserName.setText(res.getNickname());
-                        ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri()+"?imageView2/1/w/200/h/200")
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(qiNiuDownloadResponse -> {
-                                    if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
-                                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
-                                        Glide.with(this).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mUserPic) {
-                                            @Override
-                                            protected void setResource(Bitmap resource) {
-                                                RoundedBitmapDrawable circularBitmapDrawable =
-                                                        RoundedBitmapDrawableFactory.create(getResources(), resource);
-                                                circularBitmapDrawable.setCircular(true);
-                                                view.setImageDrawable(circularBitmapDrawable);
-                                            }
-                                        });
-//                                        Glide.with(this).load(pic).centerCrop().into(mUserPic);
-                                    }
-                                });
+                .subscribe(qiNiuDownloadResponse -> {
+                    if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                        String pic = qiNiuDownloadResponse.getResult().getPrivateDownloadUrl();
+                        Glide.with(this).load(pic).asBitmap().centerCrop().into(new BitmapImageViewTarget(mUserPic) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                view.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
+                        mUserName.setText(nickName[0]);
                     }
-                });
+                }, this::loadError);
         mIbAccept.setOnClickListener(v -> {
             acceptCall(callId, hostId, callType);
             Log.i(TAG, "Accept Call :" + callId);
@@ -119,6 +126,12 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
         });
         timeoutThread.start();
         ILVCallManager.getInstance().addCallListener(this);
+    }
+
+    private void loadError(Throwable throwable) {
+        LogUtils.e(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
+        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
     }
 
     public static void wakeUpAndUnlock(Context context) {

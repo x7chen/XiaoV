@@ -24,7 +24,7 @@ import com.cfk.xiaov.db.model.BondDevice;
 import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.exception.ServerException;
-import com.cfk.xiaov.model.response.GetUserInfoByIdResponse;
+import com.cfk.xiaov.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
@@ -181,9 +181,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 String targetId = result.substring(AppConst.QrCodeCommon.BOND.length());
                 //获取用户信息
                 ApiRetrofit.getInstance().getUserInfoById(targetId)
-                        .flatMap(getUserInfoByIdResponse -> {
-                            if (getUserInfoByIdResponse != null && getUserInfoByIdResponse.getCode() == 200) {
-                                GetUserInfoByIdResponse.ResultEntity res = getUserInfoByIdResponse.getResult();
+                        .flatMap(getUserInfoResponse -> {
+                            if (getUserInfoResponse != null && getUserInfoResponse.getCode() == 200) {
+                                GetUserInfoResponse.ResultEntity res = getUserInfoResponse.getResult();
                                 account[0] = res.getId();
                                 nickname[0] = res.getNickname();
                                 return ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri());
@@ -212,12 +212,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private void loadError(Throwable throwable) {
         LogUtils.sf(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unRegisterBR();
     }
 
     /**
@@ -345,21 +339,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
                 String account = AccountCache.getAccount();
                 String userSig = AccountCache.getUserSig();
-                String password = AccountCache.getPassword();
-                ApiRetrofit.getInstance().login(AppConst.REGION, account, password)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(loginResponse -> {
-                            int code = loginResponse.getCode();
-                            if (code == 200) {
-                                MyApp.mAccountMgr.loginSDK(account, userSig);
-                                MyApp.isLogin = true;
-                                UIUtils.showToastSafely("登录成功！");
-                            } else {
-                                loginError(new ServerException(UIUtils.getString(R.string.login_error) + code));
-                                MyApp.isLogin = false;
-                            }
-                        }, this::loginError);
+                MyApp.mAccountMgr.loginSDK(account, userSig);
+                MyApp.isLogin = true;
+                UIUtils.showToastSafely("登录成功！");
             }
         }
 
@@ -446,4 +428,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         BroadcastManager.getInstance(this).unregister(Intent.ACTION_TIME_TICK);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegisterBR();
+    }
 }

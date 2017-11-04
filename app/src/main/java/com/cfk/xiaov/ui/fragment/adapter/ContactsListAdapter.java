@@ -101,28 +101,31 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
     public void setAdapterData(List<BondDevice> devices) {
         mAdapterData = devices;
     }
-
+    public List<BondDevice> getAdapterData() {
+        return mAdapterData;
+    }
     class ContactsHolder extends RecyclerView.ViewHolder {
-        //@BindView(R.id.bond_device_name)
+        @BindView(R.id.bond_device_name)
         TextView deviceName;
-        //@BindView(R.id.imgHeader)
+        @BindView(R.id.imgHeader)
         ImageView imgHeader;
-        //@BindView(R.id.video_call_view)
+        @BindView(R.id.video_call_view)
         RelativeLayout call_view;
 
         ContactsHolder(View itemView) {
             super(itemView);
-            //ButterKnife.bind(this, itemView);
-            deviceName = (TextView) itemView.findViewById(R.id.bond_device_name);
-            imgHeader= (ImageView) itemView.findViewById(R.id.imgHeader);
-            call_view= (RelativeLayout) itemView.findViewById(R.id.video_call_view);
-            itemView.setOnClickListener(v -> {
+            ButterKnife.bind(this, itemView);
+//            deviceName = (TextView) itemView.findViewById(R.id.bond_device_name);
+//            imgHeader= (ImageView) itemView.findViewById(R.id.imgHeader);
+//            call_view= (RelativeLayout) itemView.findViewById(R.id.video_call_view);
+
+/*            itemView.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setAction(AppConst.MAKE_CALL);
                 intent.putExtra("CallId", mAdapterData.get(getAdapterPosition()).getAccount());
                 mContext.sendBroadcast(intent);
                 Log.i(TAG, "Monitor OnClick");
-            });
+            });*/
             Log.i(TAG, "Create ContactsHolder");
             itemView.setOnLongClickListener(v -> {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
@@ -141,5 +144,6 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
             });
 
         }
+
     }
 }

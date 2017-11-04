@@ -27,7 +27,7 @@ public class AccountMgr {
         new Thread(() -> {
             isRunning = true;
             //开始登录，最多10次
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 5; i++) {
                 //如果正在登陆，等待返回结果...
                 while (true) {
                     if (isLogining) {

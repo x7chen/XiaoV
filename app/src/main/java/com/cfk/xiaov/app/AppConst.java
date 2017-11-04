@@ -10,7 +10,7 @@ import com.cfk.xiaov.util.LogUtils;
  */
 public class AppConst {
 
-    public static final String TAG = "CSDN_LQR";
+    public static final String TAG = "CFK_SEAN";
     public static final int DEBUGLEVEL = LogUtils.LEVEL_ALL;//日志输出级别
 
     public static final String REGION = "86";

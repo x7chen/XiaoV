@@ -72,6 +72,8 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     ImageButton mDeny;
     @BindView(R.id.btn_beauty)
     ImageButton mBtnBeauty;
+    @BindView(R.id.silent)
+    ImageButton mIbSilent;
 
     @BindView(R.id.sb_beauty_progress)
     SeekBar sbBeauty;
@@ -97,7 +99,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     boolean isAlive = false;
     Timer timer;
     boolean isInCall = false;
-
+    List<String> mNumbers;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +141,7 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
         landView.setVisibility(View.INVISIBLE);
         sbBeauty.setOnSeekBarChangeListener(beautyChangeListener);
         mBtnBeauty.setEnabled(false);
+        mIbSilent.setImageResource(R.drawable.sound_on_drawable);
     }
 
     protected void initListener() {
@@ -173,17 +176,17 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
                 .setCallType(mCallType);
 
         if (0 == mCallId) { // 发起呼叫
-            List<String> nums = intent.getStringArrayListExtra("CallNumbers");
-            if (nums.size() > 1) {
-                mCallId = ILVCallManager.getInstance().makeMutiCall(nums, option, mILiveCallBack);
+            mNumbers = intent.getStringArrayListExtra("CallNumbers");
+            if (mNumbers.size() > 1) {
+                mCallId = ILVCallManager.getInstance().makeMutiCall(mNumbers, option, mILiveCallBack);
             } else {
-                mCallId = ILVCallManager.getInstance().makeCall(nums.get(0), option, mILiveCallBack);
+                mCallId = ILVCallManager.getInstance().makeCall(mNumbers.get(0), option, mILiveCallBack);
             }
 
             List<BondDevice> devices = MyApp.getBondDeviceDao().loadAll();
             BondDevice device = null;
             for (BondDevice d : devices) {
-                if (d.getAccount().equals(nums.get(0))) {
+                if (d.getAccount().equals(mNumbers.get(0))) {
                     device = d;
                     break;
                 }
@@ -296,23 +299,37 @@ public class CallActivity extends Activity implements ILVCallListener, ILVBCallM
     private void setSpeaker() {
         if (bsSpeaker) {
             ILVCallManager.getInstance().enableSpeaker(false);
+            mIbSilent.setImageResource(R.drawable.sound_off_drawable);
         } else {
             ILVCallManager.getInstance().enableSpeaker(true);
+            mIbSilent.setImageResource(R.drawable.sound_on_drawable);
         }
         bsSpeaker = !bsSpeaker;
-
     }
 
     private void switchCamera() {
         mCurCameraId = (ILiveConstants.FRONT_CAMERA == mCurCameraId) ? ILiveConstants.BACK_CAMERA : ILiveConstants.FRONT_CAMERA;
         ILVCallManager.getInstance().switchCamera(mCurCameraId);
         if (mCurCameraId == ILiveConstants.FRONT_CAMERA) {
-            avRootView.setRemoteRotationFix(90);
-            //avRootView.setRemoteRotationFix(270);
+           // avRootView.setRemoteRotationFix(90);
+            avRootView.setRemoteRotationFix(180);////(2.前摄远程正常..但是镜像)
+/// //avRootView.setLocalRotationFix(180);
         } else {
-            avRootView.setRemoteRotationFix(90);
-            avRootView.setLocalRotationFix(90);
-            avRootView.getViewByIndex(0).setRemoteRotationFix(90);
+            avRootView.setRemoteRotationFix(90);//(1.后摄远程正常)
+
+            for (int i = 0; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {
+                AVVideoView majorView = avRootView.getViewByIndex(i);
+//                if (mNumbers.get(0).equals(majorView.getIdentifier())) {
+//                    Log.i(TAG,"view:"+i);
+//                    avRootView.getViewByIndex(i).setLocalRotationFix(90);
+//                    avRootView.getViewByIndex(i).setRotation(90);
+//                }
+                avRootView.getViewByIndex(0).setRotation(90);
+                Log.i(TAG,"rotation"+i+":"+majorView.getRotation());
+            }
+            //avRootView.setLocalRotationFix(90);
+           // avRootView.setRotation(90);
+
         }
     }
 

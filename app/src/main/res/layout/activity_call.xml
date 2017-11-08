@@ -48,7 +48,7 @@
                 android:background="@android:color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
-                android:src="@mipmap/call44"
+                android:src="@drawable/hangup_call_drawable"
                 android:tint="@color/red0" />
         </RelativeLayout>
     </RelativeLayout>
@@ -81,7 +81,7 @@
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
-                android:src="@mipmap/recycle65"
+                android:src="@drawable/recycle_drawable"
                 android:tint="@color/yellow1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -95,7 +95,7 @@
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
-                android:src="@mipmap/call44"
+                android:src="@drawable/hangup_call_drawable"
                 android:tint="@color/yellow1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_switch_camera" />
@@ -109,7 +109,7 @@
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
-                android:src="@mipmap/photo189"
+                android:src="@drawable/photo_drawable"
                 android:tint="@color/yellow1"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +124,7 @@
                 android:background="@color/transparent"
                 android:onClick="onClick"
                 android:scaleType="fitXY"
-                android:src="@mipmap/sound32"
+
                 android:tint="@color/yellow1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_end" />
@@ -169,8 +169,8 @@
                 android:layout_marginBottom="30dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:thumbTint="@color/yellow1"
                 android:progressTint="@color/yellow1"
+                android:thumbTint="@color/yellow1"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

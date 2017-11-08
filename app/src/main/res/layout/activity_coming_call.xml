@@ -40,11 +40,10 @@
                 android:id="@+id/ibAccept"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
-                android:src="@mipmap/call43"
+                android:src="@drawable/accept_call_drawable"
                 android:tint="@color/green0" />
 
             <ImageButton
@@ -52,10 +51,9 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
-                android:src="@mipmap/call44"
+                android:src="@drawable/hangup_call_drawable"
                 android:tint="@color/red0" />
         </com.zhy.autolayout.AutoRelativeLayout>
     </com.zhy.autolayout.AutoRelativeLayout>

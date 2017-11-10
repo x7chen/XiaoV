@@ -5,41 +5,63 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.cfk.xiaov.api.AccountMgr;
 import com.cfk.xiaov.app.base.BaseApp;
 import com.cfk.xiaov.db.model.BondDeviceDao;
 import com.cfk.xiaov.db.model.DaoMaster;
 import com.cfk.xiaov.db.model.DaoSession;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.lqr.imagepicker.ImagePicker;
 import com.lqr.imagepicker.loader.ImageLoader;
 import com.lqr.imagepicker.view.CropImageView;
 import com.mob.MobSDK;
-import com.tencent.ilivesdk.ILiveSDK;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
 import cn.smssdk.SMSSDK;
 
 
 public class MyApp extends BaseApp {
     String TAG = getClass().getSimpleName();
     public static Context ApplicationContext;
-    public static AccountMgr mAccountMgr;
     public static boolean isLogin = false;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         ApplicationContext = this;
-        mAccountMgr = new AccountMgr();
         initImagePicker();
         initGreenDao();
-        initILVLive();
+//        initILVLive();
+        initMobSMS();
+        initJPush();
+
+    }
+
+    void initMobSMS() {
         MobSDK.init(this, "220f487e81dea", "740a5362635c39d421ee8a510b0ceec3");
         // 如果希望在读取通信录的时候提示用户，可以添加下面的代码，并且必须在其他代码调用之前，否则不起作用；如果没这个需求，可以不加这行代码
         SMSSDK.setAskPermisionOnReadContact(false);
+    }
+
+    void initJPush() {
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+
+        if (!TextUtils.isEmpty(AccountCache.getAccount())) {
+            Set<String> tags = new HashSet<>(1);
+            tags.add(AccountCache.getAccount());
+
+            JPushInterface.addTags(this, 0, tags);
+        }
+
     }
 
     public static String getCurProcessName(Context context) {
@@ -83,18 +105,15 @@ public class MyApp extends BaseApp {
         imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
     }
 
-    public void initILVLive() {
-        ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400036822, 14464);
-        Log.i(TAG, "init iLive!");
-    }
-
-    DaoMaster.DevOpenHelper helper;
-    SQLiteDatabase db;
-    DaoMaster daoMaster;
-    DaoSession daoSession;
     private static BondDeviceDao bondDeviceDao;
 
     void initGreenDao() {
+
+        DaoMaster.DevOpenHelper helper;
+        SQLiteDatabase db;
+        DaoMaster daoMaster;
+        DaoSession daoSession;
+
         // do this once, for example in your Application class
         helper = new DaoMaster.DevOpenHelper(this, "bond-db", null);
         db = helper.getWritableDatabase();
@@ -104,7 +123,8 @@ public class MyApp extends BaseApp {
         bondDeviceDao = daoSession.getBondDeviceDao();
 
     }
-    public static BondDeviceDao getBondDeviceDao(){
+
+    public static BondDeviceDao getBondDeviceDao() {
         return bondDeviceDao;
     }
 }

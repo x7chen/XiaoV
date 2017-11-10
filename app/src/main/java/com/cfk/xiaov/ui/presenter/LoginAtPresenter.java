@@ -84,7 +84,6 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
                     mContext.hideWaitingDialog();
                     MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
                     mContext.sendBroadcast(new Intent(AppConst.CHANGE_INFO_FOR_ME));
-                    MyApp.mAccountMgr.loginSDK(userId, AccountCache.getUserSig());
                     mContext.jumpToActivityAndClearTask(MainActivity.class);
                     mContext.finish();
                 }, this::loginError);

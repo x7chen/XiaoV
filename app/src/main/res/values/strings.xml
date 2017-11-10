@@ -292,4 +292,6 @@
     <string name="invite">邀请</string>
     <string name="log">日志</string>
     <string name="invite_tip">输入邀请用户id</string>
+    
+    <string name="agora_app_id"> e0ac456f6cc643b2b10b915024d842a0</string>
 </resources>

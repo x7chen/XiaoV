@@ -38,6 +38,14 @@ public class AppConst {
     public static final String REFRESH_CURRENT_SESSION = "refresh_current_session";
     public static final String CLOSE_CURRENT_SESSION = "close_current_session";
 
+    //视频电话广播
+    public static final String NEW_COMING_CALL = "new_coming_call";
+    public static final String HANG_UP_CALL = "hang_up_call";
+
+    //push方法
+    public static final String PUSH_METHOD_CALL = "call";
+    public static final String PUSH_METHOD_HANGUP = "hang_up";
+
     //视频通话
     public static final String MAKE_CALL= "make_call";
 

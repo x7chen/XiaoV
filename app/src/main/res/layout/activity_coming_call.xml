@@ -38,8 +38,8 @@
 
             <ImageButton
                 android:id="@+id/ibAccept"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentStart="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
@@ -48,8 +48,8 @@
 
             <ImageButton
                 android:id="@+id/ibDeny"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentEnd="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"

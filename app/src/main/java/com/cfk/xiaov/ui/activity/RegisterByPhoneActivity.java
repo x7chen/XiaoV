@@ -177,7 +177,6 @@ public class RegisterByPhoneActivity extends BaseActivity {
                         hideWaitingDialog();
                         MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
                         sendBroadcast(new Intent(AppConst.CHANGE_INFO_FOR_ME));
-                        MyApp.mAccountMgr.loginSDK(account[0], AccountCache.getUserSig());
                         jumpToActivityAndClearTask(MainActivity.class);
                         finish();
                     }, this::registerError);

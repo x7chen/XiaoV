@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_video_chat_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/remote_video_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tiledstripes" />
+
+    <FrameLayout
+        android:id="@+id/local_video_view_container"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/darker_gray" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:onClick="onLocalVideoMuteClicked"
+            android:scaleType="centerInside"
+            android:src="@mipmap/btn_voice" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:onClick="onLocalAudioMuteClicked"
+            android:scaleType="centerInside"
+            android:src="@mipmap/btn_mute" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:onClick="onSwitchCameraClicked"
+            android:scaleType="centerInside"
+            android:src="@mipmap/btn_switch_camera" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:onClick="onEndCallClicked"
+            android:scaleType="centerInside"
+            android:src="@mipmap/btn_end_call" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

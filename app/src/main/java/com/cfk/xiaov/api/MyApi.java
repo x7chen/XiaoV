@@ -1,10 +1,12 @@
 package com.cfk.xiaov.api;
 
 
+import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.response.CheckPhoneResponse;
 import com.cfk.xiaov.model.response.GetTokenResponse;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.model.response.LoginResponse;
+import com.cfk.xiaov.model.response.PushResponse;
 import com.cfk.xiaov.model.response.QiNiuDownloadResponse;
 import com.cfk.xiaov.model.response.QiNiuTokenResponse;
 import com.cfk.xiaov.model.response.RegisterResponse;
@@ -85,7 +87,10 @@ public interface MyApi {
 
     @GET("users/send_verify_code")
     Observable<VerifyCodeResponse> sendVerifyCode(@Query("phone") String phone,@Query("verify_code") String verify_code);
-
+    @GET("push")
+    Observable<PushResponse> push(@Query("room") String room,@Query("method") String method,@Query("target_id") String target_id);
+    @POST("push")
+    Observable<PushResponse> push(@Body RequestBody body);
     //下载图片
     @GET
     Observable<ResponseBody> downloadPic(@Url String url);

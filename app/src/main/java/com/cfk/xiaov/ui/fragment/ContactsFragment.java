@@ -8,21 +8,34 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.manager.BroadcastManager;
+import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.request.PushRequest;
+import com.cfk.xiaov.model.response.PushResponse;
 import com.cfk.xiaov.ui.ActionEvent.RecyclerViewClickListener;
+import com.cfk.xiaov.ui.activity.VideoChatViewActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.adapter.ContactsListAdapter;
+import com.cfk.xiaov.util.BroadcastUtils;
+import com.cfk.xiaov.util.LogUtils;
+import com.cfk.xiaov.util.UIUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by cfk on 2017/9/20.
@@ -65,15 +78,32 @@ public class ContactsFragment extends BaseFragment {
         //contactsListAdapter.setAdapterData(BondCache.getBondList());
         rvBondDevice.setAdapter(contactsListAdapter);
         rvBondDevice.setNestedScrollingEnabled(false);
-        rvBondDevice.addOnItemTouchListener(new RecyclerViewClickListener(getContext(), rvBondDevice,new RecyclerViewClickListener.OnItemClickListener() {
+        rvBondDevice.addOnItemTouchListener(new RecyclerViewClickListener(getContext(), rvBondDevice, new RecyclerViewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent();
-                intent.setAction(AppConst.MAKE_CALL);
-                intent.putExtra("CallId", contactsListAdapter.getAdapterData().get(position).getAccount());
-                getContext().sendBroadcast(intent);
-                Log.i(TAG, "Monitor OnClick");
+//                Intent intent = new Intent();
+//                intent.setAction(AppConst.MAKE_CALL);
+//                intent.putExtra("CallId", contactsListAdapter.getAdapterData().get(position).getAccount());
+//                getContext().sendBroadcast(intent);
+//                Log.i(TAG, "Monitor OnClick");
+                Intent intent = new Intent(getContext(), VideoChatViewActivity.class);
+                PushResponse.ResultEntity pushMessage = new PushResponse.ResultEntity(
+                        AppConst.PUSH_METHOD_CALL,
+                        AccountCache.getAccount(),
+                        contactsListAdapter.getAdapterData().get(position).getAccount(),
+                        AccountCache.getAccount()
+                        );
 
+                Type mType = new TypeToken<PushResponse.ResultEntity>() {
+                }.getType();
+                Gson gson = new Gson();
+                String json = gson.toJson(pushMessage,mType);
+                intent.putExtra("json", json);
+                ApiRetrofit.getInstance().push(pushMessage.getChannel(),AppConst.PUSH_METHOD_CALL,pushMessage.getTo())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(pushResponse -> {},ContactsFragment.this::rxError);
+                startActivity(intent);
             }
 
             @Override
@@ -84,6 +114,11 @@ public class ContactsFragment extends BaseFragment {
 
     }
 
+    private void rxError(Throwable throwable) {
+        LogUtils.e(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
+        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
+    }
     public void updateView() {
         if (MyApp.getBondDeviceDao().count() == 0) {
             notBondDeviceView.setVisibility(View.VISIBLE);
@@ -92,7 +127,7 @@ public class ContactsFragment extends BaseFragment {
         }
 
         contactsListAdapter.setAdapterData(MyApp.getBondDeviceDao().loadAll());
-       // UIUtils.showToastSafely("device:"+MyApp.getBondDeviceDao().count()+MyApp.getBondDeviceDao().loadAll().get(0).getAvatarUri());
+        // UIUtils.showToastSafely("device:"+MyApp.getBondDeviceDao().count()+MyApp.getBondDeviceDao().loadAll().get(0).getAvatarUri());
         contactsListAdapter.notifyDataSetChanged();
 
     }

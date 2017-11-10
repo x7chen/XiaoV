@@ -1,6 +1,7 @@
 package com.cfk.xiaov.ui.activity;
 
 import android.app.KeyguardManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -11,7 +12,6 @@ import android.os.PowerManager;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,16 +21,18 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
+import com.cfk.xiaov.model.response.PushResponse;
 import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
-import com.tencent.callsdk.ILVCallConstants;
-import com.tencent.callsdk.ILVCallListener;
-import com.tencent.callsdk.ILVCallManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +40,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ComingCallActivity extends AppCompatActivity implements ILVCallListener {
+public class ComingCallActivity extends AppCompatActivity {
     String TAG = getClass().getSimpleName();
     @BindView(R.id.ibAccept)
     ImageButton mIbAccept;
@@ -51,6 +53,7 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
     MediaPlayer mediaPlayer;
 
     Thread timeoutThread;
+    PushResponse.ResultEntity session_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +63,32 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
 
         setContentView(R.layout.activity_coming_call);
         ButterKnife.bind(this);
-        Intent mIntent = getIntent();
-        int callId = mIntent.getIntExtra("CallId", 0);
-        String hostId = mIntent.getStringExtra("HostId");
-        int callType = mIntent.getIntExtra("CallType", ILVCallConstants.CALL_TYPE_VIDEO);
-        String callUserId = mIntent.getStringExtra("CallUserId");
+        registerBR();
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("json");
+        Type mType = new TypeToken<PushResponse.ResultEntity>() {
+        }.getType();
+        Gson gson = new Gson();
+        session_info = gson.fromJson(json, mType);
+        initView();
+        initListener();
+    }
+
+    private void rxError(Throwable throwable) {
+        LogUtils.e(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
+        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
+    }
+
+    private void loadError(Throwable throwable) {
+        LogUtils.e(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
+        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
+    }
+
+    void initView() {
         final String[] nickName = new String[1];
-        ApiRetrofit.getInstance().getUserInfoById(callUserId)
+        ApiRetrofit.getInstance().getUserInfoById(session_info.getFrom())
                 .flatMap(getUserInfoResponse -> {
                     if (getUserInfoResponse != null && getUserInfoResponse.getCode() == 200) {
                         GetUserInfoResponse.ResultEntity res = getUserInfoResponse.getResult();
@@ -94,17 +116,7 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
                         mUserName.setText(nickName[0]);
                     }
                 }, this::loadError);
-        mIbAccept.setOnClickListener(v -> {
-            acceptCall(callId, hostId, callType);
-            Log.i(TAG, "Accept Call :" + callId);
 
-            finish();
-        });
-        mIbDeny.setOnClickListener(v -> {
-            int ret = ILVCallManager.getInstance().rejectCall(callId);
-            Log.i(TAG, "Reject Call:" + ret + "/" + callId);
-            finish();
-        });
         mediaPlayer = new MediaPlayer();
         AssetFileDescriptor fileDescriptor = null;
         try {
@@ -125,13 +137,22 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
             runOnUiThread(this::finish);
         });
         timeoutThread.start();
-        ILVCallManager.getInstance().addCallListener(this);
     }
 
-    private void loadError(Throwable throwable) {
-        LogUtils.e(throwable.getLocalizedMessage());
-        UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
+    void initListener() {
+        mIbAccept.setOnClickListener(v -> {
+            acceptCall();
+
+            finish();
+        });
+        mIbDeny.setOnClickListener(v -> {
+            ApiRetrofit.getInstance().push(session_info.getChannel(), AppConst.PUSH_METHOD_HANGUP, session_info.getFrom())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(pushResponse -> {
+                    }, this::rxError);
+            finish();
+        });
     }
 
     public static void wakeUpAndUnlock(Context context) {
@@ -179,32 +200,39 @@ public class ComingCallActivity extends AppCompatActivity implements ILVCallList
         super.onDestroy();
         mediaPlayer.stop();
         timeoutThread.interrupt();
-        ILVCallManager.getInstance().removeCallListener(this);
+        unRegisterBR();
     }
 
-    private void acceptCall(int callId, String hostId, int callType) {
+    private void acceptCall() {
         Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), CallActivity.class);
+        intent.setClass(getApplicationContext(), VideoChatViewActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("HostId", hostId);
-        intent.putExtra("CallId", callId);
-        intent.putExtra("CallType", callType);
-        intent.putExtra("Mode", "video");
+        Type mType = new TypeToken<PushResponse.ResultEntity>() {
+        }.getType();
+        Gson gson = new Gson();
+        String json = gson.toJson(session_info, mType);
+        intent.putExtra("json", json);
         startActivity(intent);
     }
 
-    @Override
-    public void onCallEstablish(int callId) {
+    private void registerBR() {
+        BroadcastManager.getInstance(this).register(AppConst.NEW_COMING_CALL, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            }
+        });
+        BroadcastManager.getInstance(this).register(AppConst.HANG_UP_CALL, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        });
 
     }
 
-    @Override
-    public void onCallEnd(int callId, int endResult, String endInfo) {
-        finish();
-    }
-
-    @Override
-    public void onException(int iExceptionId, int errCode, String errMsg) {
-
+    private void unRegisterBR() {
+        BroadcastManager.getInstance(this).unregister(AppConst.NEW_COMING_CALL);
+        BroadcastManager.getInstance(this).unregister(AppConst.HANG_UP_CALL);
     }
 }

@@ -1,8 +1,10 @@
 package com.cfk.xiaov.api;
 
 import com.cfk.xiaov.api.base.BaseApiRetrofit;
+import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.request.CheckPhoneRequest;
 import com.cfk.xiaov.model.request.LoginRequest;
+import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.request.RegisterRequest;
 import com.cfk.xiaov.model.request.SetNameRequest;
 import com.cfk.xiaov.model.request.SetPortraitRequest;
@@ -10,6 +12,7 @@ import com.cfk.xiaov.model.response.CheckPhoneResponse;
 import com.cfk.xiaov.model.response.GetTokenResponse;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.model.response.LoginResponse;
+import com.cfk.xiaov.model.response.PushResponse;
 import com.cfk.xiaov.model.response.QiNiuDownloadResponse;
 import com.cfk.xiaov.model.response.QiNiuTokenResponse;
 import com.cfk.xiaov.model.response.RegisterResponse;
@@ -127,6 +130,10 @@ public class ApiRetrofit extends BaseApiRetrofit {
 
     public Observable<VerifyCodeResponse> sendVerifyCode(String phone,String verify_code){
         return mApi.sendVerifyCode(phone,verify_code);
+    }
+
+    public Observable<PushResponse>push(String channel,String method,String target_id){
+        return mApi.push(getRequestBody(new PushRequest(AccountCache.getAccount(),target_id,method,channel)));
     }
 
 }

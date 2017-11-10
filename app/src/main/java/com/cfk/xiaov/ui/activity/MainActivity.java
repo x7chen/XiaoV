@@ -1,6 +1,5 @@
 package com.cfk.xiaov.ui.activity;
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,14 +29,12 @@ import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
-import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
-import com.tencent.ilivesdk.core.ILiveLoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +103,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void init() {
         registerBR();
-        startVideoCallService();
     }
 
     @Override
@@ -333,13 +329,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             showNetworkFail();
         } else {
             hideNetworkFail();
-            if (ILiveLoginManager.getInstance().isLogin()) {
-                return;
-            }
             if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
                 String account = AccountCache.getAccount();
                 String userSig = AccountCache.getUserSig();
-                MyApp.mAccountMgr.loginSDK(account, userSig);
+
                 MyApp.isLogin = true;
                 UIUtils.showToastSafely("登录成功！");
             }
@@ -393,33 +386,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         BroadcastManager.getInstance(this).register(Intent.ACTION_TIME_TICK, new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                startVideoCallService();
             }
         });
     }
 
-    void startVideoCallService() {
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(Integer.MAX_VALUE);
-        boolean isRunning = false;
-        if (serviceList == null || serviceList.size() == 0) {
-            isRunning = false;
-        } else {
-            for (ActivityManager.RunningServiceInfo info : serviceList) {
-                // Log.i(TAG,info.service.getClassName());
-
-                if (info.service.getClassName().equals(VideoCallService.class.getName())) {
-                    isRunning = true;
-                    break;
-                }
-            }
-            // Log.i(TAG,VideoCallService.class.getName());
-        }
-        if (!isRunning) {
-            Intent intent1 = new Intent(MyApp.ApplicationContext, VideoCallService.class);
-            MyApp.ApplicationContext.startService(intent1);
-        }
-    }
 
     private void unRegisterBR() {
         BroadcastManager.getInstance(this).unregister(AppConst.FETCH_COMPLETE);

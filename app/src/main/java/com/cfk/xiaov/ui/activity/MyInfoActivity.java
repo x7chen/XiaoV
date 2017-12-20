@@ -3,6 +3,7 @@ package com.cfk.xiaov.ui.activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -13,7 +14,7 @@ import com.lqr.imagepicker.bean.ImageItem;
 import com.lqr.imagepicker.ui.ImageGridActivity;
 import com.lqr.optionitemview.OptionItemView;
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.manager.BroadcastManager;
+
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.presenter.MyInfoAtPresenter;
 
@@ -23,7 +24,7 @@ import butterknife.BindView;
 
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 我的个人信息
  */
 public class MyInfoActivity extends BaseActivity<IMyInfoAtView, MyInfoAtPresenter> implements IMyInfoAtView {
@@ -89,18 +90,19 @@ public class MyInfoActivity extends BaseActivity<IMyInfoAtView, MyInfoAtPresente
         }
     }
 
-
+BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        mPresenter.loadUserInfo();
+    }
+};
     private void registerBR() {
-        BroadcastManager.getInstance(this).register(AppConst.CHANGE_INFO_FOR_CHANGE_NAME, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mPresenter.loadUserInfo();
-            }
-        });
+        registerReceiver(broadcastReceiver,new IntentFilter(AppConst.Action.CHANGE_INFO_FOR_CHANGE_NAME));
+
     }
 
     private void unregisterBR() {
-        BroadcastManager.getInstance(this).unregister(AppConst.CHANGE_INFO_FOR_CHANGE_NAME);
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override

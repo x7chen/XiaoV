@@ -97,7 +97,7 @@ public class RegisterAtPresenter extends BasePresenter<IRegisterAtView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(responseBody -> {
                     MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
-                    mContext.sendBroadcast(new Intent(AppConst.CHANGE_INFO_FOR_ME));
+                    mContext.sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
                     mContext.finish();
                     mContext.jumpToActivityAndClearTask(MainActivity.class);
                 }, this::registerError);

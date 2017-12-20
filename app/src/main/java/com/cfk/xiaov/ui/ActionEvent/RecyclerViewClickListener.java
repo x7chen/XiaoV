@@ -49,10 +49,7 @@ public class RecyclerViewClickListener implements RecyclerView.OnItemTouchListen
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         //把事件交给GestureDetector处理
-        if(mGestureDetector.onTouchEvent(e)){
-            return true;
-        }else
-            return false;
+        return mGestureDetector.onTouchEvent(e);
     }
 
     @Override

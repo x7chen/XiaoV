@@ -31,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 使用Retrofit对网络请求进行配置
  */
 public class ApiRetrofit extends BaseApiRetrofit {
@@ -132,8 +132,10 @@ public class ApiRetrofit extends BaseApiRetrofit {
         return mApi.sendVerifyCode(phone,verify_code);
     }
 
-    public Observable<PushResponse>push(String channel,String method,String target_id){
-        return mApi.push(getRequestBody(new PushRequest(AccountCache.getAccount(),target_id,method,channel)));
+    public Observable<PushResponse>push(String method,String target_id,PushRequest.Extra extra){
+        return mApi.push(getRequestBody(new PushRequest(AccountCache.getAccount(),target_id,method,extra)));
     }
+
+
 
 }

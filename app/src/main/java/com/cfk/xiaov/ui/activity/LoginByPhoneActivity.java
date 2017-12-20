@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
@@ -131,7 +130,7 @@ public class LoginByPhoneActivity extends BaseActivity {
                         if (code == 200)
                             return ApiRetrofit.getInstance().login_by_phone("86", etPhone.getText().toString());
                         else {
-                            return Observable.error(new ServerException((UIUtils.getString(R.string.login_error))));
+                            return Observable.error(new ServerException((UIUtils.getString(R.string.unknown))));
                         }
                     })
                     .flatMap(loginResponse -> {
@@ -143,7 +142,7 @@ public class LoginByPhoneActivity extends BaseActivity {
                             AccountCache.save(account[0], loginResponse.getResult().getToken(), null);
                             return ApiRetrofit.getInstance().getUserInfoById(account[0]);
                         } else {
-                            return Observable.error(new ServerException((UIUtils.getString(R.string.login_error) + code)));
+                            return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
                         }
                     })
                     .flatMap(getUserInfoByIdResponse -> {
@@ -154,7 +153,7 @@ public class LoginByPhoneActivity extends BaseActivity {
                             // 2. 获取头像链接
                             return ApiRetrofit.getInstance().getQiNiuDownloadUrl(getUserInfoByIdResponse.getResult().getPortraitUri());
                         } else {
-                            return Observable.error(new ServerException((UIUtils.getString(R.string.login_error) + code)));
+                            return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
                         }
                     })
                     .flatMap(qiNiuDownloadResponse -> {
@@ -163,7 +162,7 @@ public class LoginByPhoneActivity extends BaseActivity {
                             // 下载头像
                             return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
                         } else {
-                            return Observable.error(new ServerException((UIUtils.getString(R.string.login_error) + code)));
+                            return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
                         }
                     })
                     .subscribeOn(Schedulers.io())
@@ -171,7 +170,7 @@ public class LoginByPhoneActivity extends BaseActivity {
                     .subscribe(responseBody -> {
                         hideWaitingDialog();
                         MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
-                        sendBroadcast(new Intent(AppConst.CHANGE_INFO_FOR_ME));
+                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
                         jumpToActivityAndClearTask(MainActivity.class);
                         finish();
                     }, this::loginError);
@@ -187,7 +186,7 @@ public class LoginByPhoneActivity extends BaseActivity {
     private void loginError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
+        BroadcastUtils.sendBroadcast(AppConst.Action.NET_STATUS, "net_status", "failed");
     }
 
     @Override

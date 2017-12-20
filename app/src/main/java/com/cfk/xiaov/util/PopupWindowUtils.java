@@ -158,11 +158,7 @@ public class PopupWindowUtils {
         // 得到itemView距离屏幕底部的距离
         int distance = screenHeight - itemViewY - itemView.getHeight();
 
-        if (distance < itemView.getHeight()) {// 条目下方放不下popupWindow
-            return false;
-        } else {// 条目下方放得下popupWindow
-            return true;
-        }
+        return distance >= itemView.getHeight();
     }
 
     /**

@@ -3,10 +3,10 @@ package com.cfk.xiaov.ui.activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,9 +20,9 @@ import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.db.model.BondDevice;
-import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.exception.ServerException;
+import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
@@ -33,9 +33,12 @@ import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
 import com.cfk.xiaov.util.UIUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,7 +146,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             View menuView = View.inflate(MainActivity.this, com.cfk.xiaov.R.layout.menu_main, null);
             PopupWindow popupWindow = PopupWindowUtils.getPopupWindowAtLocation(menuView, getWindow().getDecorView(), Gravity.TOP | Gravity.RIGHT, UIUtils.dip2Px(5), mAppBar.getHeight() + 30);
             menuView.findViewById(com.cfk.xiaov.R.id.tvHelpFeedback).setOnClickListener(v1 -> {
-                jumpToWebViewActivity(AppConst.WeChatUrl.HELP_FEED_BACK);
+                jumpToWebViewActivity(AppConst.MyUrl.HELP_FEED_BACK);
                 popupWindow.dismiss();
             });
             menuView.findViewById(R.id.tvScan).setOnClickListener(v1 -> {
@@ -175,32 +178,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             String result = data.getStringExtra("qr_result");
             if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
                 String targetId = result.substring(AppConst.QrCodeCommon.BOND.length());
-                //获取用户信息
-                ApiRetrofit.getInstance().getUserInfoById(targetId)
-                        .flatMap(getUserInfoResponse -> {
-                            if (getUserInfoResponse != null && getUserInfoResponse.getCode() == 200) {
-                                GetUserInfoResponse.ResultEntity res = getUserInfoResponse.getResult();
-                                account[0] = res.getId();
-                                nickname[0] = res.getNickname();
-                                return ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri());
-                            } else {
-                                return Observable.error(new ServerException((UIUtils.getString(R.string.login_error))));
-                            }
-                        })
-                        .flatMap(qiNiuDownloadResponse -> {
-                            if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
-                                return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
-                            } else {
-                                return Observable.error(new ServerException((UIUtils.getString(R.string.login_error))));
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(ResponseBody -> {
-                            BondDevice device = new BondDevice(account[0], nickname[0], writeResponseBodyToDisk(ResponseBody));
-                            MyApp.getBondDeviceDao().insertOrReplace(device);
-                            FragmentFactory.getInstance().getContactsFragment().updateView();
-                        }, this::loadError);
+                Intent intent = new Intent(MainActivity.this, InviteActivity.class);
+                intent.putExtra("account", targetId);
+                startActivity(intent);
             }
         }
     }
@@ -208,6 +188,37 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private void loadError(Throwable throwable) {
         LogUtils.sf(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
+    }
+
+    void saveNewDevice(String targetId) {
+        //获取用户信息
+        final String[] account = new String[1];
+        final String[] nickname = new String[1];
+        ApiRetrofit.getInstance().getUserInfoById(targetId)
+                .flatMap(getUserInfoResponse -> {
+                    if (getUserInfoResponse != null && getUserInfoResponse.getCode() == 200) {
+                        GetUserInfoResponse.ResultEntity res = getUserInfoResponse.getResult();
+                        account[0] = res.getId();
+                        nickname[0] = res.getNickname();
+                        return ApiRetrofit.getInstance().getQiNiuDownloadUrl(res.getPortraitUri());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown))));
+                    }
+                })
+                .flatMap(qiNiuDownloadResponse -> {
+                    if (qiNiuDownloadResponse != null && qiNiuDownloadResponse.getCode() == 200) {
+                        return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown))));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(ResponseBody -> {
+                    BondDevice device = new BondDevice(account[0], nickname[0], writeResponseBodyToDisk(ResponseBody));
+                    MyApp.getBondDeviceDao().insertOrReplace(device);
+                    FragmentFactory.getInstance().getContactsFragment().updateView();
+                }, this::loadError);
     }
 
     /**
@@ -340,12 +351,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     }
 
-    private void loginError(Throwable throwable) {
-        LogUtils.e(throwable.getLocalizedMessage());
-        UIUtils.showToast("请检查网络连接！");
-        MyApp.isLogin = false;
-    }
-
     void showNetworkFail() {
         status_msg_layout.setVisibility(View.VISIBLE);
         //statusMessage.setTextColor(0xffff00);
@@ -356,46 +361,37 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         status_msg_layout.setVisibility(View.GONE);
     }
 
-    public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(AppConst.Action.AGREE_MY_INVITE)) {
+                String json = intent.getStringExtra("json");
+                Type mType = new TypeToken<PushRequest>() {
+                }.getType();
+                Gson gson = new Gson();
+                PushRequest pushMessage = gson.fromJson(json, mType);
+                saveNewDevice(pushMessage.getFrom());
+            } else if (intent.getAction().equals(AppConst.Action.FETCH_COMPLETE)) {
+                hideWaitingDialog();
+            } else if (intent.getAction().equals(AppConst.Action.CONNECTIVITY_CHANGE_ACTION)) {
+                checkNetwork();
+            } else if (intent.getAction().equals(AppConst.Action.AGREE_MY_INVITE)) {
+                showNetworkFail();
+            }
+        }
+    };
 
     private void registerBR() {
-        BroadcastManager.getInstance(this).register(AppConst.FETCH_COMPLETE, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                hideWaitingDialog();
-            }
-        });
-        BroadcastManager.getInstance(this).register(CONNECTIVITY_CHANGE_ACTION, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (TextUtils.equals(action, CONNECTIVITY_CHANGE_ACTION)) {
-                    checkNetwork();
-                }
-            }
-        });
-        BroadcastManager.getInstance(this).register(AppConst.NET_STATUS, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.i(TAG, "您的网络不可用");
-                if (intent.getStringExtra("net_status").equals("failed")) {
-                    showNetworkFail();
-                }
-            }
-        });
-        BroadcastManager.getInstance(this).register(Intent.ACTION_TIME_TICK, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        });
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.FETCH_COMPLETE));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.CONNECTIVITY_CHANGE_ACTION));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.NET_STATUS));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.AGREE_MY_INVITE));
+
     }
 
 
     private void unRegisterBR() {
-        BroadcastManager.getInstance(this).unregister(AppConst.FETCH_COMPLETE);
-        BroadcastManager.getInstance(this).unregister(AppConst.NET_STATUS);
-        BroadcastManager.getInstance(this).unregister(CONNECTIVITY_CHANGE_ACTION);
-        BroadcastManager.getInstance(this).unregister(Intent.ACTION_TIME_TICK);
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override

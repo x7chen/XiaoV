@@ -3,6 +3,7 @@ package com.cfk.xiaov.ui.fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +17,13 @@ import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.request.PushRequest;
-import com.cfk.xiaov.model.response.PushResponse;
 import com.cfk.xiaov.ui.ActionEvent.RecyclerViewClickListener;
 import com.cfk.xiaov.ui.activity.VideoChatViewActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.adapter.ContactsListAdapter;
-import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.google.gson.Gson;
@@ -87,23 +85,29 @@ public class ContactsFragment extends BaseFragment {
 //                getContext().sendBroadcast(intent);
 //                Log.i(TAG, "Monitor OnClick");
                 Intent intent = new Intent(getContext(), VideoChatViewActivity.class);
-                PushResponse.ResultEntity pushMessage = new PushResponse.ResultEntity(
-                        AppConst.PUSH_METHOD_CALL,
+                PushRequest.Extra extra = new PushRequest.Extra();
+                extra.setChannel(AccountCache.getAccount());
+                PushRequest pushMessage = new PushRequest(
                         AccountCache.getAccount(),
                         contactsListAdapter.getAdapterData().get(position).getAccount(),
-                        AccountCache.getAccount()
+                        AppConst.PUSH_METHOD.CALL,
+                        extra
                         );
 
-                Type mType = new TypeToken<PushResponse.ResultEntity>() {
+                Type mType = new TypeToken<PushRequest>() {
                 }.getType();
                 Gson gson = new Gson();
                 String json = gson.toJson(pushMessage,mType);
                 intent.putExtra("json", json);
-                ApiRetrofit.getInstance().push(pushMessage.getChannel(),AppConst.PUSH_METHOD_CALL,pushMessage.getTo())
+                PushRequest.Extra extra1 = new PushRequest.Extra();
+                extra1.setChannel(pushMessage.getExtra().getChannel());
+                ApiRetrofit.getInstance().push(AppConst.PUSH_METHOD.CALL,pushMessage.getTo(),extra1)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(pushResponse -> {},ContactsFragment.this::rxError);
-                startActivity(intent);
+                        .subscribe(pushResponse -> {
+                            startActivity(intent);
+                        },ContactsFragment.this::rxError);
+
             }
 
             @Override
@@ -117,7 +121,6 @@ public class ContactsFragment extends BaseFragment {
     private void rxError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
     }
     public void updateView() {
         if (MyApp.getBondDeviceDao().count() == 0) {
@@ -169,17 +172,18 @@ public class ContactsFragment extends BaseFragment {
         unRegisterBR();
     }
 
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getConversations();
+        }
+    };
     private void registerBR() {
-        BroadcastManager.getInstance(getActivity()).register(AppConst.UPDATE_CONVERSATIONS, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                getConversations();
-            }
-        });
+        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(AppConst.Action.UPDATE_CONVERSATIONS));
     }
 
     private void unRegisterBR() {
-        BroadcastManager.getInstance(getActivity()).unregister(AppConst.UPDATE_CONVERSATIONS);
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     public void getConversations() {

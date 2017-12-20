@@ -5,7 +5,7 @@ import com.cfk.xiaov.util.SPUtils;
 import com.cfk.xiaov.util.UIUtils;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 用户缓存
  */
 public class AccountCache {

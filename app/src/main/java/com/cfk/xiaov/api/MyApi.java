@@ -26,13 +26,13 @@ import retrofit2.http.Url;
 import rx.Observable;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 server端api
  */
 
 public interface MyApi {
 
-    public static final String BASE_URL = "http://www.abc-workflow.com/";
+    String BASE_URL = "http://www.abc-workflow.com/";
 
     //检查ID是否被注册
     @POST("users/check_available")

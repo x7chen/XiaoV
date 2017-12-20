@@ -3,6 +3,7 @@ package com.cfk.xiaov.ui.fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.activity.MainActivity;
@@ -41,7 +41,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 我界面
  */
 public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implements IMeFgView {
@@ -140,17 +140,19 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
         LogUtils.sf(throwable.getLocalizedMessage());
     }
 
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mPresenter.loadUserInfo();
+        }
+    };
+
     private void registerBR() {
-        BroadcastManager.getInstance(getActivity()).register(AppConst.CHANGE_INFO_FOR_ME, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mPresenter.loadUserInfo();
-            }
-        });
+        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(AppConst.Action.CHANGE_INFO_FOR_ME));
     }
 
     private void unregisterBR() {
-        BroadcastManager.getInstance(getActivity()).unregister(AppConst.CHANGE_INFO_FOR_ME);
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     @Override

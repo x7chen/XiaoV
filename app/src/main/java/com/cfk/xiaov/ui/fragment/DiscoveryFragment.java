@@ -18,7 +18,7 @@ import com.lqr.optionitemview.OptionItemView;
 import butterknife.BindView;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 发现界面
  */
 public class DiscoveryFragment extends BaseFragment {

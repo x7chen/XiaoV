@@ -2,7 +2,7 @@ package com.cfk.xiaov.widget;
 
 public interface OnDetectScrollListener {
 
-        public void onUpScrolling();
+        void onUpScrolling();
 
-        public void onDownScrolling();
+        void onDownScrolling();
     }

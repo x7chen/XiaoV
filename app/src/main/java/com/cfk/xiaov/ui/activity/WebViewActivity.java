@@ -18,7 +18,7 @@ import com.cfk.xiaov.widget.ProgressWebView;
 import butterknife.BindView;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 内置浏览器界面
  */
 public class WebViewActivity extends BaseActivity {

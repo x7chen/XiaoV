@@ -1,5 +1,6 @@
 package com.cfk.xiaov.ui.activity;
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.widget.EditText;
 
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
@@ -20,7 +20,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 更改名字界面
  */
 public class ChangeMyNameActivity extends BaseActivity {
@@ -74,8 +74,8 @@ public class ChangeMyNameActivity extends BaseActivity {
                     hideWaitingDialog();
                     if (setNameResponse.getCode() == 200) {
                         MyInfoCache.setNickName(nickName);
-                        BroadcastManager.getInstance(ChangeMyNameActivity.this).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
-                        BroadcastManager.getInstance(ChangeMyNameActivity.this).sendBroadcast(AppConst.CHANGE_INFO_FOR_CHANGE_NAME);
+                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
+                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_CHANGE_NAME));
                         finish();
                     }
                 }, this::loadError);

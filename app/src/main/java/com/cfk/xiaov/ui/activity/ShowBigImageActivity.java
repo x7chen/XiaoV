@@ -30,7 +30,7 @@ import butterknife.BindView;
 import okhttp3.ResponseBody;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 查看头像
  */
 public class ShowBigImageActivity extends BaseActivity {

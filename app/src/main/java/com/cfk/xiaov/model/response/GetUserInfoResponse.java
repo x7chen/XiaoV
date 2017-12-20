@@ -40,6 +40,7 @@ public class GetUserInfoResponse {
         private String id;
         private String nickname;
         private String portraitUri;
+        private int type;
 
         public void setId(String id) {
             this.id = id;
@@ -63,6 +64,14 @@ public class GetUserInfoResponse {
 
         public String getPortraitUri() {
             return portraitUri;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
     }
 }

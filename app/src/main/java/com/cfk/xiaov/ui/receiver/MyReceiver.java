@@ -9,9 +9,8 @@ import android.util.Log;
 
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.model.response.PushResponse;
+import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.ui.activity.ComingCallActivity;
-import com.cfk.xiaov.ui.activity.VideoChatViewActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,22 +43,27 @@ public class MyReceiver extends BroadcastReceiver {
 
             String src = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             Log.d(TAG, "接受到推送下来的自定义消息:" + src);
-            Type mType = new TypeToken<PushResponse.ResultEntity>() {
+            Type mType = new TypeToken<PushRequest>() {
             }.getType();
             Gson gson = new Gson();
-            PushResponse.ResultEntity pushMessage = gson.fromJson(src, mType);
+            PushRequest pushMessage = gson.fromJson(src, mType);
 //            String gsonResult = gson.toJson(pushMessage,mType);
 //            Log.i(TAG,gsonResult);
             if (pushMessage != null) {
-                if(pushMessage.getMethod().equals(AppConst.PUSH_METHOD_CALL)) {
+                if (pushMessage.getMethod().equals(AppConst.PUSH_METHOD.CALL)) {
                     Intent intent1 = new Intent(MyApp.ApplicationContext, ComingCallActivity.class);
                     intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent1.putExtra("json", src);
 
                     MyApp.ApplicationContext.startActivity(intent1);
                     // Push Talk messages are push down by custom message format
-                }else if(pushMessage.getMethod().equals(AppConst.PUSH_METHOD_HANGUP)){
-                    MyApp.ApplicationContext.sendBroadcast(new Intent(AppConst.HANG_UP_CALL));
+                } else if (pushMessage.getMethod().equals(AppConst.PUSH_METHOD.HANG_UP)) {
+                    MyApp.ApplicationContext.sendBroadcast(new Intent(AppConst.Action.HANG_UP_CALL));
+                    //BroadcastManager.getInstance(MyApp.ApplicationContext).sendBroadcast(AppConst.HANG_UP_CALL);
+                }else if(pushMessage.getMethod().equals(AppConst.PUSH_METHOD.AGREE)){
+                    Intent intent1 = new Intent(AppConst.Action.AGREE_MY_INVITE);
+                    intent1.putExtra("json",src);
+                    MyApp.ApplicationContext.sendBroadcast(intent1);
                 }
             }
 

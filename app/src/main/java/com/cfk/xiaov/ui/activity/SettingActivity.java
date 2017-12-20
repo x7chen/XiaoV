@@ -15,7 +15,7 @@ import com.lqr.optionitemview.OptionItemView;
 import butterknife.BindView;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 设置界面
  */
 public class SettingActivity extends BaseActivity {
@@ -35,7 +35,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initListener() {
         mOivAbout.setOnClickListener(v -> jumpToActivity(AboutActivity.class));
-        mOivHelpFeedback.setOnClickListener(v1 -> jumpToWebViewActivity(AppConst.WeChatUrl.HELP_FEED_BACK));
+        mOivHelpFeedback.setOnClickListener(v1 -> jumpToWebViewActivity(AppConst.MyUrl.HELP_FEED_BACK));
         mOivExit.setOnClickListener(v -> {
             if (mExitView == null) {
                 mExitView = View.inflate(this, R.layout.dialog_exit, null);

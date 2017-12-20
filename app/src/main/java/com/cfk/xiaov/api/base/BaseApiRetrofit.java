@@ -21,7 +21,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 配置Retrofit（配置网络缓存cache、配置持久cookie免登录）
  */
 
@@ -54,6 +54,7 @@ public class BaseApiRetrofit {
                 .addInterceptor(REWRITE_HEADER_CONTROL_INTERCEPTOR)
                 .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .addInterceptor(new LoggingInterceptor())
+                .connectTimeout(15,TimeUnit.SECONDS)
 //                .addInterceptor(loggingInterceptor)//设置 Debug Log 模式
                 .cache(cache)
                 .cookieJar(cookieJar)

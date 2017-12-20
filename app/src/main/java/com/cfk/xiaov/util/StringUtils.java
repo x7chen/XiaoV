@@ -3,7 +3,7 @@ package com.cfk.xiaov.util;
 import java.util.List;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 字符串工具类
  */
 public class StringUtils {

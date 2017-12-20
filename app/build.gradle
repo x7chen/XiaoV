@@ -15,24 +15,12 @@ android {
     aaptOptions.useNewCruncher = false
     defaultConfig {
         applicationId "com.cfk.xiaov"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
-        ndk {
-            //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-        }
-
-        manifestPlaceholders = [
-                JPUSH_PKGNAME : applicationId,
-                JPUSH_APPKEY : "3667f8c97cd29d4558ce5202",  //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL : "developer-default",        //暂时填写默认值即可.
-        ]
 
     }
     buildTypes {
@@ -66,7 +54,6 @@ dependencies {
     })
     compile files('libs/volley-1.0.19.jar')
     compile project(':zxing')
-    compile 'com.lqr.imagepicker:library:1.0.0'
     compile 'com.lqr.imagepicker:library:1.0.0'
     compile 'com.android.support:appcompat-v7:25.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -102,7 +89,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.2'
     compile 'org.greenrobot:greendao:3.2.2'
     compile name: 'SMSSDK-3.0.0', ext: 'aar'
-    compile 'cn.jiguang.sdk:jpush:3.0.9'
-    compile 'cn.jiguang.sdk:jcore:1.1.7'
     testCompile 'junit:junit:4.12'
 }

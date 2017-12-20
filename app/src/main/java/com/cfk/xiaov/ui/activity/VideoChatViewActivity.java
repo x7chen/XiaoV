@@ -4,37 +4,38 @@ import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.response.PushResponse;
-import com.cfk.xiaov.util.BroadcastUtils;
+import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kyleduo.switchbutton.SwitchButton;
 
 import java.lang.reflect.Type;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
@@ -46,7 +47,15 @@ public class VideoChatViewActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = VideoChatViewActivity.class.getSimpleName();
 
-    PushResponse.ResultEntity session_info;
+    @BindView(R.id.remote_video_view_container)
+    FrameLayout remoteVideoView;
+    @BindView(R.id.local_video_view_container)
+    FrameLayout localVideoView;
+    @BindView(R.id.sw_video)
+    SwitchButton swVideo;
+    @BindView(R.id.tvStatus)
+    TextView tvStatus;
+    PushRequest session_info;
     private static final int PERMISSION_REQ_ID_RECORD_AUDIO = 22;
     private static final int PERMISSION_REQ_ID_CAMERA = PERMISSION_REQ_ID_RECORD_AUDIO + 1;
 
@@ -54,49 +63,69 @@ public class VideoChatViewActivity extends AppCompatActivity {
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() { // Tutorial Step 1
         @Override
         public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setupRemoteVideo(uid);
-                }
-            });
+            runOnUiThread(() -> setupRemoteVideo(uid));
         }
 
         @Override
         public void onUserOffline(int uid, int reason) { // Tutorial Step 7
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    onRemoteUserLeft();
-                }
-            });
+            runOnUiThread(() -> onRemoteUserLeft());
         }
 
         @Override
         public void onUserMuteVideo(final int uid, final boolean muted) { // Tutorial Step 10
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    onRemoteUserVideoMuted(uid, muted);
-                }
-            });
+            runOnUiThread(() -> onRemoteUserVideoMuted(uid, muted));
+        }
+
+        @Override
+        public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
+            super.onNetworkQuality(uid, txQuality, rxQuality);
+            runOnUiThread(() -> tvStatus.setText(uid+": txQuality:"+txQuality+" txQuality:"+rxQuality));
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_chat_view);
+        setContentView(R.layout.activity_video_chat_view_land);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        ButterKnife.bind(this);
+        registerBR();
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("json");
-        Type mType = new TypeToken<PushResponse.ResultEntity>() {
+        Log.i(LOG_TAG, json);
+        Type mType = new TypeToken<PushRequest>() {
         }.getType();
         Gson gson = new Gson();
         session_info = gson.fromJson(json, mType);
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO, PERMISSION_REQ_ID_RECORD_AUDIO) && checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_REQ_ID_CAMERA)) {
             initAgoraEngineAndJoinChannel();
         }
-        registerBR();
+        initListener();
+
+    }
+
+    void initListener() {
+        swVideo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mRtcEngine.enableLocalVideo(true);
+//                mRtcEngine.muteLocalVideoStream( false);
+                mRtcEngine.muteLocalAudioStream(false);
+                buttonView.setEnabled(false);
+                localVideoView.setVisibility(View.VISIBLE);
+            }
+        });
+        localVideoView.setClickable(true);
+        localVideoView.setOnClickListener(v -> {
+            SurfaceView surfaceView1 = (SurfaceView) remoteVideoView.getChildAt(0);
+            SurfaceView surfaceView = (SurfaceView) localVideoView.getChildAt(0);
+            surfaceView1.setZOrderMediaOverlay(true);
+            surfaceView.setZOrderMediaOverlay(false);
+            localVideoView.removeAllViews();
+            remoteVideoView.removeAllViews();
+            remoteVideoView.addView(surfaceView);
+            localVideoView.addView(surfaceView1);
+
+        });
     }
 
     private void initAgoraEngineAndJoinChannel() {
@@ -162,6 +191,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
         mRtcEngine = null;
     }
 
+
     // Tutorial Step 10
     public void onLocalVideoMuteClicked(View view) {
         ImageView iv = (ImageView) view;
@@ -208,7 +238,10 @@ public class VideoChatViewActivity extends AppCompatActivity {
         } else {
             target = session_info.getFrom();
         }
-        ApiRetrofit.getInstance().push(session_info.getChannel(), AppConst.PUSH_METHOD_HANGUP, target)
+        Log.i(LOG_TAG, target);
+        PushRequest.Extra extra = new PushRequest.Extra();
+        extra.setChannel(session_info.getExtra().getChannel());
+        ApiRetrofit.getInstance().push(AppConst.PUSH_METHOD.HANG_UP, target, extra)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pushResponse -> {
@@ -219,7 +252,6 @@ public class VideoChatViewActivity extends AppCompatActivity {
     private void rxError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
     }
 
     // Tutorial Step 1
@@ -236,7 +268,10 @@ public class VideoChatViewActivity extends AppCompatActivity {
     // Tutorial Step 2
     private void setupVideoProfile() {
         mRtcEngine.enableVideo();
-        mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_360P, false);
+        mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_720P, false);
+        mRtcEngine.enableLocalVideo(false); //关闭本地视频，用于监控
+        mRtcEngine.muteLocalAudioStream(true);
+        localVideoView.setVisibility(View.GONE);
     }
 
     // Tutorial Step 3
@@ -252,8 +287,8 @@ public class VideoChatViewActivity extends AppCompatActivity {
 
     // Tutorial Step 4
     private void joinChannel() {
-
-        mRtcEngine.joinChannel(null, session_info.getChannel(), "Extra Optional Data", 0); // if you do not specify the uid, we will generate the uid for you
+        LogUtils.i(session_info.getExtra().getChannel());
+        mRtcEngine.joinChannel(null, session_info.getExtra().getChannel(), "Extra Optional Data", 0); // if you do not specify the uid, we will generate the uid for you
     }
 
     // Tutorial Step 5
@@ -281,6 +316,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
     private void onRemoteUserLeft() {
         FrameLayout container = (FrameLayout) findViewById(R.id.remote_video_view_container);
         container.removeAllViews();
+        finish();
     }
 
     // Tutorial Step 10
@@ -295,24 +331,20 @@ public class VideoChatViewActivity extends AppCompatActivity {
         }
     }
 
-    private void registerBR() {
-        BroadcastManager.getInstance(this).register(AppConst.NEW_COMING_CALL, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
 
-            }
-        });
-        BroadcastManager.getInstance(this).register(AppConst.HANG_UP_CALL, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                finish();
-            }
-        });
+    private void registerBR() {
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.HANG_UP_CALL));
+
 
     }
 
     private void unRegisterBR() {
-        BroadcastManager.getInstance(this).unregister(AppConst.NEW_COMING_CALL);
-        BroadcastManager.getInstance(this).unregister(AppConst.HANG_UP_CALL);
+        unregisterReceiver(broadcastReceiver);
     }
 }

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import java.util.Map;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 sharedPreferences工具类(单例模式)
  */
 public class SPUtils {

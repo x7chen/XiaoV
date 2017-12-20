@@ -5,60 +5,46 @@ import com.cfk.xiaov.util.FileUtils;
 import com.cfk.xiaov.util.LogUtils;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 全局常量类
  */
 public class AppConst {
 
-    public static final String TAG = "CFK_SEAN";
+    public static final String TAG = "xiaov";
     public static final int DEBUGLEVEL = LogUtils.LEVEL_ALL;//日志输出级别
 
     public static final String REGION = "86";
 
-    /*================== 广播Action begin ==================*/
-    //全局数据获取
-    public static final String FETCH_COMPLETE = "fetch_complete";
-    //好友
-    public static final String UPDATE_FRIEND = "update_friend";
-    public static final String UPDATE_RED_DOT = "update_red_dot";
-    //群组
-    public static final String UPDATE_GROUP_NAME = "update_group_name";
-    public static final String GROUP_LIST_UPDATE = "group_list_update";
-    public static final String UPDATE_GROUP = "update_group";
-    public static final String UPDATE_GROUP_MEMBER = "update_group_member";
-    public static final String GROUP_DISMISS = "group_dismiss";
-    //个人信息
-    public static final String CHANGE_INFO_FOR_ME = "change_info_for_me";
-    public static final String CHANGE_INFO_FOR_CHANGE_NAME = "change_info_for_change_name";
-    public static final String CHANGE_INFO_FOR_USER_INFO = "change_info_for_user_info";
-    //会话
-    public static final String UPDATE_CONVERSATIONS = "update_conversations";
-    public static final String UPDATE_CURRENT_SESSION = "update_current_session";
-    public static final String UPDATE_CURRENT_SESSION_NAME = "update_current_session_name";
-    public static final String REFRESH_CURRENT_SESSION = "refresh_current_session";
-    public static final String CLOSE_CURRENT_SESSION = "close_current_session";
 
-    //视频电话广播
-    public static final String NEW_COMING_CALL = "new_coming_call";
-    public static final String HANG_UP_CALL = "hang_up_call";
+
+    public static final class Action {
+        public static final String FETCH_COMPLETE = "fetch_complete";
+        public static final String CHANGE_INFO_FOR_ME = "change_info_for_me";
+        public static final String CHANGE_INFO_FOR_CHANGE_NAME = "change_info_for_change_name";
+        public static final String UPDATE_CONVERSATIONS = "update_conversations";
+        public static final String NEW_COMING_CALL = "new_coming_call";
+        public static final String HANG_UP_CALL = "hang_up_call";
+        public static final String AGREE_MY_INVITE = "agree_my_invite";
+        public static final String NET_STATUS = "net_status";
+        public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
+    }
 
     //push方法
-    public static final String PUSH_METHOD_CALL = "call";
-    public static final String PUSH_METHOD_HANGUP = "hang_up";
+    public static class PUSH_METHOD {
 
-    //视频通话
-    public static final String MAKE_CALL= "make_call";
-
-    //视频通话
-    public static final String NET_STATUS= "net_status";
-
-    /*================== 广播Action end ==================*/
+        public static final String CALL = "call";
+        public static final String HANG_UP = "hang_up";
+        public static final String INVITE = "invite";
+        public static final String DENY = "deny";
+        public static final String IGNORE = "ignore";
+        public static final String AGREE = "agree";
+    }
 
 
     public static final class User {
         public static final String ID = "id";
         public static final String PHONE = "phone";
-        //        public static final String ACCOUNT = "account";
+        //public static final String ACCOUNT = "account";
         public static final String TOKEN = "token";
     }
 
@@ -73,19 +59,15 @@ public class AppConst {
         public static final String PASSWORD = "password";
         public static final String USER_SIG = "user_sig";
     }
+
     public static final class MyInfo {
         public static final String NICK_NAME = "name";
         public static final String ACCOUNT = "account";
         public static final String AVATAR_URI = "avatarUri";
     }
-    public static final class WeChatUrl {
+
+    public static final class MyUrl {
         public static final String HELP_FEED_BACK = "http://www.runoob.com/";
-        public static final String JD = "https://m.jd.com/";
-        public static final String GAME = "http://h.4399.com/android/?301";
-        public static final String MY_JIAN_SHU = "http://www.jianshu.com/u/f9de259236a3";
-        public static final String MY_CSDN = "http://blog.csdn.net/csdn_lqr";
-        public static final String MY_OSCHINA = "https://git.oschina.net/CSDNLQR";
-        public static final String MY_GITHUB = "https://github.com/GitLqr";
     }
 
     public static final class QrCodeCommon {
@@ -94,9 +76,6 @@ public class AppConst {
         public static final String BOND = "bond:";//绑定
     }
 
-    //语音存放位置
-    public static final String AUDIO_SAVE_DIR = FileUtils.getDir("audio");
-    public static final int DEFAULT_MAX_AUDIO_RECORD_TIME_SECOND = 120;
     //视频存放位置
     public static final String VIDEO_SAVE_DIR = FileUtils.getDir("video");
     //照片存放位置

@@ -20,7 +20,7 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 气泡型ImageView
  */
 public class BubbleImageView extends ImageView {

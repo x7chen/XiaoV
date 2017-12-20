@@ -1,5 +1,6 @@
 package com.cfk.xiaov.ui.presenter;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -11,7 +12,7 @@ import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.db.model.UserInfo;
-import com.cfk.xiaov.manager.BroadcastManager;
+
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
@@ -111,9 +112,7 @@ public class MyInfoAtPresenter extends BasePresenter<IMyInfoAtView> {
                                                 }
                                             });
                                             mContext.hideWaitingDialog();
-                                            BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.CHANGE_INFO_FOR_ME);
-//                                            BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_CONVERSATIONS);
-//                                            BroadcastManager.getInstance(mContext).sendBroadcast(AppConst.UPDATE_GROUP);
+                                            mContext.sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
                                             UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.set_success));
                                         }, this::uploadError);
                             }

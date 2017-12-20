@@ -7,7 +7,6 @@ import android.util.Log;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
@@ -55,7 +54,7 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
                         AccountCache.save(userId, loginResponse.getResult().getToken(), pwd);
                         return ApiRetrofit.getInstance().getUserInfoById(userId);
                     } else {
-                        return Observable.error(new ServerException((UIUtils.getString(R.string.login_error) + code)));
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
                     }
                 })
                 .flatMap(getUserInfoByIdResponse -> {
@@ -66,7 +65,7 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
                         // 2. 获取头像链接
                         return ApiRetrofit.getInstance().getQiNiuDownloadUrl(getUserInfoByIdResponse.getResult().getPortraitUri());
                     } else {
-                        return Observable.error(new ServerException((UIUtils.getString(R.string.login_error) + code)));
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
                     }
                 })
                 .flatMap(qiNiuDownloadResponse -> {
@@ -75,7 +74,7 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
                         // 下载头像
                         return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
                     } else {
-                        return Observable.error(new ServerException((UIUtils.getString(R.string.login_error) + code)));
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -83,7 +82,7 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
                 .subscribe(responseBody -> {
                     mContext.hideWaitingDialog();
                     MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
-                    mContext.sendBroadcast(new Intent(AppConst.CHANGE_INFO_FOR_ME));
+                    mContext.sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
                     mContext.jumpToActivityAndClearTask(MainActivity.class);
                     mContext.finish();
                 }, this::loginError);
@@ -92,7 +91,7 @@ public class LoginAtPresenter extends BasePresenter<ILoginAtView> {
     private void loginError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
+        BroadcastUtils.sendBroadcast(AppConst.Action.NET_STATUS, "net_status", "failed");
         mContext.hideWaitingDialog();
     }
 }

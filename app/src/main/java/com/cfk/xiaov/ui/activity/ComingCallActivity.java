@@ -4,6 +4,7 @@ import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -21,10 +22,9 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.manager.BroadcastManager;
 import com.cfk.xiaov.model.exception.ServerException;
+import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
-import com.cfk.xiaov.model.response.PushResponse;
 import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
@@ -53,7 +53,7 @@ public class ComingCallActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
 
     Thread timeoutThread;
-    PushResponse.ResultEntity session_info;
+    PushRequest session_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class ComingCallActivity extends AppCompatActivity {
         registerBR();
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("json");
-        Type mType = new TypeToken<PushResponse.ResultEntity>() {
+        Type mType = new TypeToken<PushRequest>() {
         }.getType();
         Gson gson = new Gson();
         session_info = gson.fromJson(json, mType);
@@ -77,13 +77,6 @@ public class ComingCallActivity extends AppCompatActivity {
     private void rxError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
-    }
-
-    private void loadError(Throwable throwable) {
-        LogUtils.e(throwable.getLocalizedMessage());
-        UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
     }
 
     void initView() {
@@ -115,7 +108,7 @@ public class ComingCallActivity extends AppCompatActivity {
                         });
                         mUserName.setText(nickName[0]);
                     }
-                }, this::loadError);
+                }, this::rxError);
 
         mediaPlayer = new MediaPlayer();
         AssetFileDescriptor fileDescriptor = null;
@@ -146,7 +139,9 @@ public class ComingCallActivity extends AppCompatActivity {
             finish();
         });
         mIbDeny.setOnClickListener(v -> {
-            ApiRetrofit.getInstance().push(session_info.getChannel(), AppConst.PUSH_METHOD_HANGUP, session_info.getFrom())
+            PushRequest.Extra extra = new PushRequest.Extra();
+            extra.setChannel(session_info.getFrom());
+            ApiRetrofit.getInstance().push(AppConst.PUSH_METHOD.HANG_UP, session_info.getFrom(), extra)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(pushResponse -> {
@@ -207,7 +202,7 @@ public class ComingCallActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), VideoChatViewActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Type mType = new TypeToken<PushResponse.ResultEntity>() {
+        Type mType = new TypeToken<PushRequest>() {
         }.getType();
         Gson gson = new Gson();
         String json = gson.toJson(session_info, mType);
@@ -215,24 +210,21 @@ public class ComingCallActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void registerBR() {
-        BroadcastManager.getInstance(this).register(AppConst.NEW_COMING_CALL, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
 
-            }
-        });
-        BroadcastManager.getInstance(this).register(AppConst.HANG_UP_CALL, new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                finish();
-            }
-        });
+    private void registerBR() {
+        registerReceiver(receiver, new IntentFilter(AppConst.Action.HANG_UP_CALL));
+
 
     }
 
     private void unRegisterBR() {
-        BroadcastManager.getInstance(this).unregister(AppConst.NEW_COMING_CALL);
-        BroadcastManager.getInstance(this).unregister(AppConst.HANG_UP_CALL);
+
+        unregisterReceiver(receiver);
     }
 }

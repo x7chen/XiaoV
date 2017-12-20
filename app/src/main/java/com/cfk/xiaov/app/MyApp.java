@@ -59,7 +59,7 @@ public class MyApp extends BaseApp {
             Set<String> tags = new HashSet<>(1);
             tags.add(AccountCache.getAccount());
 
-            JPushInterface.addTags(this, 0, tags);
+            JPushInterface.setTags(this, 0, tags);
         }
 
     }

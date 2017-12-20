@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 写文件的工具类
  */
 public class FileUtils {
@@ -30,12 +30,8 @@ public class FileUtils {
      * 判断SD卡是否挂载
      */
     public static boolean isSDCardAvailable() {
-        if (Environment.MEDIA_MOUNTED.equals(Environment
-                .getExternalStorageState())) {
-            return true;
-        } else {
-            return false;
-        }
+        return Environment.MEDIA_MOUNTED.equals(Environment
+                .getExternalStorageState());
     }
 
     /**

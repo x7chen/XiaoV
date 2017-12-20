@@ -1,7 +1,7 @@
 package com.cfk.xiaov.ui.fragment;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 主界面4个Fragment工厂
  */
 public class FragmentFactory {

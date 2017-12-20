@@ -18,7 +18,7 @@ import com.cfk.xiaov.util.UIUtils;
 import butterknife.BindView;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 登录界面
  */
 public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> implements ILoginAtView {
@@ -92,10 +92,7 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
     private boolean canLogin() {
         int pwdLength = mEtPwd.getText().toString().trim().length();
         int phoneLength = mEtUserId.getText().toString().trim().length();
-        if (pwdLength > 0 && phoneLength > 0) {
-            return true;
-        }
-        return false;
+        return pwdLength > 0 && phoneLength > 0;
     }
 
 

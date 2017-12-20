@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 快速导航条
  */
 public class QuickIndexBar extends View {

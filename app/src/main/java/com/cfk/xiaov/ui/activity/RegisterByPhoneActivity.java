@@ -176,7 +176,7 @@ public class RegisterByPhoneActivity extends BaseActivity {
                     .subscribe(responseBody -> {
                         hideWaitingDialog();
                         MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
-                        sendBroadcast(new Intent(AppConst.CHANGE_INFO_FOR_ME));
+                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
                         jumpToActivityAndClearTask(MainActivity.class);
                         finish();
                     }, this::registerError);
@@ -190,7 +190,7 @@ public class RegisterByPhoneActivity extends BaseActivity {
     private void registerError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.NET_STATUS, "net_status", "failed");
+        BroadcastUtils.sendBroadcast(AppConst.Action.NET_STATUS, "net_status", "failed");
     }
     @Override
     protected BasePresenter createPresenter() {

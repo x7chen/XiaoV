@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 跟网络相关的工具类
  */
 public class NetUtils {

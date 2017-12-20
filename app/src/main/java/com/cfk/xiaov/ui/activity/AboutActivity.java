@@ -4,7 +4,7 @@ import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
 
 /**
- * @创建者 CSDN_LQR
+ * @创建者 Sean
  * @描述 关于界面
  */
 public class AboutActivity extends BaseActivity {

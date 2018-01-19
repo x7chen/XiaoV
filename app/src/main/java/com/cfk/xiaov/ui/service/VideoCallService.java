@@ -7,18 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.data.TCallParameter;
-import com.cfk.xiaov.ui.activity.CallActivity;
-import com.cfk.xiaov.ui.activity.ComingCallActivity;
 import com.cfk.xiaov.ui.activity.TComingCallActivity;
-import com.cfk.xiaov.util.NetUtils;
-import com.cfk.xiaov.util.UIUtils;
 import com.tencent.callsdk.ILVCallConfig;
 import com.tencent.callsdk.ILVCallListener;
 import com.tencent.callsdk.ILVCallManager;
@@ -26,9 +21,6 @@ import com.tencent.callsdk.ILVCallNotification;
 import com.tencent.callsdk.ILVCallNotificationListener;
 import com.tencent.callsdk.ILVIncomingListener;
 import com.tencent.callsdk.ILVIncomingNotification;
-import com.tencent.ilivesdk.core.ILiveLoginManager;
-
-import java.util.ArrayList;
 
 public class VideoCallService extends Service implements ILVIncomingListener, ILVCallListener, ILVCallNotificationListener {
     String TAG = getClass().getSimpleName();
@@ -123,11 +115,11 @@ public class VideoCallService extends Service implements ILVIncomingListener, IL
         Intent intent = new Intent();
         intent.setClass(this, TComingCallActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        TCallParameter parameter = new TCallParameter(  notification.getSponsorId(),
-                                                        callId,
-                                                        callType,
-                                                        notification.getSender(),
-                                                        null);
+        TCallParameter parameter = new TCallParameter(notification.getSponsorId(),
+                callId,
+                callType,
+                notification.getSender(),
+                AccountCache.getAccount());
         intent.putExtra("json", parameter.toJson());
         startActivity(intent);
     }

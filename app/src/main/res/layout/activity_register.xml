@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="290dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:orientation="vertical"
         android:paddingLeft="10dp"
@@ -40,11 +40,11 @@
                     android:layout_height="100px"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="30px"
-                    android:paddingRight="30px">
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <TextView
-                        android:layout_width="120px"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/nickname"
                         android:textColor="@color/black0"
@@ -58,7 +58,7 @@
                         android:hint="最多六个汉字或12个字母或数字"
                         android:padding="10dp"
                         android:textColorHint="@color/gray3"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -89,6 +89,7 @@
                 android:id="@+id/tvArea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:text="中国"
                 android:textColor="@color/colorPrimary" />
 
@@ -98,16 +99,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="90px"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="30px">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tvAreaCode"
-                android:layout_width="120px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:text="ID"
                 android:textColor="@color/black0"
                 android:textSize="14sp" />
@@ -117,12 +119,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="您的ID(字母开头，6-16位长度)"
+                android:hint="字母开头，6-16位长度"
                 android:inputType="text"
                 android:padding="10dp"
                 android:text=""
                 android:textColorHint="@color/gray3"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -136,15 +138,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="90px"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="30px"
-                android:paddingRight="30px">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
                 <TextView
-                    android:layout_width="120px"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:text="@string/password"
                     android:textColor="@color/black0"
                     android:textSize="14sp" />
@@ -153,24 +156,24 @@
                     android:id="@+id/etPwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="56px"
+                    android:layout_marginEnd="20dp"
                     android:background="@null"
-                    android:hint="填写密码（可以是字母或数字，8-18位长度）"
+                    android:hint="可以是字母或数字，8-18位长度"
                     android:inputType="textPassword"
                     android:padding="10dp"
                     android:text=""
                     android:textColorHint="@color/gray3"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/ivSeePwd"
-                android:layout_width="60px"
-                android:layout_height="60px"
-                android:layout_alignParentRight="true"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20px"
+                android:layout_marginEnd="8dp"
                 android:src="@mipmap/ic_see_pwd" />
         </RelativeLayout>
 
@@ -178,16 +181,12 @@
             android:id="@+id/vLinePwd"
             style="@style/Line" />
 
-        <View
-            android:id="@+id/vLineVertifyCode"
-            style="@style/Line" />
-
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
-            android:layout_height="90px"
-            android:layout_marginBottom="30px"
-            android:layout_marginTop="40px"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/selector_login_btn"
             android:enabled="true"
             android:text="注册"

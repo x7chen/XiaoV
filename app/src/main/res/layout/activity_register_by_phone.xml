@@ -13,7 +13,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/autoLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
@@ -39,12 +38,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="30px"
-                    android:paddingRight="30px">
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <TextView
-                        android:layout_width="120px"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="10dp"
                         android:text="@string/nickname"
                         android:textColor="@color/black0"
                         android:textSize="14sp" />
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="中国"
-                android:textColor="@color/green1"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -102,14 +102,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="30px">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tvAreaCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:padding="10dp"
                 android:text="+86"
                 android:textColor="@color/black0"
                 android:textSize="14sp" />
@@ -132,66 +133,19 @@
             android:id="@+id/vLinePhone"
             style="@style/Line" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="90px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="30px"
-                android:paddingRight="30px">
-
-                <TextView
-                    android:layout_width="120px"
-                    android:layout_height="wrap_content"
-                    android:text="@string/password"
-                    android:textColor="@color/black0"
-                    android:textSize="28px" />
-
-                <EditText
-                    android:id="@+id/etPwd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="56px"
-                    android:background="@null"
-                    android:hint="填写密码"
-                    android:inputType="textPassword"
-                    android:text=""
-                    android:textColorHint="@color/gray3"
-                    android:textSize="28px" />
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/ivSeePwd"
-                android:layout_width="60px"
-                android:layout_height="60px"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20px"
-                android:src="@mipmap/ic_see_pwd" />
-        </RelativeLayout>
-
-        <View
-            android:id="@+id/vLinePwd"
-            style="@style/Line" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="20px">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:padding="10dp"
                 android:text="@string/verification_code"
                 android:textColor="@color/black0"
                 android:textSize="14sp" />
@@ -226,9 +180,9 @@
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
-            android:layout_height="90px"
-            android:layout_marginBottom="30px"
-            android:layout_marginTop="40px"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/selector_login_btn"
             android:enabled="false"
             android:text="注册"

@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:orientation="vertical"
-        android:paddingLeft="30px"
-        android:paddingRight="30px"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,8 +31,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
                 android:layout_weight="1"
+                android:padding="10dp"
                 android:text="@string/area"
                 android:textColor="@color/black0"
                 android:textSize="14sp" />
@@ -41,9 +41,9 @@
                 android:id="@+id/tvArea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20px"
+                android:layout_marginRight="10dp"
                 android:text="中国"
-                android:textColor="@color/green1"
+                android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -90,8 +90,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="20px">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/selector_login_btn"
             android:enabled="false"
             android:text="登录"
@@ -149,7 +149,6 @@
         android:padding="10dp"
         android:text="使用普通方式登录"
         android:textColor="@color/colorAccent"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

@@ -52,11 +52,11 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="30px">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
-                android:layout_width="120px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID"
                 android:textColor="@color/black0"
@@ -85,11 +85,11 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="30px">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
-                android:layout_width="120px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="密码"
                 android:textColor="@color/black0"
@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/selector_login_btn"
             android:enabled="false"
             android:text="登录"

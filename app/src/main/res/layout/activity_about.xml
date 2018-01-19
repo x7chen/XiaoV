@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray5"
@@ -9,11 +7,11 @@
 
     <include layout="@layout/include_toolbar"/>
 
-    <com.zhy.autolayout.AutoRelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300px">
+        android:layout_height="100dp">
 
-        <com.zhy.autolayout.AutoLinearLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -28,59 +26,53 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4px"
+                android:layout_marginTop="2dp"
                 android:text="@string/app_name_in_about"
                 android:textColor="@color/gray2"
-                android:textSize="18sp"/>
-        </com.zhy.autolayout.AutoLinearLayout>
-    </com.zhy.autolayout.AutoRelativeLayout>
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical">
 
-        <com.lqr.optionitemview.OptionItemView
+        <TextView
             style="@style/OptionItem"
+            android:layout_marginStart="10dp"
             android:background="@drawable/selector_option_item"
-            app:left_text="@string/function_introduction"
-            app:left_text_color="@color/black0"
-            app:left_text_margin_left="@dimen/option_item_margin_left"
-            app:left_text_size="16sp"/>
+            android:text="@string/function_introduction" />
 
         <View
             style="@style/Line"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             />
 
 
-        <com.lqr.optionitemview.OptionItemView
+        <TextView
             style="@style/OptionItem"
+            android:layout_marginStart="10dp"
             android:background="@drawable/selector_option_item"
-            app:left_text="@string/complaint"
-            app:left_text_color="@color/black0"
-            app:left_text_margin_left="@dimen/option_item_margin_left"
-            app:left_text_size="16sp"/>
+            android:text="@string/complaint" />
 
         <View
             style="@style/Line"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             />
 
 
-        <com.lqr.optionitemview.OptionItemView
+        <TextView
             style="@style/OptionItem"
+            android:layout_marginStart="10dp"
             android:background="@drawable/selector_option_item"
-            app:left_text="@string/check_update"
-            app:left_text_color="@color/black0"
-            app:left_text_margin_left="@dimen/option_item_margin_left"
-            app:left_text_size="16sp"/>
+            android:text="@string/check_update" />
 
 
-    </com.zhy.autolayout.AutoLinearLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -103,4 +95,4 @@
 
 
 
-</com.zhy.autolayout.AutoLinearLayout>
+</LinearLayout>

@@ -21,11 +21,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
-import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.google.gson.Gson;
@@ -65,11 +64,8 @@ public class ComingCallActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         registerBR();
         Bundle bundle = getIntent().getExtras();
-        String json = bundle.getString("json");
-        Type mType = new TypeToken<PushRequest>() {
-        }.getType();
-        Gson gson = new Gson();
-        session_info = gson.fromJson(json, mType);
+        String json = bundle != null ? bundle.getString("json") : null;
+        session_info = PushRequest.parserFromJson(json);
         initView();
         initListener();
     }
@@ -141,7 +137,7 @@ public class ComingCallActivity extends AppCompatActivity {
         mIbDeny.setOnClickListener(v -> {
             PushRequest.Extra extra = new PushRequest.Extra();
             extra.setChannel(session_info.getFrom());
-            ApiRetrofit.getInstance().push(AppConst.PUSH_METHOD.HANG_UP, session_info.getFrom(), extra)
+            ApiRetrofit.getInstance().push(AppConstants.PUSH_METHOD.HANG_UP, session_info.getFrom(), extra)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(pushResponse -> {
@@ -202,10 +198,7 @@ public class ComingCallActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), VideoChatViewActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Type mType = new TypeToken<PushRequest>() {
-        }.getType();
-        Gson gson = new Gson();
-        String json = gson.toJson(session_info, mType);
+        String json = session_info.toJson();
         intent.putExtra("json", json);
         startActivity(intent);
     }
@@ -218,7 +211,7 @@ public class ComingCallActivity extends AppCompatActivity {
     };
 
     private void registerBR() {
-        registerReceiver(receiver, new IntentFilter(AppConst.Action.HANG_UP_CALL));
+        registerReceiver(receiver, new IntentFilter(AppConstants.Action.HANG_UP_CALL));
 
 
     }

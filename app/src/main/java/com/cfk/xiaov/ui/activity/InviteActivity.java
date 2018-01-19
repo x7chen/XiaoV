@@ -1,7 +1,6 @@
 package com.cfk.xiaov.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,9 +8,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.db.model.BondDevice;
-import com.cfk.xiaov.model.cache.MyInfoCache;
+import com.cfk.xiaov.app.AppConstants;
+import com.cfk.xiaov.model.db.BondDevice;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
@@ -21,7 +19,6 @@ import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -87,7 +84,7 @@ public class InviteActivity extends BaseActivity {
         btInvite.setOnClickListener(v -> {
             PushRequest.Extra extra = new PushRequest.Extra();
             extra.setMessage(tvMessage.getText().toString());
-            ApiRetrofit.getInstance().push(AppConst.PUSH_METHOD.INVITE, mAccount, extra)
+            ApiRetrofit.getInstance().push(AppConstants.PUSH_METHOD.INVITE, mAccount, extra)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(pushResponse -> {

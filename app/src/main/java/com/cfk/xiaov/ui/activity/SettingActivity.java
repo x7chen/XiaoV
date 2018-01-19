@@ -1,9 +1,10 @@
 package com.cfk.xiaov.ui.activity;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
@@ -23,19 +24,17 @@ public class SettingActivity extends BaseActivity {
     private View mExitView;
 
     @BindView(R.id.oivAbout)
-    OptionItemView mOivAbout;
+    TextView mOivAbout;
     @BindView(R.id.oivHelpFeedback)
-    OptionItemView mOivHelpFeedback;
+    TextView mOivHelpFeedback;
     @BindView(R.id.oivExit)
-    OptionItemView mOivExit;
-    @BindView(R.id.oivDeviceManager)
-    OptionItemView mOivDeviceManager;
+    TextView mOivExit;
     private CustomDialog mExitDialog;
 
     @Override
     public void initListener() {
         mOivAbout.setOnClickListener(v -> jumpToActivity(AboutActivity.class));
-        mOivHelpFeedback.setOnClickListener(v1 -> jumpToWebViewActivity(AppConst.MyUrl.HELP_FEED_BACK));
+        mOivHelpFeedback.setOnClickListener(v1 -> jumpToWebViewActivity(AppConstants.MyUrl.HELP_FEED_BACK));
         mOivExit.setOnClickListener(v -> {
             if (mExitView == null) {
                 mExitView = View.inflate(this, R.layout.dialog_exit, null);

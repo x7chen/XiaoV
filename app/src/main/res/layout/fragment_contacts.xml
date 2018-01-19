@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
-        <com.zhy.autolayout.AutoRelativeLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_video_bg">
@@ -22,7 +22,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <com.zhy.autolayout.AutoRelativeLayout
+            <RelativeLayout
                 android:id="@+id/not_bond_device_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -34,9 +34,9 @@
                     android:layout_marginTop="30dp"
                     android:text="请点击[扫一扫]绑定设备"
                     android:textSize="16sp" />
-            </com.zhy.autolayout.AutoRelativeLayout>
+            </RelativeLayout>
 
-            <com.zhy.autolayout.AutoRelativeLayout
+            <RelativeLayout
                 android:id="@+id/bond_device_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -49,9 +49,9 @@
                     android:layout_centerHorizontal="true">
 
                 </android.support.v7.widget.RecyclerView>
-            </com.zhy.autolayout.AutoRelativeLayout>
+            </RelativeLayout>
 
-            <com.zhy.autolayout.AutoRelativeLayout
+            <RelativeLayout
                 android:id="@+id/bond_device_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -74,11 +74,11 @@
                     android:text="在线"
                     android:textColor="@color/white" />
 
-            </com.zhy.autolayout.AutoRelativeLayout>
+            </RelativeLayout>
 
-        </com.zhy.autolayout.AutoRelativeLayout>
+        </RelativeLayout>
 
-        <com.zhy.autolayout.AutoRelativeLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#F7EED6"
@@ -100,9 +100,9 @@
 
             </android.support.v7.widget.RecyclerView>
 
-        </com.zhy.autolayout.AutoRelativeLayout>
+        </RelativeLayout>
 
-        <com.zhy.autolayout.AutoRelativeLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp">
 
@@ -128,7 +128,7 @@
 
             </android.support.v7.widget.RecyclerView>
 
-        </com.zhy.autolayout.AutoRelativeLayout>
+        </RelativeLayout>
 
-    </com.zhy.autolayout.AutoLinearLayout>
+    </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

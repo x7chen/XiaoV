@@ -10,8 +10,7 @@ import android.widget.Toast;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
-import com.cfk.xiaov.app.MyApp;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
@@ -176,9 +175,8 @@ public class RegisterByPhoneActivity extends BaseActivity {
                     .subscribe(responseBody -> {
                         hideWaitingDialog();
                         MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
-                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
+                        sendBroadcast(new Intent(AppConstants.Action.CHANGE_INFO_FOR_ME));
                         jumpToActivityAndClearTask(MainActivity.class);
-                        finish();
                     }, this::registerError);
         });
         tvRegisterByNormal.setOnClickListener(view -> {
@@ -190,7 +188,7 @@ public class RegisterByPhoneActivity extends BaseActivity {
     private void registerError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.Action.NET_STATUS, "net_status", "failed");
+        BroadcastUtils.sendBroadcast(AppConstants.Action.NET_STATUS, "net_status", "failed");
     }
     @Override
     protected BasePresenter createPresenter() {

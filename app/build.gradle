@@ -5,11 +5,11 @@ android {
         config {
             keyAlias 'cfk'
             keyPassword 'cfk123'
-            storeFile file('C:/G/anProject/key/cfk_cfk123.jks')
+            storeFile file('C:/Workspace/anProject/key/cfk_cfk123.jks')
             storePassword 'cfk123'
         }
     }
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
@@ -21,7 +21,14 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
+        ndk {
+            abiFilters "armeabi-v7a","armeabi"
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "3667f8c97cd29d4558ce5202",  //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "developer-default",         //暂时填写默认值即可.
+        ]
     }
     buildTypes {
         release {
@@ -48,46 +55,46 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile files('libs/volley-1.0.19.jar')
-    compile project(':zxing')
-    compile 'com.lqr.imagepicker:library:1.0.0'
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.4.0'
-    compile 'com.android.support:cardview-v7:25.4.0'
-    compile 'com.lqr.adapter:library:1.0.2'
-    compile 'com.lqr.recyclerview:library:1.0.2'
-    compile 'com.lqr.ninegridimageview:library:1.0.0'
-    compile 'com.lqr.optionitemview:library:1.0.7'
-    compile 'com.lqr.emoji:library:1.0.2'
-    compile 'com.lqr.audio:library:1.0.0'
-    compile 'cjt.library.wheel:camera:0.1.9'
-    compile 'com.zhy:autolayout:1.4.5'
-    compile 'com.jaeger.statusbaruitl:library:1.3.5'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.7'
-    compile 'me.drakeet.materialdialog:library:1.3.1'
-    compile 'com.kyleduo.switchbutton:library:1.4.6'
-    compile 'com.alibaba:fastjson:1.2.29'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.lovedise:permissiongen:0.0.6'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    compile 'com.squareup.okio:okio:1.13.0'
-    compile 'com.qiniu:qiniu-android-sdk:7.3.3'
-    compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.bm.photoview:library:1.4.1'
-    compile 'com.android.support:multidex:1.0.2'
-    compile 'org.greenrobot:greendao:3.2.2'
-    compile name: 'SMSSDK-3.0.0', ext: 'aar'
     testCompile 'junit:junit:4.12'
+    implementation project(':zxing')
+    implementation name: 'SMSSDK-3.0.0', ext: 'aar'
+    implementation 'com.lqr.imagepicker:library:1.0.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.lqr.ninegridimageview:library:1.0.0'
+    implementation 'com.lqr.optionitemview:library:1.0.7'
+    implementation 'cjt.library.wheel:camera:0.1.9'
+    implementation 'com.jaeger.statusbaruitl:library:1.3.5'
+    implementation 'me.drakeet.materialdialog:library:1.3.1'
+    implementation 'com.kyleduo.switchbutton:library:1.4.6'
+    implementation 'com.alibaba:fastjson:1.2.29'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.lovedise:permissiongen:0.0.6'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.2.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.squareup.okio:okio:1.13.0'
+    implementation 'com.qiniu:qiniu-android-sdk:7.3.3'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.bm.photoview:library:1.4.1'
+    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'cn.jiguang.sdk:jpush:3.1.1'
+    implementation 'cn.jiguang.sdk:jcore:1.1.9'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.zxing:android-core:3.3.0'
+    implementation 'joda-time:joda-time:2.9.6'
+    implementation 'com.tencent.ilivesdk:ilivesdk:1.7.2'
+    implementation 'com.tencent.callsdk:callsdk:1.0.30'
 }

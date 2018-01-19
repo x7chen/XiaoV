@@ -13,7 +13,6 @@ import android.webkit.WebViewClient;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.base.BasePresenter;
-import com.lqr.optionitemview.OptionItemView;
 
 import butterknife.BindView;
 
@@ -24,8 +23,6 @@ import butterknife.BindView;
 public class DiscoveryFragment extends BaseFragment {
 
     String TAG = getClass().getSimpleName();
-    @BindView(R.id.oivScan)
-    OptionItemView mOivScan;
     @BindView(R.id.discovery_view)
     WebView mDiscoveryView;
     @BindView(R.id.fab)

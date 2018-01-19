@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoFrameLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
-        <com.zhy.autolayout.AutoLinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="50px"
@@ -53,7 +53,7 @@
                 android:src="@mipmap/ic_gender_female"
                 android:visibility="gone"/>
 
-        </com.zhy.autolayout.AutoLinearLayout>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/ivCard"
@@ -75,5 +75,5 @@
             android:layout_marginTop="40px"
             android:textColor="@color/gray1"
             android:textSize="12sp"/>
-    </com.zhy.autolayout.AutoLinearLayout>
-</com.zhy.autolayout.AutoFrameLayout>
+    </LinearLayout>
+</FrameLayout>

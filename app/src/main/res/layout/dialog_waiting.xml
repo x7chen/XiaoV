@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoFrameLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.zhy.autolayout.AutoRelativeLayout
+    <RelativeLayout
         android:layout_width="480px"
         android:layout_height="160px"
         android:background="@drawable/dialog_waiting">
@@ -25,5 +25,5 @@
             android:layout_marginRight="30px"
             android:layout_toLeftOf="@id/tvTip"/>
 
-    </com.zhy.autolayout.AutoRelativeLayout>
-</com.zhy.autolayout.AutoFrameLayout>
+    </RelativeLayout>
+</FrameLayout>

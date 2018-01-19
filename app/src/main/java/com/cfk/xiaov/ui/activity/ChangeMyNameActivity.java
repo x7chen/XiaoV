@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
@@ -74,8 +74,8 @@ public class ChangeMyNameActivity extends BaseActivity {
                     hideWaitingDialog();
                     if (setNameResponse.getCode() == 200) {
                         MyInfoCache.setNickName(nickName);
-                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
-                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_CHANGE_NAME));
+                        sendBroadcast(new Intent(AppConstants.Action.CHANGE_INFO_FOR_ME));
+                        sendBroadcast(new Intent(AppConstants.Action.CHANGE_INFO_FOR_CHANGE_NAME));
                         finish();
                     }
                 }, this::loadError);

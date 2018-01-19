@@ -15,21 +15,21 @@ import android.widget.RelativeLayout;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.data.TCallParameter;
 import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.ui.ActionEvent.RecyclerViewClickListener;
+import com.cfk.xiaov.ui.activity.CallActivity;
 import com.cfk.xiaov.ui.activity.VideoChatViewActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.adapter.ContactsListAdapter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
+import com.tencent.callsdk.ILVCallConstants;
+import com.tencent.ilivesdk.core.ILiveLoginManager;
 
 import butterknife.BindView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -79,34 +79,45 @@ public class ContactsFragment extends BaseFragment {
         rvBondDevice.addOnItemTouchListener(new RecyclerViewClickListener(getContext(), rvBondDevice, new RecyclerViewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                Intent intent = new Intent();
-//                intent.setAction(AppConst.MAKE_CALL);
-//                intent.putExtra("CallId", contactsListAdapter.getAdapterData().get(position).getAccount());
-//                getContext().sendBroadcast(intent);
-//                Log.i(TAG, "Monitor OnClick");
-                Intent intent = new Intent(getContext(), VideoChatViewActivity.class);
-                PushRequest.Extra extra = new PushRequest.Extra();
-                extra.setChannel(AccountCache.getAccount());
-                PushRequest pushMessage = new PushRequest(
-                        AccountCache.getAccount(),
-                        contactsListAdapter.getAdapterData().get(position).getAccount(),
-                        AppConst.PUSH_METHOD.CALL,
-                        extra
-                        );
 
-                Type mType = new TypeToken<PushRequest>() {
-                }.getType();
-                Gson gson = new Gson();
-                String json = gson.toJson(pushMessage,mType);
-                intent.putExtra("json", json);
-                PushRequest.Extra extra1 = new PushRequest.Extra();
-                extra1.setChannel(pushMessage.getExtra().getChannel());
-                ApiRetrofit.getInstance().push(AppConst.PUSH_METHOD.CALL,pushMessage.getTo(),extra1)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(pushResponse -> {
-                            startActivity(intent);
-                        },ContactsFragment.this::rxError);
+                if (AppConstants.Solution.equals(AppConstants.Agora)) {
+                    Intent intent = new Intent(getContext(), VideoChatViewActivity.class);
+                    PushRequest.Extra extra = new PushRequest.Extra();
+                    extra.setChannel(AccountCache.getAccount());
+                    PushRequest pushMessage = new PushRequest(
+                            AccountCache.getAccount(),
+                            contactsListAdapter.getAdapterData().get(position).getAccount(),
+                            AppConstants.PUSH_METHOD.CALL,
+                            extra
+                    );
+                    String json = pushMessage.toJson();
+                    intent.putExtra("json", json);
+                    PushRequest.Extra extra1 = new PushRequest.Extra();
+                    extra1.setChannel(pushMessage.getExtra().getChannel());
+                    //推送消息CALL
+                    ApiRetrofit.getInstance().push(AppConstants.PUSH_METHOD.CALL, pushMessage.getTo(), extra1)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(pushResponse -> {
+                                startActivity(intent);
+                            }, ContactsFragment.this::rxError);
+                } else if (AppConstants.Solution.equals(AppConstants.Tencent)) {
+                    if(MyApp.isLogin) {
+                        Intent intent = new Intent(getContext(), CallActivity.class);
+                        PushRequest.Extra extra = new PushRequest.Extra();
+                        extra.setChannel(AccountCache.getAccount());
+                        TCallParameter parameter = new TCallParameter(
+                                ILiveLoginManager.getInstance().getMyUserId(),
+                                0,
+                                ILVCallConstants.CALL_TYPE_VIDEO,
+                                AccountCache.getAccount(),
+                                contactsListAdapter.getAdapterData().get(position).getAccount()
+                        );
+                        String json = parameter.toJson();
+                        intent.putExtra("json", json);
+                        startActivity(intent);
+                    }
+                }
 
             }
 
@@ -122,6 +133,7 @@ public class ContactsFragment extends BaseFragment {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
     }
+
     public void updateView() {
         if (MyApp.getBondDeviceDao().count() == 0) {
             notBondDeviceView.setVisibility(View.VISIBLE);
@@ -178,8 +190,9 @@ public class ContactsFragment extends BaseFragment {
             getConversations();
         }
     };
+
     private void registerBR() {
-        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(AppConst.Action.UPDATE_CONVERSATIONS));
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.Action.UPDATE_CONVERSATIONS));
     }
 
     private void unRegisterBR() {

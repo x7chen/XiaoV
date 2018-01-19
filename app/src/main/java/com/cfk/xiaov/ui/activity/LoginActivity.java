@@ -1,8 +1,11 @@
 package com.cfk.xiaov.ui.activity;
 
 
+import android.content.Intent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,18 +13,31 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
+import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.app.AppConstants;
+import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.cache.MyInfoCache;
+import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.presenter.LoginAtPresenter;
-import com.cfk.xiaov.ui.view.ILoginAtView;
+import com.cfk.xiaov.ui.base.BasePresenter;
+import com.cfk.xiaov.util.BroadcastUtils;
+import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 
 import butterknife.BindView;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static com.cfk.xiaov.util.ResponseBodyStore.writeResponseBodyToDisk;
 
 /**
  * @创建者 Sean
  * @描述 登录界面
  */
-public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> implements ILoginAtView {
+public class LoginActivity extends BaseActivity {
+
+    String TAG = getClass().getSimpleName();
 
     @BindView(R.id.ibAddMenu)
     ImageButton mIbAddMenu;
@@ -80,12 +96,17 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
         });
 
         mBtnLogin.setOnClickListener(v -> {
-            mPresenter.login();
+            login();
         });
         tvLoginByPhone.setOnClickListener(v -> {
             jumpToActivity(LoginByPhoneActivity.class);
             finish();
         });
+    }
+
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
 
@@ -95,24 +116,71 @@ public class LoginActivity extends BaseActivity<ILoginAtView, LoginAtPresenter> 
         return pwdLength > 0 && phoneLength > 0;
     }
 
+    public void login() {
+        String userId = mEtUserId.getText().toString().trim();
+        String pwd = mEtPwd.getText().toString().trim();
 
-    @Override
-    protected LoginAtPresenter createPresenter() {
-        return new LoginAtPresenter(this);
+        if (TextUtils.isEmpty(userId)) {
+            UIUtils.showToast(UIUtils.getString(R.string.phone_not_empty));
+            return;
+        }
+        if (TextUtils.isEmpty(pwd)) {
+            UIUtils.showToast(UIUtils.getString(R.string.password_not_empty));
+            return;
+        }
+
+        showWaitingDialog(UIUtils.getString(R.string.please_wait));
+        ApiRetrofit.getInstance().login(AppConstants.REGION, userId, pwd)
+                .flatMap(loginResponse -> {
+                    int code = loginResponse.getCode();
+                    Log.i(TAG, "code:" + code);
+                    if (code == 200) {
+                        // 1. 获取用户信息
+                        AccountCache.save(userId, loginResponse.getResult().getToken(), pwd);
+                        return ApiRetrofit.getInstance().getUserInfoById(userId);
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
+                    }
+                })
+                .flatMap(getUserInfoByIdResponse -> {
+                    int code = getUserInfoByIdResponse.getCode();
+                    if (code == 200) {
+                        MyInfoCache.setAccount(userId);
+                        MyInfoCache.setNickName(getUserInfoByIdResponse.getResult().getNickname());
+                        // 2. 获取头像链接
+                        return ApiRetrofit.getInstance().getQiNiuDownloadUrl(getUserInfoByIdResponse.getResult().getPortraitUri());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
+                    }
+                })
+                .flatMap(qiNiuDownloadResponse -> {
+                    int code = qiNiuDownloadResponse.getCode();
+                    if (code == 200) {
+                        // 下载头像
+                        return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.unknown) + code)));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseBody -> {
+                    hideWaitingDialog();
+                    MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
+                    sendBroadcast(new Intent(AppConstants.Action.CHANGE_INFO_FOR_ME));
+                    jumpToActivityAndClearTop(MainActivity.class);
+                }, this::loginError);
+    }
+
+    private void loginError(Throwable throwable) {
+        LogUtils.e(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
+        BroadcastUtils.sendBroadcast(AppConstants.Action.NET_STATUS, "net_status", "failed");
+        hideWaitingDialog();
     }
 
     @Override
     protected int provideContentViewId() {
         return com.cfk.xiaov.R.layout.activity_login;
-    }
-
-    @Override
-    public EditText getEtUserId() {
-        return mEtUserId;
-    }
-
-    @Override
-    public EditText getEtPwd() {
-        return mEtPwd;
     }
 }

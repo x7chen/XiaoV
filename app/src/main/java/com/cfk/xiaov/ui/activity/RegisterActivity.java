@@ -1,27 +1,42 @@
 package com.cfk.xiaov.ui.activity;
 
+import android.content.Intent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.app.MyApp;
+import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.app.AppConstants;
+import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.cache.MyInfoCache;
+import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.presenter.RegisterAtPresenter;
-import com.cfk.xiaov.ui.view.IRegisterAtView;
+import com.cfk.xiaov.ui.base.BasePresenter;
+import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 
 import butterknife.BindView;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPresenter> implements IRegisterAtView {
+import static com.cfk.xiaov.util.ResponseBodyStore.writeResponseBodyToDisk;
+
+public class RegisterActivity extends BaseActivity {
+
+    String TAG = getClass().getSimpleName();
+
+    private Subscription mSubscription;
 
     @BindView(R.id.etNick)
     EditText mEtNick;
@@ -105,18 +120,23 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         });
 
         mBtnRegister.setOnClickListener(v -> {
-            mPresenter.register();
+            register();
         });
-        tvRegisterByPhone.setOnClickListener(view ->{
+        tvRegisterByPhone.setOnClickListener(view -> {
             jumpToActivity(RegisterByPhoneActivity.class);
             finish();
         });
     }
 
     @Override
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.unsubscribe();
+        unsubscribe();
     }
 
     private boolean canRegister() {
@@ -127,17 +147,91 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         String userId = mEtUserId.getText().toString().trim();
         int userIdLength = userId.length();
         if (nickNameLength > 0 && pwdLength > 0 && userIdLength > 0)
-        if(userId.matches("^[a-zA-Z][a-zA-Z0-9_]{5,15}$"))
-        if(passWd.matches("^[a-zA-Z0-9_.]{8,18}$")){
-            return true;
-        }
+            if (userId.matches("^[a-zA-Z][a-zA-Z0-9_]{5,15}$"))
+                if (passWd.matches("^[a-zA-Z0-9_.]{8,18}$")) {
+                    return true;
+                }
         return false;
     }
 
+    public void register() {
+        String userId = mEtUserId.getText().toString().trim();
+        String password = mEtPwd.getText().toString().trim();
+        String nickName = mEtNick.getText().toString().trim();
 
-    @Override
-    protected RegisterAtPresenter createPresenter() {
-        return new RegisterAtPresenter(this);
+        if (TextUtils.isEmpty(userId)) {
+            UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.account_not_empty));
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.password_not_empty));
+            return;
+        }
+        if (TextUtils.isEmpty(nickName)) {
+            UIUtils.showToast(UIUtils.getString(com.cfk.xiaov.R.string.nickname_not_empty));
+            return;
+        }
+
+
+        ApiRetrofit.getInstance().register(AppConstants.REGION, nickName, userId, password)
+                .flatMap(registerResponse -> {
+                    int code = registerResponse.getCode();
+                    if (code == 200) {
+                        Log.i(TAG, "hello");
+                        return ApiRetrofit.getInstance().login(AppConstants.REGION, userId, password);
+                    } else {
+                        return Observable.error(new ServerException(UIUtils.getString(R.string.register_error) + code));
+                    }
+
+                })
+                .flatMap(loginResponse -> {
+                    int code = loginResponse.getCode();
+                    if (code == 200) {
+                        AccountCache.save(loginResponse.getResult().getId(), loginResponse.getResult().getToken(), password);
+                        return ApiRetrofit.getInstance().getUserInfoById(loginResponse.getResult().getId());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.load_error) + code)));
+                    }
+                })
+                .flatMap(getUserInfoByIdResponse -> {
+                    int code = getUserInfoByIdResponse.getCode();
+                    if (code == 200) {
+                        MyInfoCache.setAccount(getUserInfoByIdResponse.getResult().getId());
+                        MyInfoCache.setNickName(getUserInfoByIdResponse.getResult().getNickname());
+                        return ApiRetrofit.getInstance().getQiNiuDownloadUrl(getUserInfoByIdResponse.getResult().getPortraitUri());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.load_error) + code)));
+                    }
+                })
+                .flatMap(qiNiuDownloadResponse -> {
+
+                    int code = qiNiuDownloadResponse.getCode();
+                    if (code == 200) {
+                        return ApiRetrofit.getInstance().downloadPic(qiNiuDownloadResponse.getResult().getPrivateDownloadUrl());
+                    } else {
+                        return Observable.error(new ServerException((UIUtils.getString(R.string.load_error) + code)));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseBody -> {
+                    MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
+                    sendBroadcast(new Intent(AppConstants.Action.CHANGE_INFO_FOR_ME));
+                    jumpToActivityAndClearTask(MainActivity.class);
+                }, this::registerError);
+    }
+
+    private void registerError(Throwable throwable) {
+        LogUtils.sf(throwable.getLocalizedMessage());
+        UIUtils.showToast(throwable.getLocalizedMessage());
+    }
+
+    public void unsubscribe() {
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+            mSubscription = null;
+        }
     }
 
     @Override
@@ -145,19 +239,5 @@ public class RegisterActivity extends BaseActivity<IRegisterAtView, RegisterAtPr
         return R.layout.activity_register;
     }
 
-    @Override
-    public EditText getEtNickName() {
-        return mEtNick;
-    }
-
-    @Override
-    public EditText getEtUserID() {
-        return mEtUserId;
-    }
-
-    @Override
-    public EditText getEtPwd() {
-        return mEtPwd;
-    }
 
 }

@@ -12,15 +12,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.activity.MyInfoActivity;
 import com.cfk.xiaov.ui.activity.SettingActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
-import com.cfk.xiaov.ui.presenter.MeFgPresenter;
-import com.cfk.xiaov.ui.view.IMeFgView;
+import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.widget.CustomDialog;
@@ -30,7 +29,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.lqr.optionitemview.OptionItemView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +42,7 @@ import rx.schedulers.Schedulers;
  * @创建者 Sean
  * @描述 我界面
  */
-public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implements IMeFgView {
+public class MeFragment extends BaseFragment {
 
     private CustomDialog mQrCardDialog;
 
@@ -60,7 +58,7 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
     ImageView mIvQRCordCard;
 
     @BindView(com.cfk.xiaov.R.id.oivSetting)
-    OptionItemView mOivSetting;
+    TextView mOivSetting;
 
     @Override
     public void init() {
@@ -69,7 +67,7 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
 
     @Override
     public void initData() {
-        mPresenter.loadUserInfo();
+        loadUserInfo();
     }
 
     @Override
@@ -143,12 +141,12 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mPresenter.loadUserInfo();
+            loadUserInfo();
         }
     };
 
     private void registerBR() {
-        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(AppConst.Action.CHANGE_INFO_FOR_ME));
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.Action.CHANGE_INFO_FOR_ME));
     }
 
     private void unregisterBR() {
@@ -156,8 +154,18 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
     }
 
     @Override
-    protected MeFgPresenter createPresenter() {
-        return new MeFgPresenter((MainActivity) getActivity());
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    public void loadUserInfo() {
+        fillView();
+    }
+
+    public void fillView() {
+        Glide.with(this).load(MyInfoCache.getAvatarUri()).centerCrop().into(mIvHeader);
+        mTvAccount.setText(UIUtils.getString(com.cfk.xiaov.R.string.my_chat_account) + MyInfoCache.getAccount());
+        mTvName.setText(MyInfoCache.getNickName());
     }
 
     @Override
@@ -165,18 +173,4 @@ public class MeFragment extends BaseFragment<IMeFgView, MeFgPresenter> implement
         return com.cfk.xiaov.R.layout.fragment_me;
     }
 
-    @Override
-    public ImageView getIvHeader() {
-        return mIvHeader;
-    }
-
-    @Override
-    public TextView getTvName() {
-        return mTvName;
-    }
-
-    @Override
-    public TextView getTvAccount() {
-        return mTvAccount;
-    }
 }

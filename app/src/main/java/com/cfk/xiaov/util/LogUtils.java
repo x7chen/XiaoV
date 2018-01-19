@@ -3,7 +3,7 @@ package com.cfk.xiaov.util;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class LogUtils {
     /**
      * 日志输出时的TAG
      */
-    private static String mTag = AppConst.TAG;
+    private static String mTag = AppConstants.TAG;
     /**
      * 日志输出级别NONE
      */
@@ -55,7 +55,7 @@ public class LogUtils {
     /**
      * 是否允许输出log
      */
-    private static int mDebuggable = AppConst.DEBUGLEVEL;
+    private static int mDebuggable = AppConstants.DEBUGLEVEL;
 
     /**
      * 用于记时的变量

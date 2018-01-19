@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
@@ -19,7 +20,6 @@ import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.widget.CustomDialog;
-import com.zhy.autolayout.AutoLinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +43,7 @@ public abstract class BaseFragmentActivity<V, T extends BaseFragmentPresenter<V>
     @BindView(R.id.vToolbarDivision)
     public View mToolbarDivision;
     @BindView(R.id.llToolbarTitle)
-    public AutoLinearLayout mLlToolbarTitle;
+    public LinearLayout mLlToolbarTitle;
     @BindView(R.id.tvToolbarTitle)
     public TextView mToolbarTitle;
     @BindView(R.id.tvToolbarSubTitle)

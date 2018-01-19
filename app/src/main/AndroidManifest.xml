@@ -14,15 +14,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
-    <!-- Required -->
-    <permission
-        android:name="com.cfk.xiaov.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <!-- Required  by jpush -->
-    <uses-permission android:name="com.cfk.xiaov.permission.JPUSH_MESSAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-
     <!-- 通过GPS得到精确位置 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 通过网络得到粗略位置 -->
@@ -59,12 +50,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="design_width"
-            android:value="720" />
-        <meta-data
-            android:name="design_height"
-            android:value="1280" />
 
         <activity
             android:name=".ui.activity.SplashActivity"
@@ -110,9 +95,24 @@
         <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.ComingCallActivity" />
-        <activity android:name=".ui.activity.RegisterByPhoneActivity" />
-        <activity android:name=".ui.activity.LoginByPhoneActivity" />
+        <activity
+            android:name=".ui.activity.ComingCallActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RegisterByPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LoginByPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CallActivity"
+            android:keepScreenOn="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullWindowTheme" />
+        <activity android:name=".ui.activity.TComingCallActivity" />
+
+        <service android:name=".ui.service.VideoCallService" />
+
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -122,92 +122,9 @@
             android:name=".ui.activity.VideoChatViewActivity"
             android:keepScreenOn="true"
             android:screenOrientation="landscape"
-            android:theme="@style/FullWindowTheme"></activity>
+            android:theme="@style/FullWindowTheme" />
+        <activity android:name=".ui.activity.InviteActivity" />
 
-        <!-- Rich push 核心功能 since 2.0.6 -->
-        <activity
-            android:name="cn.jpush.android.ui.PopWinActivity"
-            android:exported="false"
-            android:theme="@style/MyDialog"></activity>
-
-        <!-- Required SDK核心功能 -->
-        <activity
-            android:name="cn.jpush.android.ui.PushActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:exported="false"
-            android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.cfk.xiaov" />
-            </intent-filter>
-        </activity>
-
-        <!-- Required SDK 核心功能 -->
-        <!-- 可配置android:process参数将PushService放在其他进程中 -->
-        <service
-            android:name="cn.jpush.android.service.PushService"
-            android:exported="false"
-            android:process=":mult">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
-            </intent-filter>
-        </service>
-        <!-- since 3.0.9 Required SDK 核心功能 -->
-        <provider
-            android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="com.cfk.xiaov.DataProvider"
-            android:exported="false" />
-
-        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
-        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
-
-                <category android:name="com.cfk.xiaov" />
-            </intent-filter>
-        </service>
-        <!-- since 3.1.0 Required SDK 核心功能 -->
-        <provider
-            android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="com.cfk.xiaov.DownloadProvider"
-            android:exported="true" />
-        <!-- Required SDK核心功能 -->
-        <receiver
-            android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
-                <category android:name="com.cfk.xiaov" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- Optional -->
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Required SDK核心功能 -->
-        <receiver
-            android:name="cn.jpush.android.service.AlarmReceiver"
-            android:exported="false" />
-
-        <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
             android:name=".ui.receiver.MyReceiver"
             android:enabled="true"
@@ -219,19 +136,8 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
                 <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-
                 <category android:name="com.cfk.xiaov" />
             </intent-filter>
         </receiver>
-
-        <!-- Required  . Enable it you can get statistics data with channel -->
-        <meta-data
-            android:name="JPUSH_CHANNEL"
-            android:value="developer-default" />
-        <meta-data
-            android:name="JPUSH_APPKEY"
-            android:value="3667f8c97cd29d4558ce5202" /> <!-- </>值来自开发者平台取得的AppKey -->
-        <activity android:name=".ui.activity.InviteActivity"></activity>
     </application>
-
 </manifest>

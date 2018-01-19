@@ -1,5 +1,6 @@
 package com.cfk.xiaov.ui.activity;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +18,10 @@ import android.widget.TextView;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.db.model.BondDevice;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.db.BondDevice;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
@@ -29,16 +30,14 @@ import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
+import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
 import com.cfk.xiaov.util.UIUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +104,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public void init() {
+        if (MyApp.getSplashActivity() != null) {
+            MyApp.getSplashActivity().finish();
+        }
         registerBR();
+        startVideoCallService();
     }
 
     @Override
@@ -146,7 +149,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             View menuView = View.inflate(MainActivity.this, com.cfk.xiaov.R.layout.menu_main, null);
             PopupWindow popupWindow = PopupWindowUtils.getPopupWindowAtLocation(menuView, getWindow().getDecorView(), Gravity.TOP | Gravity.RIGHT, UIUtils.dip2Px(5), mAppBar.getHeight() + 30);
             menuView.findViewById(com.cfk.xiaov.R.id.tvHelpFeedback).setOnClickListener(v1 -> {
-                jumpToWebViewActivity(AppConst.MyUrl.HELP_FEED_BACK);
+                jumpToWebViewActivity(AppConstants.MyUrl.HELP_FEED_BACK);
                 popupWindow.dismiss();
             });
             menuView.findViewById(R.id.tvScan).setOnClickListener(v1 -> {
@@ -172,15 +175,18 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        final String[] account = new String[1];
-        final String[] nickname = new String[1];
         if (resultCode == 1001) {
             String result = data.getStringExtra("qr_result");
-            if (result.startsWith(AppConst.QrCodeCommon.BOND)) {
-                String targetId = result.substring(AppConst.QrCodeCommon.BOND.length());
-                Intent intent = new Intent(MainActivity.this, InviteActivity.class);
-                intent.putExtra("account", targetId);
-                startActivity(intent);
+            if (result.startsWith(AppConstants.QrCodeCommon.BOND)) {
+                String targetId = result.substring(AppConstants.QrCodeCommon.BOND.length());
+
+                if (AppConstants.Solution.equals(AppConstants.Agora)) {
+                    Intent intent = new Intent(MainActivity.this, InviteActivity.class);
+                    intent.putExtra("account", targetId);
+                    startActivity(intent);
+                } else if (AppConstants.Solution.equals(AppConstants.Tencent)) {
+                    saveNewDevice(targetId);
+                }
             }
         }
     }
@@ -343,9 +349,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             if (!TextUtils.isEmpty(AccountCache.getUserSig())) {
                 String account = AccountCache.getAccount();
                 String userSig = AccountCache.getUserSig();
-
-                MyApp.isLogin = true;
-                UIUtils.showToastSafely("登录成功！");
+                MyApp.mAccountMgr.loginSDK(account, userSig);
+//                MyApp.isLogin = true;
+//                UIUtils.showToastSafely("登录成功！");
             }
         }
 
@@ -364,28 +370,49 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(AppConst.Action.AGREE_MY_INVITE)) {
+            if (intent.getAction().equals(AppConstants.Action.AGREE_MY_INVITE)) {
                 String json = intent.getStringExtra("json");
-                Type mType = new TypeToken<PushRequest>() {
-                }.getType();
-                Gson gson = new Gson();
-                PushRequest pushMessage = gson.fromJson(json, mType);
+                PushRequest pushMessage = PushRequest.parserFromJson(json);
+
                 saveNewDevice(pushMessage.getFrom());
-            } else if (intent.getAction().equals(AppConst.Action.FETCH_COMPLETE)) {
+            } else if (intent.getAction().equals(AppConstants.Action.FETCH_COMPLETE)) {
                 hideWaitingDialog();
-            } else if (intent.getAction().equals(AppConst.Action.CONNECTIVITY_CHANGE_ACTION)) {
+            } else if (intent.getAction().equals(AppConstants.Action.CONNECTIVITY_CHANGE_ACTION)) {
                 checkNetwork();
-            } else if (intent.getAction().equals(AppConst.Action.AGREE_MY_INVITE)) {
+            } else if (intent.getAction().equals(AppConstants.Action.AGREE_MY_INVITE)) {
                 showNetworkFail();
             }
         }
     };
 
+    void startVideoCallService() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(Integer.MAX_VALUE);
+        boolean isRunning = false;
+        if (serviceList == null || serviceList.size() == 0) {
+            isRunning = false;
+        } else {
+            for (ActivityManager.RunningServiceInfo info : serviceList) {
+                // Log.i(TAG,info.service.getClassName());
+
+                if (info.service.getClassName().equals(VideoCallService.class.getName())) {
+                    isRunning = true;
+                    break;
+                }
+            }
+            // Log.i(TAG,VideoCallService.class.getName());
+        }
+        if (!isRunning) {
+            Intent intent1 = new Intent(MyApp.ApplicationContext, VideoCallService.class);
+            MyApp.ApplicationContext.startService(intent1);
+        }
+    }
+
     private void registerBR() {
-        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.FETCH_COMPLETE));
-        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.CONNECTIVITY_CHANGE_ACTION));
-        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.NET_STATUS));
-        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.AGREE_MY_INVITE));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.Action.FETCH_COMPLETE));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.Action.CONNECTIVITY_CHANGE_ACTION));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.Action.NET_STATUS));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.Action.AGREE_MY_INVITE));
 
     }
 

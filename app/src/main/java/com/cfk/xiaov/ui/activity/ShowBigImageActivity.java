@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BasePresenter;
@@ -105,7 +105,7 @@ public class ShowBigImageActivity extends BaseActivity {
             FileOutputStream out = null;
             try {
                 in = new FileInputStream(file);
-                out = new FileOutputStream(new File(AppConst.HEADER_SAVE_DIR, SystemClock.currentThreadTimeMillis() + "_header.jpg"));
+                out = new FileOutputStream(new File(AppConstants.HEADER_SAVE_DIR, SystemClock.currentThreadTimeMillis() + "_header.jpg"));
                 int c;
 
                 while ((c = in.read()) != -1) {
@@ -133,7 +133,7 @@ public class ShowBigImageActivity extends BaseActivity {
             FileOutputStream out = null;
             try {
                 in = body.byteStream();
-                out = new FileOutputStream(new File(AppConst.HEADER_SAVE_DIR, SystemClock.currentThreadTimeMillis() + "_header.jpg"));
+                out = new FileOutputStream(new File(AppConstants.HEADER_SAVE_DIR, SystemClock.currentThreadTimeMillis() + "_header.jpg"));
                 int c;
 
                 while ((c = in.read()) != -1) {

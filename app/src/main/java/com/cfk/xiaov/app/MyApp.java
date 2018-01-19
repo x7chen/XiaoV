@@ -10,15 +10,18 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.cfk.xiaov.api.AccountMgr;
 import com.cfk.xiaov.app.base.BaseApp;
-import com.cfk.xiaov.db.model.BondDeviceDao;
-import com.cfk.xiaov.db.model.DaoMaster;
-import com.cfk.xiaov.db.model.DaoSession;
 import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.model.db.BondDeviceDao;
+import com.cfk.xiaov.model.db.DaoMaster;
+import com.cfk.xiaov.model.db.DaoSession;
+import com.cfk.xiaov.ui.activity.SplashActivity;
 import com.lqr.imagepicker.ImagePicker;
 import com.lqr.imagepicker.loader.ImageLoader;
 import com.lqr.imagepicker.view.CropImageView;
 import com.mob.MobSDK;
+import com.tencent.ilivesdk.ILiveSDK;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +34,8 @@ public class MyApp extends BaseApp {
     String TAG = getClass().getSimpleName();
     public static Context ApplicationContext;
     public static boolean isLogin = false;
-
+    private static SplashActivity splashActivity;
+    public static AccountMgr mAccountMgr;
 
     @Override
     public void onCreate() {
@@ -39,10 +43,10 @@ public class MyApp extends BaseApp {
         ApplicationContext = this;
         initImagePicker();
         initGreenDao();
-//        initILVLive();
+        initILVLive();
         initMobSMS();
         initJPush();
-
+        mAccountMgr = new AccountMgr();
     }
 
     void initMobSMS() {
@@ -127,4 +131,17 @@ public class MyApp extends BaseApp {
     public static BondDeviceDao getBondDeviceDao() {
         return bondDeviceDao;
     }
+
+    public static void setSplashActivity(SplashActivity splashActivity) {
+        MyApp.splashActivity = splashActivity;
+    }
+
+    public static SplashActivity getSplashActivity() {
+        return splashActivity;
+    }
+    public void initILVLive() {
+        ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400036822, 14464);
+        Log.i(TAG, "init iLive!");
+    }
+
 }

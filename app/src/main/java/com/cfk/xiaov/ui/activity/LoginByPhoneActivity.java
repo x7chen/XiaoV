@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
@@ -170,9 +170,8 @@ public class LoginByPhoneActivity extends BaseActivity {
                     .subscribe(responseBody -> {
                         hideWaitingDialog();
                         MyInfoCache.setAvatarUri(writeResponseBodyToDisk(responseBody));
-                        sendBroadcast(new Intent(AppConst.Action.CHANGE_INFO_FOR_ME));
+                        sendBroadcast(new Intent(AppConstants.Action.CHANGE_INFO_FOR_ME));
                         jumpToActivityAndClearTask(MainActivity.class);
-                        finish();
                     }, this::loginError);
         });
 
@@ -186,7 +185,7 @@ public class LoginByPhoneActivity extends BaseActivity {
     private void loginError(Throwable throwable) {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
-        BroadcastUtils.sendBroadcast(AppConst.Action.NET_STATUS, "net_status", "failed");
+        BroadcastUtils.sendBroadcast(AppConstants.Action.NET_STATUS, "net_status", "failed");
     }
 
     @Override

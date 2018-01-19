@@ -8,7 +8,7 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.util.UIUtils;
 import com.cjt2325.cameralibrary.JCameraView;
@@ -52,10 +52,10 @@ public class TakePhotoActivity extends BaseActivity {
         //(0.0.8+)设置手动/自动对焦，默认为自动对焦
         mJCameraView.setAutoFoucs(false);
         //设置小视频保存路径
-        File file = new File(AppConst.VIDEO_SAVE_DIR);
+        File file = new File(AppConstants.VIDEO_SAVE_DIR);
         if (!file.exists())
             file.mkdirs();
-        mJCameraView.setSaveVideoPath(AppConst.VIDEO_SAVE_DIR);
+        mJCameraView.setSaveVideoPath(AppConstants.VIDEO_SAVE_DIR);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class TakePhotoActivity extends BaseActivity {
             @Override
             public void captureSuccess(Bitmap bitmap) {
                 //获取到拍照成功后返回的Bitmap
-                String path = saveBitmap(bitmap, AppConst.PHOTO_SAVE_DIR);
+                String path = saveBitmap(bitmap, AppConstants.PHOTO_SAVE_DIR);
                 Intent data = new Intent();
                 data.putExtra("take_photo", true);
                 data.putExtra("path", path);

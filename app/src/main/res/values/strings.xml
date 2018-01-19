@@ -79,7 +79,7 @@
     <string name="photo">照片</string>
 
     <!--我-->
-    <string name="my_chat_account">账号:</string>
+    <string name="my_chat_account">账号 :  </string>
     <string name="album">相册</string>
     <string name="collection">收藏</string>
     <string name="wallet">钱包</string>
@@ -267,7 +267,7 @@
     <string name="manage_device">设备管理</string>
 
     <!--关于-->
-    <string name="app_name_in_about">小威 V1.0.0</string>
+    <string name="app_name_in_about">小V V1.0.0</string>
     <string name="function_introduction">功能介绍</string>
     <string name="complaint">投诉</string>
     <string name="check_update">检查更新</string>

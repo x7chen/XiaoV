@@ -1,11 +1,8 @@
-<com.zhy.autolayout.AutoLinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <include layout="@layout/include_toolbar"/>
 
@@ -26,4 +23,4 @@
         android:layout_centerVertical="true"
         android:visibility="gone"/>
 
-</com.zhy.autolayout.AutoLinearLayout>
+</LinearLayout>

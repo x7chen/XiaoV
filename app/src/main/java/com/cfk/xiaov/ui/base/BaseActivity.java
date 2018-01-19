@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cfk.xiaov.app.MyApp;
@@ -19,7 +20,6 @@ import com.cfk.xiaov.ui.activity.WebViewActivity;
 import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.widget.CustomDialog;
 import com.jaeger.library.StatusBarUtil;
-import com.zhy.autolayout.AutoLinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,21 +32,27 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     private MaterialDialog mMaterialDialog;
 
     //以下是所有Activity中可能会出现的控件
-    @BindView(com.cfk.xiaov.R.id.appBar) protected AppBarLayout mAppBar;
+    @BindView(com.cfk.xiaov.R.id.appBar)
+    protected AppBarLayout mAppBar;
     //    @Bind(R.id.toolbar)
     //    protected Toolbar mToolbar;
-    @BindView(com.cfk.xiaov.R.id.flToolbar) public FrameLayout mToolbar;
-    @BindView(com.cfk.xiaov.R.id.ivToolbarNavigation) public ImageView mToolbarNavigation;
-    @BindView(com.cfk.xiaov.R.id.vToolbarDivision) public View mToolbarDivision;
-    @BindView(com.cfk.xiaov.R.id.llToolbarTitle) public AutoLinearLayout mLlToolbarTitle;
-    @BindView(com.cfk.xiaov.R.id.tvToolbarTitle) public TextView mToolbarTitle;
-    @BindView(com.cfk.xiaov.R.id.tvToolbarSubTitle) public TextView mToolbarSubTitle;
+    @BindView(com.cfk.xiaov.R.id.flToolbar)
+    public FrameLayout mToolbar;
+    @BindView(com.cfk.xiaov.R.id.ivToolbarNavigation)
+    public ImageView mToolbarNavigation;
+    @BindView(com.cfk.xiaov.R.id.vToolbarDivision)
+    public View mToolbarDivision;
+    @BindView(com.cfk.xiaov.R.id.llToolbarTitle)
+    public LinearLayout mLlToolbarTitle;
+    @BindView(com.cfk.xiaov.R.id.tvToolbarTitle)
+    public TextView mToolbarTitle;
+    @BindView(com.cfk.xiaov.R.id.tvToolbarSubTitle)
+    public TextView mToolbarSubTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApp.activities.add(this);
-
 
 
         //判断是否使用MVP模式
@@ -214,7 +220,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
 
     public void jumpToActivityAndClearTask(Class activity) {
         Intent intent = new Intent(this, activity);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
@@ -223,6 +229,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         Intent intent = new Intent(this, activity);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     /*------------------ toolbar的一些视图操作 ------------------*/

@@ -1,7 +1,6 @@
 package com.cfk.xiaov.ui.fragment.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -9,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,9 +17,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.app.AppConst;
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.db.model.BondDevice;
+import com.cfk.xiaov.model.db.BondDevice;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
 
 import java.util.List;
@@ -68,7 +65,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
 
 /*        holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setAction(AppConst.MAKE_CALL);
+            intent.setAction(AppConstants.MAKE_CALL);
             intent.putExtra("CallId", mAdapterData.get(holder.getAdapterPosition()).getAccount());
             mContext.sendBroadcast(intent);
             Log.i(TAG, "Monitor OnClick");
@@ -121,7 +118,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
 
 /*            itemView.setOnClickListener(v -> {
                 Intent intent = new Intent();
-                intent.setAction(AppConst.MAKE_CALL);
+                intent.setAction(AppConstants.MAKE_CALL);
                 intent.putExtra("CallId", mAdapterData.get(getAdapterPosition()).getAccount());
                 mContext.sendBroadcast(intent);
                 Log.i(TAG, "Monitor OnClick");

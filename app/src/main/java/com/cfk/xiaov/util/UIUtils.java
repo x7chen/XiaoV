@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.app.base.BaseApp;
 
-import static com.zhy.autolayout.utils.ScreenUtils.getStatusBarHeight;
 
 
 /**
@@ -192,56 +190,6 @@ public class UIUtils {
         float density = getResource().getDisplayMetrics().density;
         int px = (int) (dip * density + 0.5f);
         return px;
-    }
-
-    /**
-     * px-->dip
-     */
-    public static int px2dip(int px) {
-
-        float density = getResource().getDisplayMetrics().density;
-        int dip = (int) (px / density + 0.5f);
-        return dip;
-    }
-
-    /**
-     * sp-->px
-     */
-    public static int sp2px(int sp) {
-        return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getResource().getDisplayMetrics()) + 0.5f);
-    }
-
-
-    public static int getDisplayWidth() {
-        if (screenWidth == 0) {
-            GetInfo(UIUtils.getContext());
-        }
-        return screenWidth;
-    }
-
-    public static int getDisplayHeight() {
-        if (screenHeight == 0) {
-            GetInfo(UIUtils.getContext());
-        }
-        return screenHeight;
-    }
-
-    public static void GetInfo(Context context) {
-        if (null == context) {
-            return;
-        }
-        DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
-        screenWidth = dm.widthPixels;
-        screenHeight = dm.heightPixels;
-        screenMin = (screenWidth > screenHeight) ? screenHeight : screenWidth;
-        screenMax = (screenWidth < screenHeight) ? screenHeight : screenWidth;
-        density = dm.density;
-        scaleDensity = dm.scaledDensity;
-        xdpi = dm.xdpi;
-        ydpi = dm.ydpi;
-        densityDpi = dm.densityDpi;
-        statusbarheight = getStatusBarHeight(context);
-        navbarheight = getNavBarHeight(context);
     }
 
     public static int getNavBarHeight(Context context) {

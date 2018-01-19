@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.api.ApiRetrofit;
-import com.cfk.xiaov.app.AppConst;
+import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.util.LogUtils;
@@ -93,10 +93,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("json");
         Log.i(LOG_TAG, json);
-        Type mType = new TypeToken<PushRequest>() {
-        }.getType();
-        Gson gson = new Gson();
-        session_info = gson.fromJson(json, mType);
+        session_info = PushRequest.parserFromJson(json);
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO, PERMISSION_REQ_ID_RECORD_AUDIO) && checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_REQ_ID_CAMERA)) {
             initAgoraEngineAndJoinChannel();
         }
@@ -241,7 +238,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
         Log.i(LOG_TAG, target);
         PushRequest.Extra extra = new PushRequest.Extra();
         extra.setChannel(session_info.getExtra().getChannel());
-        ApiRetrofit.getInstance().push(AppConst.PUSH_METHOD.HANG_UP, target, extra)
+        ApiRetrofit.getInstance().push(AppConstants.PUSH_METHOD.HANG_UP, target, extra)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pushResponse -> {
@@ -267,8 +264,9 @@ public class VideoChatViewActivity extends AppCompatActivity {
 
     // Tutorial Step 2
     private void setupVideoProfile() {
+//         mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
         mRtcEngine.enableVideo();
-        mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_720P, false);
+        mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_360P, false);
         mRtcEngine.enableLocalVideo(false); //关闭本地视频，用于监控
         mRtcEngine.muteLocalAudioStream(true);
         localVideoView.setVisibility(View.GONE);
@@ -283,11 +281,14 @@ public class VideoChatViewActivity extends AppCompatActivity {
         //container.setBackground(getDrawable(R.color.transparent));
         //container.setVisibility(View.GONE);
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_HIDDEN, 0));
+
+//        mRtcEngine.setClientRole(Constants.CLIENT_ROLE_AUDIENCE,null);
     }
 
     // Tutorial Step 4
     private void joinChannel() {
         LogUtils.i(session_info.getExtra().getChannel());
+
         mRtcEngine.joinChannel(null, session_info.getExtra().getChannel(), "Extra Optional Data", 0); // if you do not specify the uid, we will generate the uid for you
     }
 
@@ -339,7 +340,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
     };
 
     private void registerBR() {
-        registerReceiver(broadcastReceiver, new IntentFilter(AppConst.Action.HANG_UP_CALL));
+        registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.Action.HANG_UP_CALL));
 
 
     }

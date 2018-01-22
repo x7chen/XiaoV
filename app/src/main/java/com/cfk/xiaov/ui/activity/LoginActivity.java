@@ -19,7 +19,6 @@ import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
@@ -102,11 +101,6 @@ public class LoginActivity extends BaseActivity {
             jumpToActivity(LoginByPhoneActivity.class);
             finish();
         });
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
 

@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.google.zxing.BarcodeFormat;
@@ -99,10 +98,6 @@ public class QRCodeCardActivity extends BaseActivity {
         LogUtils.sf(throwable.getLocalizedMessage());
     }
 
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
-    }
 
     @Override
     protected int provideContentViewId() {

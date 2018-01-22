@@ -9,9 +9,7 @@ import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.widget.CustomDialog;
-import com.lqr.optionitemview.OptionItemView;
 
 import butterknife.BindView;
 
@@ -61,11 +59,6 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

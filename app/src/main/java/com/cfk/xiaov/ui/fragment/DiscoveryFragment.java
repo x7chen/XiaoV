@@ -12,7 +12,6 @@ import android.webkit.WebViewClient;
 
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.ui.base.BaseFragment;
-import com.cfk.xiaov.ui.base.BasePresenter;
 
 import butterknife.BindView;
 
@@ -38,10 +37,6 @@ public class DiscoveryFragment extends BaseFragment {
         mFab.setOnClickListener(v -> Log.i(TAG,mDiscoveryView.getUrl()));
     }
 
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
-    }
 
     @Override
     public void initView(View rootView) {

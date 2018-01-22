@@ -28,7 +28,6 @@ import com.cfk.xiaov.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
 import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.util.LogUtils;
@@ -165,11 +164,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mLlDiscovery.setOnClickListener(v -> bottomBtnClick(v));
         mLlMe.setOnClickListener(v -> bottomBtnClick(v));
         mVpContent.setOnPageChangeListener(this);
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

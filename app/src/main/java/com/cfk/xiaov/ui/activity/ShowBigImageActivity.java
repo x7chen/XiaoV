@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.PopupWindowUtils;
 import com.cfk.xiaov.util.UIUtils;
 
@@ -59,12 +58,6 @@ public class ShowBigImageActivity extends BaseActivity {
     public void initListener() {
         mIbToolbarMore.setOnClickListener(v -> showPopupMenu());
     }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
-    }
-
     @Override
     protected int provideContentViewId() {
         return com.cfk.xiaov.R.layout.activity_show_big_image;

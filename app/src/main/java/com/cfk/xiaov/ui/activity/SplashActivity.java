@@ -11,8 +11,6 @@ import android.widget.RelativeLayout;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
-import com.cfk.xiaov.ui.service.VideoCallService;
 import com.cfk.xiaov.util.UIUtils;
 import com.jaeger.library.StatusBarUtil;
 
@@ -89,11 +87,6 @@ public class SplashActivity extends BaseActivity {
             jumpToActivity(RegisterActivity.class);
             //finish();
         });
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

@@ -19,7 +19,6 @@ import com.cfk.xiaov.ui.activity.MainActivity;
 import com.cfk.xiaov.ui.activity.MyInfoActivity;
 import com.cfk.xiaov.ui.activity.SettingActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.cfk.xiaov.widget.CustomDialog;
@@ -77,8 +76,8 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void initListener() {
-        mLlMyInfo.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToActivityAndClearTop(MyInfoActivity.class));
-        mOivSetting.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToActivityAndClearTop(SettingActivity.class));
+        mLlMyInfo.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToActivity(MyInfoActivity.class));
+        mOivSetting.setOnClickListener(v -> ((MainActivity) getActivity()).jumpToActivity(SettingActivity.class));
     }
 
     @Override
@@ -93,10 +92,10 @@ public class MeFragment extends BaseFragment {
         }
 //        if (mQrCardDialog == null) {
         View qrCardView = View.inflate(getContext(), com.cfk.xiaov.R.layout.include_qrcode_card, null);
-        final ImageView ivHeader = (ImageView) qrCardView.findViewById(R.id.ivHeader);
-        TextView tvName = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvName);
-        ImageView ivCard = (ImageView) qrCardView.findViewById(com.cfk.xiaov.R.id.ivCard);
-        TextView tvTip = (TextView) qrCardView.findViewById(com.cfk.xiaov.R.id.tvTip);
+        final ImageView ivHeader = qrCardView.findViewById(R.id.ivHeader);
+        TextView tvName = qrCardView.findViewById(R.id.tvName);
+        ImageView ivCard = qrCardView.findViewById(R.id.ivCard);
+        TextView tvTip = qrCardView.findViewById(R.id.tvTip);
         Glide.with(this).load(MyInfoCache.getAvatarUri()).centerCrop().into(ivHeader);
         tvName.setText(MyInfoCache.getNickName());
         tvTip.setText(UIUtils.getString(com.cfk.xiaov.R.string.qr_code_card_tip));
@@ -151,11 +150,6 @@ public class MeFragment extends BaseFragment {
 
     private void unregisterBR() {
         getActivity().unregisterReceiver(broadcastReceiver);
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     public void loadUserInfo() {

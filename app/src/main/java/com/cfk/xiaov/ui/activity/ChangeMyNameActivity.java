@@ -11,7 +11,6 @@ import com.cfk.xiaov.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 
@@ -84,11 +83,6 @@ public class ChangeMyNameActivity extends BaseActivity {
     private void loadError(Throwable throwable) {
         hideWaitingDialog();
         LogUtils.sf(throwable.getLocalizedMessage());
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

@@ -14,7 +14,6 @@ import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.request.PushRequest;
 import com.cfk.xiaov.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 
@@ -95,10 +94,6 @@ public class InviteActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
-    }
 
     @Override
     protected int provideContentViewId() {

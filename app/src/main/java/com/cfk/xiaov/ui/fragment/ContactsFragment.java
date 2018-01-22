@@ -24,7 +24,6 @@ import com.cfk.xiaov.ui.ActionEvent.RecyclerViewClickListener;
 import com.cfk.xiaov.ui.activity.CallActivity;
 import com.cfk.xiaov.ui.activity.VideoChatViewActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.ui.fragment.adapter.ContactsListAdapter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
@@ -162,10 +161,6 @@ public class ContactsFragment extends BaseFragment {
         super.initListener();
     }
 
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
-    }
 
     @Override
     public void onResume() {

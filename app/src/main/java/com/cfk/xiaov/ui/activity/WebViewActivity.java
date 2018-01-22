@@ -12,7 +12,6 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.widget.ProgressWebView;
 
 import butterknife.BindView;
@@ -80,11 +79,6 @@ public class WebViewActivity extends BaseActivity {
     @Override
     public void initListener() {
         mIbToolbarMore.setOnClickListener(v -> showShare());
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

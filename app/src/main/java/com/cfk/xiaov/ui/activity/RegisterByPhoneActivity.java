@@ -15,7 +15,6 @@ import com.cfk.xiaov.model.cache.AccountCache;
 import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
@@ -189,10 +188,6 @@ public class RegisterByPhoneActivity extends BaseActivity {
         LogUtils.e(throwable.getLocalizedMessage());
         UIUtils.showToast(throwable.getLocalizedMessage());
         BroadcastUtils.sendBroadcast(AppConstants.Action.NET_STATUS, "net_status", "failed");
-    }
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

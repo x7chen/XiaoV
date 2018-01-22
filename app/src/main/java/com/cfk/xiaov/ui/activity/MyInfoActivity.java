@@ -20,7 +20,6 @@ import com.cfk.xiaov.model.cache.MyInfoCache;
 import com.cfk.xiaov.model.exception.ServerException;
 import com.cfk.xiaov.model.response.QiNiuTokenResponse;
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.ui.base.BasePresenter;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
 import com.lqr.imagepicker.ImagePicker;
@@ -87,11 +86,6 @@ public class MyInfoActivity extends BaseActivity {
         });
         mOivQRCodeCard.setOnClickListener(v -> jumpToActivity(QRCodeCardActivity.class));
         mOivName.setOnClickListener(v -> jumpToActivity(ChangeMyNameActivity.class));
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

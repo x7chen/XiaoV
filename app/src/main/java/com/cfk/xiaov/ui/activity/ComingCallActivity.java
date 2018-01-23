@@ -20,18 +20,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.rest.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConstants;
-import com.cfk.xiaov.model.exception.ServerException;
-import com.cfk.xiaov.model.request.PushRequest;
-import com.cfk.xiaov.model.response.GetUserInfoResponse;
+import com.cfk.xiaov.misc.exception.ServerException;
+import com.cfk.xiaov.rest.model.request.PushRequest;
+import com.cfk.xiaov.rest.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

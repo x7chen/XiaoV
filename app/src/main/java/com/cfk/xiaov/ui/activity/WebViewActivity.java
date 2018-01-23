@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
 import com.cfk.xiaov.ui.base.BaseActivity;
-import com.cfk.xiaov.widget.ProgressWebView;
+import com.cfk.xiaov.ui.view.ProgressWebView;
 
 import butterknife.BindView;
 

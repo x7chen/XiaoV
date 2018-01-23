@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.rest.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConstants;
-import com.cfk.xiaov.model.cache.MyInfoCache;
+import com.cfk.xiaov.storage.sp.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;

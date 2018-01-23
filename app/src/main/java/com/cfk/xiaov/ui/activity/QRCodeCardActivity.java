@@ -5,8 +5,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.cache.MyInfoCache;
+import com.cfk.xiaov.storage.sp.AccountCache;
+import com.cfk.xiaov.storage.sp.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;

@@ -114,7 +114,7 @@
         <activity android:name=".ui.activity.InviteActivity" />
 
 
-        <service android:name=".ui.service.VideoCallService" />
+        <service android:name=".business.service.VideoCallService" />
 
         <activity
             android:name="com.mob.tools.MobUIShell"
@@ -124,7 +124,7 @@
 
 
         <receiver
-            android:name=".ui.receiver.MyReceiver"
+            android:name=".business.receiver.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

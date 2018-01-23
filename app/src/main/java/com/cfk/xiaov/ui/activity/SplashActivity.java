@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.model.cache.AccountCache;
+import com.cfk.xiaov.storage.sp.AccountCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.util.UIUtils;
 import com.jaeger.library.StatusBarUtil;

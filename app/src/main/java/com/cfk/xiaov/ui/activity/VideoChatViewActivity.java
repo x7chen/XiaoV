@@ -22,17 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.rest.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConstants;
-import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.request.PushRequest;
+import com.cfk.xiaov.storage.sp.AccountCache;
+import com.cfk.xiaov.rest.model.request.PushRequest;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.kyleduo.switchbutton.SwitchButton;
-
-import java.lang.reflect.Type;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

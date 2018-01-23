@@ -10,12 +10,12 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.cfk.xiaov.api.AccountMgr;
+import com.cfk.xiaov.business.AccountMgr;
 import com.cfk.xiaov.app.base.BaseApp;
-import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.db.BondDeviceDao;
-import com.cfk.xiaov.model.db.DaoMaster;
-import com.cfk.xiaov.model.db.DaoSession;
+import com.cfk.xiaov.storage.sp.AccountCache;
+import com.cfk.xiaov.storage.db.BondDeviceDao;
+import com.cfk.xiaov.storage.db.DaoMaster;
+import com.cfk.xiaov.storage.db.DaoSession;
 import com.cfk.xiaov.ui.activity.SplashActivity;
 import com.lqr.imagepicker.ImagePicker;
 import com.lqr.imagepicker.loader.ImageLoader;
@@ -139,6 +139,7 @@ public class MyApp extends BaseApp {
     public static SplashActivity getSplashActivity() {
         return splashActivity;
     }
+
     public void initILVLive() {
         ILiveSDK.getInstance().initSdk(getApplicationContext(), 1400036822, 14464);
         Log.i(TAG, "init iLive!");

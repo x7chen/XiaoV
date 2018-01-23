@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.rest.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConstants;
-import com.cfk.xiaov.model.db.BondDevice;
-import com.cfk.xiaov.model.exception.ServerException;
-import com.cfk.xiaov.model.request.PushRequest;
-import com.cfk.xiaov.model.response.GetUserInfoResponse;
+import com.cfk.xiaov.storage.db.BondDevice;
+import com.cfk.xiaov.misc.exception.ServerException;
+import com.cfk.xiaov.rest.model.request.PushRequest;
+import com.cfk.xiaov.rest.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.UIUtils;

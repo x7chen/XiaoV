@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.cfk.xiaov.app.AppConstants;
-import com.cfk.xiaov.model.cache.MyInfoCache;
+import com.cfk.xiaov.storage.sp.MyInfoCache;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.util.PopupWindowUtils;
 import com.cfk.xiaov.util.UIUtils;

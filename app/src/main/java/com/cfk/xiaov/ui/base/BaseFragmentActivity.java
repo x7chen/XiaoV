@@ -19,7 +19,7 @@ import com.jaeger.library.StatusBarUtil;
 import com.cfk.xiaov.R;
 import com.cfk.xiaov.app.MyApp;
 import com.cfk.xiaov.util.UIUtils;
-import com.cfk.xiaov.widget.CustomDialog;
+import com.cfk.xiaov.ui.dialog.CustomDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

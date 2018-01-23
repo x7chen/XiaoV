@@ -17,19 +17,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.rest.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConstants;
 import com.cfk.xiaov.app.MyApp;
-import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.db.BondDevice;
-import com.cfk.xiaov.model.exception.ServerException;
-import com.cfk.xiaov.model.request.PushRequest;
-import com.cfk.xiaov.model.response.GetUserInfoResponse;
+import com.cfk.xiaov.storage.sp.AccountCache;
+import com.cfk.xiaov.storage.db.BondDevice;
+import com.cfk.xiaov.misc.exception.ServerException;
+import com.cfk.xiaov.rest.model.request.PushRequest;
+import com.cfk.xiaov.rest.model.response.GetUserInfoResponse;
 import com.cfk.xiaov.ui.adapter.CommonFragmentPagerAdapter;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.ui.base.BaseFragment;
 import com.cfk.xiaov.ui.fragment.FragmentFactory;
-import com.cfk.xiaov.ui.service.VideoCallService;
+import com.cfk.xiaov.business.service.VideoCallService;
 import com.cfk.xiaov.util.LogUtils;
 import com.cfk.xiaov.util.NetUtils;
 import com.cfk.xiaov.util.PopupWindowUtils;
@@ -344,8 +344,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 String account = AccountCache.getAccount();
                 String userSig = AccountCache.getUserSig();
                 MyApp.mAccountMgr.loginSDK(account, userSig);
-//                MyApp.isLogin = true;
-//                UIUtils.showToastSafely("登录成功！");
             }
         }
 

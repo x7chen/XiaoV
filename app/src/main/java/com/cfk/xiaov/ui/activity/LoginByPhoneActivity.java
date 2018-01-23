@@ -8,11 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cfk.xiaov.R;
-import com.cfk.xiaov.api.ApiRetrofit;
+import com.cfk.xiaov.rest.api.ApiRetrofit;
 import com.cfk.xiaov.app.AppConstants;
-import com.cfk.xiaov.model.cache.AccountCache;
-import com.cfk.xiaov.model.cache.MyInfoCache;
-import com.cfk.xiaov.model.exception.ServerException;
+import com.cfk.xiaov.storage.sp.AccountCache;
+import com.cfk.xiaov.storage.sp.MyInfoCache;
+import com.cfk.xiaov.misc.exception.ServerException;
 import com.cfk.xiaov.ui.base.BaseActivity;
 import com.cfk.xiaov.util.BroadcastUtils;
 import com.cfk.xiaov.util.LogUtils;
